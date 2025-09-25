@@ -12,6 +12,7 @@ ob_start();
 // }
 
 
+
 //function to get user ID
 function getUserId() {
     return $_SESSION['customer_id'] ?? null;
@@ -23,10 +24,15 @@ function getUserRole() {
     return $_SESSION['user_role'] ?? null;
 }
 
+function isLoggedIn() {
+    return isset($_SESSION['customer_id']) && !empty($_SESSION['customer_id']);
+}
+
 // Check if user is admin
 function isAdmin() {
     return getUserRole() == 1;
 }
+
 
 // Check if user is customer
 function isCustomer() {
