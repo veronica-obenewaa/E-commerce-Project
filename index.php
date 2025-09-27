@@ -1,9 +1,16 @@
+<?php
+
+require_once __DIR__ . '/settings/core.php';
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link href="https://fonts.google.com/specimen/Josefin+Sans?query=Josefin+Sans:ital,wght@0,400;1,200;1,300;1,600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap" rel="stylesheet">
 	<!--<link rel="stylesheet" href="./css/index.css">-->
 	<title>Homepage</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,7 +22,7 @@
 		}
 
 		.bg-image {
-			background: url("/images/notebook.jpg") no-repeat center center fixed;
+			background: url("images/notebook.jpg") no-repeat center center fixed;
 			background-size: cover;
 			filter: blur(6px);
 			height: 100%;
@@ -37,6 +44,25 @@
 </head>
 
 	<body>
+		<nav class="navbar navbar-light bg-light">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/mvc_skeleton_template/index.php">Virtual Pharmacy</a>
+				<div>
+					<?php if (!isLoggedIn()): ?>
+						<a href="/mvc_skeleton_template/Login/register.php" class="btn btn-outline-primary me-2">Register</a>
+						<a href="/mvc_skeleton_template/Login/login.php" class="btn btn-primary">Login</a>
+					<?php else: ?>
+						<form method="post" action="/mvc_skeleton_template/Login/logout.php" style="display:inline">
+							<button class="btn btn-outline-danger">Logout</button>
+						</form>
+						<?php if (isAdmin()): ?>
+							<a href="/mvc_skeleton_template/admin/category_add.php" class="btn btn-secondary ms-2">Category</a>
+						<?php endif; ?>
+					<?php endif; ?>
+				</div>
+			</div>
+		</nav>
+
 		<div class="bg-image"></div>
 
 		<div class="d-flex align-items-center justify-content-center vh-100">

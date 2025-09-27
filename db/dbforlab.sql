@@ -51,6 +51,9 @@ CREATE TABLE `cart` (
 -- Table structure for table `categories`
 --
 
+
+SELECT * FROM `categories` WHERE 1
+
 CREATE TABLE `categories` (
   `cat_id` int(11) NOT NULL,
   `cat_name` varchar(100) NOT NULL
