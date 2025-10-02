@@ -52,7 +52,7 @@ CREATE TABLE `cart` (
 --
 
 
-SELECT * FROM `categories` WHERE 1
+SELECT * FROM `categories` WHERE 1;
 
 CREATE TABLE `categories` (
   `cat_id` int(11) NOT NULL,
