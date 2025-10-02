@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `shoppn`
+
 --
 
 -- --------------------------------------------------------
@@ -52,7 +52,7 @@ CREATE TABLE `cart` (
 --
 
 
-SELECT * FROM `categories` WHERE 1;
+--SELECT * FROM `categories` WHERE 1;
 
 CREATE TABLE `categories` (
   `cat_id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
