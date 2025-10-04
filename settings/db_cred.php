@@ -5,15 +5,15 @@ if(!defined("SERVER")) {
 }
 
 if(!defined("USERNAME")) {
-    define("USERNAME", "root");
+    define("USERNAME", "veronica.obenewaa");
 }
 
 if(!defined("PASSWORD")) {
-    define("PASSWORD", "");
+    define("PASSWORD", "22o15Be+w*a45");
 }
 
 if(!defined("DATABASE")) {
-    define("DATABASE", "dbforlab");
+    define("DATABASE", "ecommerce_2025A_veronica_obenewaa");
 }
 
 ?>

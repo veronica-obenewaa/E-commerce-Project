@@ -56,7 +56,7 @@ CREATE TABLE `cart` (
 
 CREATE TABLE `categories` (
   `cat_id` int(11) NOT NULL,
-  `cat_name` varchar(100) NOT NULL UNIQUE
+  `cat_name` varchar(100) NOT NULL UNIQUE,
   `created_by` INT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
