@@ -131,10 +131,10 @@
 // });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const fetchUrl = '/mvc_skeleton_template/actions/fetch_category_action.php';
-    const addUrl = '/mvc_skeleton_template/actions/add_category_action.php';
-    const updateUrl = '/mvc_skeleton_template/actions/update_category_action.php';
-    const deleteUrl = '/mvc_skeleton_template/actions/delete_category_action.php';
+    const fetchUrl = '/actions/fetch_category_action.php';
+    const addUrl = '/actions/add_category_action.php';
+    const updateUrl = '/actions/update_category_action.php';
+    const deleteUrl = '/actions/delete_category_action.php';
 
     const listEl = document.getElementById('categoryList');
     const addForm = document.getElementById('addCategoryForm');
@@ -207,9 +207,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     addForm.reset();
 
                     // if we are on category_add.php → redirect to category.php
-                    if (window.location.pathname.includes('/mvc_skeleton_template/admin/category_add.php')) {
+                    if (window.location.pathname.includes('/admin/category_add.php')) {
                         setTimeout(() => {
-                            window.location.href = '/mvc_skeleton_template/admin/category.php';
+                            window.location.href = '/admin/category.php';
                         }, 1200);
                     } else {
                         // if on category.php just refresh the list

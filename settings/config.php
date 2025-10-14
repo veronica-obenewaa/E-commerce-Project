@@ -1,8 +1,8 @@
 <?php
 $servername ="localhost";
-$username ="root";
-$password ="";
-$db_name ="dbforlab";
+$username ="veronica.obenewaa";
+$password ="22o15Be+w*a45";
+$db_name ="ecommerce_2025A_veronica_obenewaa";
 
 $conn = mysqli_connect($servername,$username,$password,$db_name);
 
