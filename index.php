@@ -1,7 +1,5 @@
 <?php
-
 require_once __DIR__ . '/settings/core.php';
-
 ?>
 
 
@@ -46,7 +44,7 @@ require_once __DIR__ . '/settings/core.php';
 	<body>
 		<nav class="navbar navbar-light bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="/mvc_skeleton_template/index.php">Virtual Pharmacy</a>
+				<a class="navbar-brand" href="/index.php">Virtual Pharmacy</a>
 				<div>
 					<?php if (!isLoggedIn()): ?>
 						<a href="/Login/register.php" class="btn btn-outline-primary me-2">Register</a>
