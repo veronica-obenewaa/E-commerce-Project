@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     addForm.reset();
 
                     // if we are on category_add.php → redirect to category.php
-                    if (window.location.pathname.includes('../admin/category_add.php')) {
+                    if (window.location.pathname.includes('/admin/category_add.php')) {
                         setTimeout(() => {
                             window.location.href = '../admin/category.php';
                         }, 1200);
