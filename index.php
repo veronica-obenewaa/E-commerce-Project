@@ -49,14 +49,14 @@ require_once __DIR__ . '/settings/core.php';
 				<a class="navbar-brand" href="/mvc_skeleton_template/index.php">Virtual Pharmacy</a>
 				<div>
 					<?php if (!isLoggedIn()): ?>
-						<a href="/mvc_skeleton_template/Login/register.php" class="btn btn-outline-primary me-2">Register</a>
-						<a href="/mvc_skeleton_template/Login/login.php" class="btn btn-primary">Login</a>
+						<a href="/Login/register.php" class="btn btn-outline-primary me-2">Register</a>
+						<a href="/Login/login.php" class="btn btn-primary">Login</a>
 					<?php else: ?>
-						<form method="post" action="/mvc_skeleton_template/Login/logout.php" style="display:inline">
+						<form method="post" action="/Login/logout.php" style="display:inline">
 							<button class="btn btn-outline-danger">Logout</button>
 						</form>
 						<?php if (isAdmin()): ?>
-							<a href="/mvc_skeleton_template/admin/category_add.php" class="btn btn-secondary ms-2">Category</a>
+							<a href="/admin/category_add.php" class="btn btn-secondary ms-2">Category</a>
 						<?php endif; ?>
 					<?php endif; ?>
 				</div>
