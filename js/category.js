@@ -205,16 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (j.status === 'success') {
                     showMsg(msg, 'success', j.message);
                     addForm.reset();
-
-                    // if we are on category_add.php → redirect to category.php
-                    if (window.location.pathname.includes('/admin/category_add.php')) {
-                        setTimeout(() => {
-                            window.location.href = '../admin/category.php';
-                        }, 1200);
-                    } else {
-                        // if on category.php just refresh the list
-                        fetchCategories();
-                    }
+                    // always redirect to the category list page after success
+                    setTimeout(() => {
+                        window.location.href = '../admin/category.php';
+                    }, 1200);
                 } else {
                     showMsg(msg, 'danger', j.message);
                 }
