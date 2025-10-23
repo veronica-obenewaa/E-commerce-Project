@@ -22,7 +22,7 @@ if (!isLoggedIn() || !isAdmin()) {
     <div id="addMsg"></div>
     <form id="addBrandForm">
         <div class="mb-3">
-            <label for="brand_name" class="form-label">Brand Name</label>
+            <label class="form-label">Brand Name</label>
             <input type="text" class="form-control" name="brand_name" required>
         </div>
         <div class="d-grid">

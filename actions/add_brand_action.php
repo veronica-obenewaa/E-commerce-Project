@@ -21,4 +21,3 @@ $data = [
 $ctrl = new BrandController();
 echo json_encode($ctrl->add_brand_ctr($data));
 exit();
-?>
