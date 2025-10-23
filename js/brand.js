@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     addForm.reset();
                     // Redirect to brand list page after success
                     setTimeout(() => {
-                        window.location.href = '/admin/brand.php';
+                        window.location.href = '../admin/brand.php';
                     }, 1200);
                 } else {
                     showMsg(msg, 'danger', j.message);
