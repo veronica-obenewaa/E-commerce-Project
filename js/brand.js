@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 html += `<li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>${r.brand_name}</span>
                     <div>
-                        <button class="btn btn-sm btn-outline-primary me-2" data-id="${r.brand_id}" data-name="${r.brand_name}" onclick="openEdit(this)">Edit</button>
+                        <button class="btn btn-sm btn-outline-primary me-2" data-id="${r.brand_id}" data-name="${escapeHtml(r.brand_name)}" onclick="openEdit(this)">Edit</button>
                         <button class="btn btn-sm btn-outline-danger" data-id="${r.brand_id}" onclick="doDelete(this)">Delete</button>
                     </div>
                 </li>`;
@@ -39,7 +39,15 @@ document.addEventListener('DOMContentLoaded', function() {
             html += '</ul>';
             listEl.innerHTML = html;
         })
-        .catch(() => listEl.innerHTML = '<div class="text-danger">Error loading brands</div>');
+        .catch(err => {
+            listEl.innerHTML = '<div class="text-danger">Error loading brands</div>';
+            console.error(err);
+        });
+    }
+
+    // escape for attribute insertion
+    function escapeHtml(str) {
+        return String(str).replace(/"/g, '&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
     if (addForm) {
@@ -57,17 +65,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (j.status === 'success') {
                     showMsg(msg, 'success', j.message);
                     addForm.reset();
-                    fetchBrands();
+                    // always redirect to the category list page after success
+                    setTimeout(() => {
+                        window.location.href = '../admin/brand.php';
+                    }, 1200);
+                    //fetchBrands();
                 } else showMsg(msg, 'danger', j.message);
             })
             .catch(() => showMsg(msg, 'danger', 'Error'));
         });
     }
-
-    window.openEdit = btn => {
-        document.getElementById('update_brand_id').value = btn.dataset.id;
-        document.getElementById('update_brand_name').value = btn.dataset.name;
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('updateModal')).show();
+    //expose edit function to window to be callable from buttons
+    window.openEdit = function(btn) {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        document.getElementById('update_brand_id').value = id;
+        document.getElementById('update_brand_name').value = name;
+        // show modal if using bootstrap modal
+        const modalEl = document.getElementById('updateModal');
+        if (modalEl) {
+            const bs = bootstrap.Modal.getOrCreateInstance(modalEl);
+            bs.show();
+        }
     };
 
     if (updateForm) {
