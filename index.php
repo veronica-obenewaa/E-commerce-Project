@@ -55,7 +55,7 @@ require_once __DIR__ . '/settings/core.php';
 						</form>
 						<?php if (isAdmin()): ?>
 							<a href="admin/category_add.php" class="btn btn-secondary ms-2">Category</a>
-							<a href="admin/brand.php" class="btn btn-secondary ms-2">Brand</a>
+							<a href="admin/brand_add.php" class="btn btn-secondary ms-2">Brand</a>
 						<?php endif; ?>
 					<?php endif; ?>
 				</div>
