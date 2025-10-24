@@ -9,9 +9,9 @@ if(!isLoggedIn() || !isAdmin()) {
     exit();
 }
 
-//$customer_id = getUserId();
+$created_by = getUserId();
 $ctrl = new BrandController();
-echo json_encode($ctrl->fetch_brand_ctr($getUserId));
+echo json_encode($ctrl->fetch_brand_ctr($created_by));
 exit();
 
 ?>
