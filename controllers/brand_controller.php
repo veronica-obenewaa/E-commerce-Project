@@ -14,7 +14,7 @@ class BrandController {
         $created_by = intval($data['created_by'] ?? 0);
 
         if($name === '') return ['status' => 'error', 'message' => 'Brand name is required'];
-        if(strlen($name) > 100) return ['staus' => 'error', 'message' => 'Brand name is too long'];
+        if(strlen($name) > 100) return ['status' => 'error', 'message' => 'Brand name is too long'];
         //if($this->model->categoryNameExists($name)) return ['status' => 'error', 'message' => 'Category name already']
 
         $ok = $this->brandModel->addBrand($name, $created_by);
@@ -25,6 +25,7 @@ class BrandController {
     #fectch brands
     public function fetch_brand_ctr($created_by) {
         $rows = $this->brandModel->fetchBrand($created_by);
+        if (!is_array($rows)) $rows = [];
         return ['status' => 'success', 'data' => $rows];
     }
 

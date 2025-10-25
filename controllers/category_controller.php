@@ -14,7 +14,7 @@ class CategoryController {
         $created_by = intval($data['created_by'] ?? 0);
 
         if($name === '') return ['status' => 'error', 'message' => 'Category name is required'];
-        if(strlen($name) > 100) return ['staus' => 'error', 'message' => 'Category name is too long'];
+        if(strlen($name) > 100) return ['status' => 'error', 'message' => 'Category name is too long'];
         //if($this->model->categoryNameExists($name)) return ['status' => 'error', 'message' => 'Category name already']
 
         $ok = $this->model->addCategory($name, $created_by);
@@ -25,6 +25,7 @@ class CategoryController {
     #fectch category
     public function fetch_categories_ctr($customer_id) {
         $rows = $this->model->getCategoryByUser($customer_id);
+        if (!is_array($rows)) $rows = [];
         return ['status' => 'success', 'data' => $rows];
     }
 
