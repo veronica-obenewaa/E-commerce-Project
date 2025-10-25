@@ -24,10 +24,16 @@ class BrandController {
 
     #fectch brands
     public function fetch_brand_ctr($created_by) {
-        $rows = $this->brandModel->fetchBrand($created_by);
-        if (!is_array($rows)) $rows = [];
-        return ['status' => 'success', 'data' => $rows];
+        $result = $this->brandModel->fetchBrand($created_by);
+
+    // handle both formats (safe fallback)
+        if (isset($result['data'])) {
+            return ['status' => 'success', 'data' => $result['data']];
+        } else {
+            return ['status' => 'success', 'data' => $result];
+        }
     }
+
 
     #update brands controller
     public function update_brand_ctr($data) {

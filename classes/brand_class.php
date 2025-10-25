@@ -38,7 +38,7 @@ class brand_class extends db_connection {
         $result = $stmt->get_result();
         $brands = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
-        return ['status' => 'success', 'data' => $brands];
+        return $brands;
 
     } 
 
