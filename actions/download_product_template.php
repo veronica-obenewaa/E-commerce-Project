@@ -1,0 +1,66 @@
+<?php
+// actions/download_product_template.php
+//require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../settings/core.php';
+require_once __DIR__ . '/../controllers/category_controller.php';
+require_once __DIR__ . '/../controllers/brand_controller.php';
+
+if (!isLoggedIn() || !isAdmin()) {
+    header('HTTP/1.1 403 Forbidden'); exit('Unauthorized');
+}
+
+require_once __DIR__ . '/../vendor/autoload.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+$catCtrl = new CategoryController();
+$brandCtrl = new BrandController();
+
+$cats = $catCtrl->fetch_categories_ctr(getUserId())['data'] ?? [];
+$brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
+
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setTitle('Product Template');
+
+$headers = ['product_title','product_price','product_desc','product_cat','product_brand','product_keywords','product_image_filename'];
+$col = 'A';
+foreach ($headers as $h) {
+    $sheet->setCellValue($col . '1', $h);
+    $col++;
+}
+$sheet->fromArray(['Example Paracetamol', '12.50', 'Pain relief','1','1','pain,fever','paracetamol.jpg'], NULL, 'A2');
+
+$row = 4;
+$sheet->setCellValue("A{$row}", '--- Categories (id, name) ---'); $row++;
+foreach ($cats as $c) {
+    $sheet->setCellValue("A{$row}", $c['cat_id']);
+    $sheet->setCellValue("B{$row}", $c['cat_name']);
+    $row++;
+}
+
+$row += 1;
+$sheet->setCellValue("A{$row}", '--- Brands (id, name) ---'); $row++;
+foreach ($brands as $b) {
+    $sheet->setCellValue("A{$row}", $b['brand_id']);
+    $sheet->setCellValue("B{$row}", $b['brand_name']);
+    $row++;
+}
+
+// Style headers (optional)
+$sheet->getStyle('A1:G1')->getFont()->setBold(true);
+$sheet->getColumnDimension('A')->setWidth(20);
+$sheet->getColumnDimension('B')->setWidth(20);
+$sheet->getColumnDimension('C')->setWidth(25);
+$sheet->getColumnDimension('E')->setWidth(40);
+
+// write to temp and stream
+$tmpFile = sys_get_temp_dir() . '/product_template_' . time() . '.xlsx';
+$writer = new Xlsx($spreadsheet);
+$writer->save($tmpFile);
+
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment; filename="product_bulk_template.xlsx"');
+readfile($tmpFile);
+@unlink($tmpFile);
+exit;
