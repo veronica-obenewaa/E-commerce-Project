@@ -21,7 +21,7 @@ class product_controller {
         $created_by = intval($data['created_by'] ?? 0);
         $product_image = $data['product_image'] ?? null;
 
-        if($product_cat <= 0 || $product_brand <= 0 || $product_title === '' || $product_price <= 0) {
+        if($product_cat <= 0 || $product_title === '' || $product_price <= 0) {
             return ['status' => 'error', 'message' => 'Required fields missing or invalid'];
 
         }
