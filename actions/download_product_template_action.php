@@ -2,13 +2,13 @@
 // actions/download_product_template.php
 //require_once __DIR__ . '/../vendor/autoload.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
-var_dump($cats);
-var_dump($brands);
-exit;
+// var_dump($cats);
+// var_dump($brands);
+// exit;
 
 
 
@@ -76,7 +76,7 @@ if (is_array($brands)) {
 }
 
 
-// Style headers (optional)
+// Style headers
 $sheet->getStyle('A1:G1')->getFont()->setBold(true);
 $sheet->getColumnDimension('A')->setWidth(20);
 $sheet->getColumnDimension('B')->setWidth(20);
