@@ -80,7 +80,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
     <h4>Bulk Upload</h4>
     <p>Download the Excel template, fill it (include image filenames), zip the .xlsx + images and upload below.</p>
     <div class="mb-3">
-        <a class="btn btn-outline-secondary" href="../actions/download_product_template.php">Download Excel Template (.xlsx)</a>
+        <a class="btn btn-outline-secondary" href="../actions/download_product_template_action.php">Download Excel Template (.xlsx)</a>
     </div>
 
     <form id="bulkUploadForm" method="POST" action="../actions/bulk_upload_product_action.php" enctype="multipart/form-data">
