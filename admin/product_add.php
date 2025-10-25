@@ -39,15 +39,15 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-6 mb-3">
+            <!--<div class="col-md-6 mb-3">
                 <label>Brand</label>
                 <select name="product_brand" class="form-select" required>
                     <option value="">Select brand</option>
-                    <?php foreach($brands as $b): ?>
-                        <option value="<?=htmlspecialchars($b['brand_id'])?>"><?=htmlspecialchars($b['brand_name'])?></option>
-                    <?php endforeach; ?>
+                    <//?php foreach($brands as $b): ?>
+                        <option value="<//?=htmlspecialchars($b['brand_id'])?>"><//?=htmlspecialchars($b['brand_name'])?></option>
+                    <//?php endforeach; ?>
                 </select>
-            </div>
+            </div>-->
         </div>
 
         <div class="mb-3"><label>Title</label>
