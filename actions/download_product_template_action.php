@@ -1,17 +1,6 @@
 <?php
 // actions/download_product_template.php
 //require_once __DIR__ . '/../vendor/autoload.php';
-
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
-// var_dump($cats);
-// var_dump($brands);
-// exit;
-
-
-
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/category_controller.php';
 require_once __DIR__ . '/../controllers/brand_controller.php';
@@ -43,40 +32,22 @@ foreach ($headers as $h) {
 $sheet->fromArray(['Example Paracetamol', '12.50', 'Pain relief','1','1','pain,fever','paracetamol.jpg'], NULL, 'A2');
 
 $row = 4;
-$sheet->setCellValue("A{$row}", '--- Categories (id, name) ---');
-$row++;
-
-if (is_array($cats)) {
-    foreach ($cats as $c) {
-        if (is_array($c) && isset($c['cat_id'], $c['cat_name'])) {
-            $sheet->setCellValue("A{$row}", $c['cat_id']);
-            $sheet->setCellValue("B{$row}", $c['cat_name']);
-            $row++;
-        }
-    }
-} else {
-    $sheet->setCellValue("A{$row}", 'No category data available');
+$sheet->setCellValue("A{$row}", '--- Categories (id, name) ---'); $row++;
+foreach ($cats as $c) {
+    $sheet->setCellValue("A{$row}", $c['cat_id']);
+    $sheet->setCellValue("B{$row}", $c['cat_name']);
     $row++;
 }
 
 $row += 1;
-$sheet->setCellValue("A{$row}", '--- Brands (id, name) ---');
-$row++;
-
-if (is_array($brands)) {
-    foreach ($brands as $b) {
-        if (is_array($b) && isset($b['brand_id'], $b['brand_name'])) {
-            $sheet->setCellValue("A{$row}", $b['brand_id']);
-            $sheet->setCellValue("B{$row}", $b['brand_name']);
-            $row++;
-        }
-    }
-} else {
-    $sheet->setCellValue("A{$row}", 'No brand data available');
+$sheet->setCellValue("A{$row}", '--- Brands (id, name) ---'); $row++;
+foreach ($brands as $b) {
+    $sheet->setCellValue("A{$row}", $b['brand_id']);
+    $sheet->setCellValue("B{$row}", $b['brand_name']);
+    $row++;
 }
 
-
-// Style headers
+// Style headers (optional)
 $sheet->getStyle('A1:G1')->getFont()->setBold(true);
 $sheet->getColumnDimension('A')->setWidth(20);
 $sheet->getColumnDimension('B')->setWidth(20);
