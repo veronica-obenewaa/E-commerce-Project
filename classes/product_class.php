@@ -200,23 +200,71 @@ class product_class extends db_connection
         return $rows;
     }
 
-    //search products
-    public function search_products($query) {
+    // search_products with category, brand, and pagination
+    public function search_products($query = '', $cat_id = 0, $brand_id = 0, $page = 1, $pageSize = 10) {
         $conn = $this->db_conn();
-        $query = "%" . $conn->real_escape_string($query) . "%";
+        $offset = ($page - 1) * $pageSize;
+
+        $where = "WHERE 1";
+        $params = [];
+        $types = "";
+
+        // Search by title or keyword
+        if (!empty($query)) {
+            $where .= " AND (p.product_title LIKE ? OR p.product_keywords LIKE ?)";
+            $q = "%" . $query . "%";
+            $params[] = $q;
+            $params[] = $q;
+            $types .= "ss";
+        }
+
+        // Filter by category
+        if ($cat_id > 0) {
+            $where .= " AND p.product_cat = ?";
+            $params[] = $cat_id;
+            $types .= "i";
+        }
+
+        // Filter by brand
+        if ($brand_id > 0) {
+            $where .= " AND p.product_brand = ?";
+            $params[] = $brand_id;
+            $types .= "i";
+        }
+
+        // Build main query
         $sql = "SELECT p.*, c.cat_name, b.brand_name
                 FROM products p
                 LEFT JOIN categories c ON p.product_cat = c.cat_id
                 LEFT JOIN brands b ON p.product_brand = b.brand_id
-                WHERE p.product_title LIKE ? OR p.product_keywords LIKE ?
-                ORDER BY p.product_title ASC";
+                $where
+                ORDER BY p.product_id DESC
+                LIMIT ?, ?";
+        $params[] = $offset;
+        $params[] = $pageSize;
+        $types .= "ii";
+
         $stmt = $conn->prepare($sql);
-        if(!$stmt) return [];
-        $stmt->bind_param("ss", $query, $query);
+        if (!$stmt) return ['status' => 'error', 'message' => 'DB prepare failed'];
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $res = $stmt->get_result();
         $rows = $res->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
-        return $rows;
+
+        // Total count (for pagination)
+        $count_sql = "SELECT COUNT(*) AS total FROM products p $where";
+        $stmt2 = $conn->prepare($count_sql);
+        $count_types = substr($types, 0, -2); 
+        $count_params = array_slice($params, 0, -2);
+        if (!empty($count_params)) {
+            $stmt2->bind_param($count_types, ...$count_params);
+        }
+        $stmt2->execute();
+        $total = $stmt2->get_result()->fetch_assoc()['total'] ?? 0;
+        $stmt2->close();
+
+        return ['status' => 'success', 'data' => $rows, 'total' => $total];
     }
+
 }

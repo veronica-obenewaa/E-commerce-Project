@@ -100,10 +100,10 @@ class product_controller {
 
     //search products
     //filter by category
-    public function search_product_ctr($query) {
-        $rows = $this->model->search_products($query);
-        return ['status'=>'success', 'data'=>$rows];
-    }
+    public function search_products_ctr($query = '', $cat_id = 0, $brand_id = 0, $page = 1, $pageSize = 10) {
+    return $this->model->search_products($query, $cat_id, $brand_id, $page, $pageSize);
+}
+
 
 
         
