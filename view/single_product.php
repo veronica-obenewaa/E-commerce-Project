@@ -53,7 +53,7 @@ if (!$productData) {
 
       <div class="mt-4">
         <button class="btn btn-success btn-lg">Add to Cart</button>
-        <a href="/view/all_product.php" class="btn btn-outline-secondary btn-lg ms-2">Back to Products</a>
+        <a href="all_product.php" class="btn btn-outline-secondary btn-lg ms-2">Back to Products</a>
       </div>
     </div>
   </div>

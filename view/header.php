@@ -1,5 +1,5 @@
-<!-- includes/header.php -->
 <?php require_once __DIR__ . '/../settings/core.php'; ?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
     <a class="navbar-brand fw-bold" href="../index.php">Med-ePharmacy</a>
@@ -15,14 +15,18 @@
           <li class="nav-item"><a class="nav-link" href="../Login/login.php">Login</a></li>
         <?php else: ?>
           <li class="nav-item">
-            <form method="post" action="../Login/logout.php">
-              <button class="btn btn-link nav-link">Logout</button>
+            <form method="post" action="../Login/logout.php" class="d-inline">
+              <button class="btn btn-link nav-link" type="submit">Logout</button>
             </form>
           </li>
           <?php if (isAdmin()): ?>
             <li class="nav-item"><a class="nav-link" href="../admin/category.php">Category</a></li>
             <li class="nav-item"><a class="nav-link" href="../admin/brand.php">Brand</a></li>
-            <li class="nav-item"><a class="nav-link btn btn-sm btn-success text-white ms-2" href="../admin/product_add.php">Add Product</a></li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-sm btn-success text-white ms-2" href="../admin/product_add.php">
+                Add Product
+              </a>
+            </li>
           <?php endif; ?>
         <?php endif; ?>
       </ul>
@@ -34,3 +38,19 @@
     </div>
   </div>
 </nav>
+
+<script>
+// Attach event listener safely after DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  const searchBtn = document.getElementById('navSearchBtn');
+  const searchInput = document.getElementById('navSearchInput');
+  if (searchBtn && searchInput) {
+    searchBtn.addEventListener('click', () => {
+      const query = searchInput.value.trim();
+      if (!query) return;
+      // Redirect to search results page
+      window.location.href = 'product_search_result.php?q=' + encodeURIComponent(query);
+    });
+  }
+});
+</script>
