@@ -1,6 +1,6 @@
 // /js/product.js
 document.addEventListener('DOMContentLoaded', () => {
-  const api = '../actions/product_actions.php';
+  const api = '/actions/product_actions.php';
   const pageSize = 12;
 
   // detect page type
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Render product card
   function renderCard(p) {
-    const img = p.product_image ? p.product_image : '/uploads/placeholder.png';
+    const img = p.product_image ? p.product_image : '/../uploads/placeholder.png';
     const slug = encodeURIComponent(p.product_id);
     return `
       <div class="col-sm-6 col-md-4 col-lg-3">
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('prodCategory').textContent = p.cat_name || '';
     document.getElementById('prodBrand').textContent = p.brand_name || '';
     document.getElementById('prodKeywords').textContent = p.product_keywords || '';
-    document.getElementById('prodImage').src = p.product_image || '/uploads/placeholder.png';
+    document.getElementById('prodImage').src = p.product_image || '/../uploads/placeholder.png';
   }
 
   // bind UI listeners (filters, search)

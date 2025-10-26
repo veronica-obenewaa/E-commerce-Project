@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../view/header.php';
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/product_controller.php';
 require_once __DIR__ . '/../controllers/category_controller.php';
@@ -88,8 +89,8 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
     <?php if(count($products) > 0): ?>
       <?php foreach($products as $p): ?>
         <div class="col-md-3">
-          <div class="card product-card h-100">
-            <img src="../uploads/<?= htmlspecialchars($p['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['product_title']) ?>">
+          <div class="card product-card h-100"> 
+            <img src="/../uploads/<?= htmlspecialchars($p['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['product_title']) ?>">
             <div class="card-body">
               <span class="badge-cat"><?= htmlspecialchars($p['cat_name'] ?? 'Uncategorized') ?></span>
               <h6 class="mt-2"><?= htmlspecialchars($p['product_title']) ?></h6>
