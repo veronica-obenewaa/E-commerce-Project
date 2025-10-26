@@ -124,4 +124,99 @@ class product_class extends db_connection
         $stmt->close();
         return $ok;
     }
+
+    //fetch all products visible to customers(all admin products)
+    public function view_all_products() {
+        $conn = $this->db_conn();
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                ORDER BY p.product_id DESC";
+        $stmt = $conn->prepare($sql);
+        if(!$stmt) return [];
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $rows;
+
+    }
+
+    //fetch single product details for customers
+    public function view_single_product($product_id) {
+        $conn = $this->db_conn();
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                WHERE p.product_id = ? LIMIT 1";
+        $stmt = $conn->prepare($sql);
+        if(!$stmt) return null;
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $row = $res->fetch_assoc();
+        $stmt->close();
+        return $row;
+
+    }
+
+    //filter by category
+    public function filter_products_by_category($cat_id) {
+        $conn = $this->db_conn();
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                WHERE p.product_cat = ?
+                ORDER BY p.product_id DESC";
+        $stmt = $conn->prepare($sql);
+        if(!$stmt) return [];
+        $stmt->bind_param("i", $cat_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $rows;
+    }
+
+    //filter by brand
+    public function filter_products_by_brand($brand_id) {
+        $conn = $this->db_conn();
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                WHERE p.product_brand = ?
+                ORDER BY p.product_id DESC";
+        $stmt = $conn->prepare($sql);
+        if(!$stmt) return [];
+        $stmt->bind_param("i", $brand_id);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $rows;
+    }
+
+    //search products
+    public function search_products($query) {
+        $conn = $this->db_conn();
+        $query = "%" . $conn->real_escape_string($query) . "%";
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                WHERE p.product_title LIKE ? OR p.product_keywords LIKE ?
+                ORDER BY p.product_title ASC";
+        $stmt = $conn->prepare($sql);
+        if(!$stmt) return [];
+        $stmt->bind_param("ss", $query, $query);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $rows;
+    }
 }

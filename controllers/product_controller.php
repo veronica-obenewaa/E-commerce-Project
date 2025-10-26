@@ -73,6 +73,39 @@ class product_controller {
         return $ok ? ['status' => 'success', 'message' => 'Deleted'] : ['status' => 'error', 'message' => 'Delete failed'];
     }
     
+
+    #fetch all products
+    public function fetch_products_public_ctr() {
+        $rows = $this->model->view_all_products();
+        return ['status'=>'success', 'data'=>$rows];
+    }
+
+    //fetch single product for customer view
+    public function fetch_single_product_public_ctr($product_id) {
+        $row = $this->model->view_single_product($product_id);
+        return $row ? ['status' => 'success', 'data' => $row] : ['status' => 'error', 'message' => 'Product not found'];
+    }
+
+    //filter by category
+    public function filter_by_category_ctr($cat_id) {
+        $rows = $this->model->filter_products_by_category($cat_id);
+        return ['status'=>'success', 'data'=>$rows];
+    }
+
+    //filter by brand
+    public function filter_by_brand_ctr($brand_id) {
+        $rows = $this->model->filter_products_by_brand($brand_id);
+        return ['status'=>'success', 'data'=>$rows];
+    }
+
+    //search products
+    //filter by category
+    public function search_product_ctr($query) {
+        $rows = $this->model->search_products($query);
+        return ['status'=>'success', 'data'=>$rows];
+    }
+
+
         
     
 }
