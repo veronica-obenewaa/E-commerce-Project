@@ -86,7 +86,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
     <form id="bulkUploadForm" method="POST" action="../actions/bulk_upload_product_action.php" enctype="multipart/form-data">
         <div class="mb-3">
             <label>Upload ZIP (template + images)</label>
-            <input type="file" name="images_zip" accept=".zip" class="form-control" required>
+            <input type="file" name="zipfile" accept=".zip" class="form-control" required>
         </div>
         <div id="bulkMsg" class="mb-3"></div>
         <div><button class="btn btn-secondary">Upload ZIP</button></div>
