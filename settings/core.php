@@ -11,6 +11,7 @@ ob_start();
 //     exit;
 // }
 
+define('UPLOAD_BASE_URL', '/~veronica.obenewaa/uploads/');
 
 
 //function to get user ID

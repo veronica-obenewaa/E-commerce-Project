@@ -31,7 +31,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
   </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
     <a class="navbar-brand fw-bold" href="../index.php">E-Pharmacy</a>
     <div class="ms-auto d-flex align-items-center gap-2">
@@ -39,7 +39,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
       <a class="btn btn-primary" href="../Login/login.php">Login</a>
     </div>
   </div>
-</nav>
+</nav>-->
 
 <section class="hero">
   <div class="container">
@@ -90,13 +90,13 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
       <?php foreach($products as $p): ?>
         <div class="col-md-3">
           <div class="card product-card h-100"> 
-            <img src="/../uploads/<?= htmlspecialchars($p['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['product_title']) ?>">
+            <img src="<?= UPLOAD_BASE_URL . htmlspecialchars($p['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['product_title']) ?>">
             <div class="card-body">
               <span class="badge-cat"><?= htmlspecialchars($p['cat_name'] ?? 'Uncategorized') ?></span>
               <h6 class="mt-2"><?= htmlspecialchars($p['product_title']) ?></h6>
               <p class="price mb-1">GHS <?= number_format($p['product_price'],2) ?></p>
               <p class="text-muted small mb-2"><?= htmlspecialchars($p['brand_name'] ?? '') ?></p>
-              <button class="btn btn-outline-success w-100" disabled>Add to Cart</button>
+              <button class="btn btn-outline-success w-100">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -107,6 +107,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
   </div>
 </div>
 
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/view_product.js"></script>
+
 </body>
 </html>

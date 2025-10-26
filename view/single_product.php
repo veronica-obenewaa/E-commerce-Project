@@ -38,7 +38,7 @@ if (!$productData) {
   <div class="row g-4 align-items-start">
     <div class="col-md-6">
       <img class="hero-img border" 
-           src="../uploads/<?= htmlspecialchars($productData['product_image'] ?: 'placeholder.png') ?>" 
+           src="<?= UPLOAD_BASE_URL . htmlspecialchars($productData['product_image'] ?: 'placeholder.png') ?>" 
            alt="<?= htmlspecialchars($productData['product_title']) ?>">
     </div>
     <div class="col-md-6">
@@ -60,5 +60,7 @@ if (!$productData) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/view_product.js"></script>
+
 </body>
 </html>
