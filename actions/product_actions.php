@@ -16,11 +16,16 @@ $action = $_GET['action'] ?? 'list';
 
 //Return category & brand lists for filters
 if ($action === 'filters') {
-    $cats = $catCtrl->fetch_categories_ctr(getUserId())['data'] ?? [];
-    $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
+    $catsData = $catCtrl->fetch_categories_ctr(getUserId());
+    $brandsData = $brandCtrl->fetch_brand_ctr(getUserId());
+    
+    $cats = isset($catsData['data']) ? $catsData['data'] : $catsData;
+    $brands = isset($brandsData['data']) ? $brandsData['data'] : $brandsData;
+    
     echo json_encode(['status' => 'success', 'categories' => $cats, 'brands' => $brands]);
     exit();
 }
+
 
 //Single product
 if ($action === 'view_single') {
