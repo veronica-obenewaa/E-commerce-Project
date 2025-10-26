@@ -90,7 +90,11 @@ class product_class extends db_connection
     // Get single product by id (and owner)
     public function getProductById($product_id, $created_by) {
         $conn = $this->db_conn();
-        $sql = "SELECT * FROM products WHERE product_id = ? AND created_by = ? LIMIT 1";
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                WHERE p.product_id = ? AND p.created_by = ? LIMIT 1";
         $stmt = $conn->prepare($sql);
         if (!$stmt) return null;
         $stmt->bind_param("ii", $product_id, $created_by);
@@ -266,5 +270,32 @@ class product_class extends db_connection
 
         return ['status' => 'success', 'data' => $rows, 'total' => $total];
     }
+
+
+    public function fetch_products_filtered($query = '', $cat_id = 0, $brand_id = 0) {
+        $conn = $this->db_conn();
+        $query = "%" . $query . "%";
+
+        $sql = "SELECT p.*, c.cat_name, b.brand_name
+                FROM products p
+                LEFT JOIN categories c ON p.product_cat = c.cat_id
+                LEFT JOIN brands b ON p.product_brand = b.brand_id
+                WHERE (p.product_title LIKE ? OR p.product_keywords LIKE ?)";
+        
+        if ($cat_id > 0) $sql .= " AND p.product_cat = " . intval($cat_id);
+        if ($brand_id > 0) $sql .= " AND p.product_brand = " . intval($brand_id);
+        
+        $sql .= " ORDER BY p.product_id DESC";
+
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) return ['status' => 'error', 'message' => 'DB prepare failed'];
+        $stmt->bind_param("ss", $query, $query);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $rows = $res->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return ['status' => 'success', 'data' => $rows];
+    }
+
 
 }

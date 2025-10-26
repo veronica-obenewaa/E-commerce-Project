@@ -102,7 +102,15 @@ class product_controller {
     //filter by category
     public function search_products_ctr($query = '', $cat_id = 0, $brand_id = 0, $page = 1, $pageSize = 10) {
     return $this->model->search_products($query, $cat_id, $brand_id, $page, $pageSize);
-}
+    }
+
+
+    public function fetch_products_filtered_ctr($query = '', $cat_id = 0, $brand_id = 0) {
+        $model = new product_class();
+        $data = $model->fetch_products_filtered($query, $cat_id, $brand_id);
+        return ['status' => 'success', 'data' => $data];
+    }
+
 
 
 
