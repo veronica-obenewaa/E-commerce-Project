@@ -18,11 +18,12 @@ $action = $_GET['action'] ?? 'list';
 if ($action === 'filters') {
     $catsData = $catCtrl->fetch_categories_ctr(getUserId());
     $brandsData = $brandCtrl->fetch_brand_ctr(getUserId());
-    echo json_encode(['status' => 'success', 'categories' => $catsData]);
-    // $cats = isset($catsData['data']) ? $catsData['data'] : $catsData;
-    // $brands = isset($brandsData['data']) ? $brandsData['data'] : $brandsData;
-    
-    // echo json_encode(['status' => 'success', 'categories' => $cats, 'brands' => $brands]);
+    // controllers return an envelope ['status' => 'success', 'data' => [...]]
+    // unwrap the data arrays so the API returns { status, categories: [...], brands: [...] }
+    $cats = isset($catsData['data']) ? $catsData['data'] : [];
+    $brands = isset($brandsData['data']) ? $brandsData['data'] : [];
+
+    echo json_encode(['status' => 'success', 'categories' => $cats, 'brands' => $brands]);
     exit();
 }
 
