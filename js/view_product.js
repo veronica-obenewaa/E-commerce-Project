@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const api = '../actions/product_actions.php';
     const pageSize = 12;
-    const uploadBaseUrl = '/';
+    const uploadBaseUrl = '../';
 
     // detect page type
     const productsGrid = document.getElementById('productsGrid');
