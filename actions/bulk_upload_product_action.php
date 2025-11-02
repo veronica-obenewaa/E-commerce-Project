@@ -26,7 +26,7 @@ if ($zipFile['error'] !== UPLOAD_ERR_OK) {
 
 // Create temporary extraction folder
 $tmpBase = sys_get_temp_dir();
-$uniq = 'bulk_' . $created_by . '_' . time();
+$uniq = '../uploads/bulk_' . $created_by . '_' . time();
 $extractDir = $tmpBase . '/' . $uniq;
 mkdir($extractDir, 0755, true);
 
