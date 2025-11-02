@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_FILES['zipfile'])) {
 }
 
 $created_by = getUserId();
-$zipFile = $_FILES['zipfile'];
+$zipFile = $_FILES['zipfile']["tmp_name"] ?? null;
 if ($zipFile['error'] !== UPLOAD_ERR_OK) {
     echo json_encode(['status'=>'error','message'=>'Upload error']); 
     exit;
@@ -30,7 +30,7 @@ $uniq = '../uploads/bulk_' . $created_by . '_' . time();
 $extractDir = $tmpBase . '/' . $uniq;
 mkdir($extractDir, 0755, true);
 
-$zipPath = $extractDir . '../uploads/' . basename($zipFile['name']);
+$zipPath = $extractDir . '/' . basename($zipFile['name']);
 move_uploaded_file($zipFile['tmp_name'], $zipPath);
 
 $zip = new ZipArchive();
