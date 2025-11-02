@@ -34,6 +34,13 @@ class BrandController {
         }
     }
 
+    // fetch all brands (no owner filter)
+    public function fetch_all_brands_ctr() {
+        $rows = $this->brandModel->fetchAllBrands();
+        if (!is_array($rows)) $rows = [];
+        return ['status' => 'success', 'data' => $rows];
+    }
+
 
     #update brands controller
     public function update_brand_ctr($data) {

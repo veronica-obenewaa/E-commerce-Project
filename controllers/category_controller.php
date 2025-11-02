@@ -29,6 +29,13 @@ class CategoryController {
         return ['status' => 'success', 'data' => $rows];
     }
 
+    // fetch all categories (no owner filter)
+    public function fetch_all_categories_ctr() {
+        $rows = $this->model->getAllCategories();
+        if (!is_array($rows)) $rows = [];
+        return ['status' => 'success', 'data' => $rows];
+    }
+
     #update category controller
     public function update_category_ctr($data) {
         $cat_id = intval($data['cat_id'] ?? 0);

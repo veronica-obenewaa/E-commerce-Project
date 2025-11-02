@@ -16,8 +16,15 @@ $action = $_GET['action'] ?? 'list';
 
 //Return category & brand lists for filters
 if ($action === 'filters') {
-    $catsData = $catCtrl->fetch_categories_ctr(getUserId());
-    $brandsData = $brandCtrl->fetch_brand_ctr(getUserId());
+    $userId = getUserId();
+    if ($userId) {
+        $catsData = $catCtrl->fetch_categories_ctr($userId);
+        $brandsData = $brandCtrl->fetch_brand_ctr($userId);
+    } else {
+        // public page: return all categories/brands (no owner filter)
+        $catsData = $catCtrl->fetch_all_categories_ctr();
+        $brandsData = $brandCtrl->fetch_all_brands_ctr();
+    }
     // controllers return an envelope ['status' => 'success', 'data' => [...]]
     // unwrap the data arrays so the API returns { status, categories: [...], brands: [...] }
     $cats = isset($catsData['data']) ? $catsData['data'] : [];

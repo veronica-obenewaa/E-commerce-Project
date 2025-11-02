@@ -48,6 +48,23 @@ class category_class extends db_connection {
 
     } 
 
+    // get all categories (no owner filter)
+    public function getAllCategories() {
+        $conn = $this->db_conn();
+        $sql = "SELECT cat_id, cat_name, created_at FROM categories ORDER BY cat_name ASC";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            // fallback to query
+            $res = $conn->query($sql);
+            return $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        $stmt->close();
+        return $rows;
+    }
+
     #edit catergory name
     public function editCategory($cat_id, $cat_name, $customer_id) {
         $conn = $this->db_conn();

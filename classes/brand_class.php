@@ -42,6 +42,22 @@ class brand_class extends db_connection {
 
     } 
 
+    // get all brands (no owner filter)
+    public function fetchAllBrands() {
+        $conn = $this->db_conn();
+        $sql = "SELECT * FROM brands ORDER BY brand_name ASC";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            $res = $conn->query($sql);
+            return $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $brands = $result ? $result->fetch_all(MYSQLI_ASSOC) : [];
+        $stmt->close();
+        return $brands;
+    }
+
     #update brands name
     public function editBrand($brand_id, $brand_name, $created_by) {
         $conn = $this->db_conn();
