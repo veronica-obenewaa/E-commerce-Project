@@ -30,7 +30,7 @@ $uniq = '../uploads/bulk_' . $created_by . '_' . time();
 $extractDir = $tmpBase . '/' . $uniq;
 mkdir($extractDir, 0755, true);
 
-$zipPath = $extractDir . '/' . basename($zipFile['name']);
+$zipPath = $extractDir . '../uploads/' . basename($zipFile['name']);
 move_uploaded_file($zipFile['tmp_name'], $zipPath);
 
 $zip = new ZipArchive();
