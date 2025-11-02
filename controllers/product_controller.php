@@ -106,9 +106,9 @@ class product_controller {
 
 
     public function fetch_products_filtered_ctr($query = '', $cat_id = 0, $brand_id = 0) {
-        $model = new product_class();
-        $data = $model->fetch_products_filtered($query, $cat_id, $brand_id);
-        return ['status' => 'success', 'data' => $data];
+        // forward the model response directly to avoid double-wrapping the envelope
+        // product_class::fetch_products_filtered already returns ['status' => 'success', 'data' => [...]]
+        return $this->model->fetch_products_filtered($query, $cat_id, $brand_id);
     }
 
 
