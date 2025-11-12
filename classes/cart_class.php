@@ -105,10 +105,15 @@ class cart_class extends db_connection {
     public function checkProductInCart($c_id, $p_id) {
         $conn = $this->db_conn();
         $stmt = $conn->prepare("SELECT * FROM cart WHERE c_id = ? AND p_id = ?");
+        if (!$stmt) {
+            // prepare failed (DB error) - return null to indicate "not found / no existing"
+            error_log('DB prepare failed in checkProductInCart: ' . $conn->error);
+            return null;
+        }
         $stmt->bind_param("ii", $c_id, $p_id);
         $stmt->execute();
         $res = $stmt->get_result();
-        $row = $res->fetch_assoc();
+        $row = $res ? $res->fetch_assoc() : null;
         $stmt->close();
         return $row;
     }
@@ -121,9 +126,17 @@ class cart_class extends db_connection {
         if ($existing) {
             // Update qty instead of inserting duplicate
             $stmt = $conn->prepare("UPDATE cart SET qty = qty + ? WHERE c_id = ? AND p_id = ?");
+            if (!$stmt) {
+                error_log('DB prepare failed in addToCart (update): ' . $conn->error);
+                return false;
+            }
             $stmt->bind_param("iii", $qty, $c_id, $p_id);
         } else {
             $stmt = $conn->prepare("INSERT INTO cart (p_id, c_id, qty) VALUES (?, ?, ?)");
+            if (!$stmt) {
+                error_log('DB prepare failed in addToCart (insert): ' . $conn->error);
+                return false;
+            }
             $stmt->bind_param("iii", $p_id, $c_id, $qty);
         }
 

@@ -24,11 +24,17 @@ if ($p_id <= 0) {
 }
 
 $ctrl = new cart_controller();
-$ok = $ctrl->add_to_cart_ctr($customer_id, $p_id, $qty);
-
-if ($ok) {
-	echo json_encode(['status' => 'success', 'message' => 'Added to cart']);
-} else {
-	echo json_encode(['status' => 'error', 'message' => 'Failed to add to cart']);
+try {
+	$ok = $ctrl->add_to_cart_ctr($customer_id, $p_id, $qty);
+	if ($ok) {
+		echo json_encode(['status' => 'success', 'message' => 'Added to cart']);
+	} else {
+		// log potential error for debugging
+		error_log("add_to_cart failed for c_id={$customer_id}, p_id={$p_id}");
+		echo json_encode(['status' => 'error', 'message' => 'Failed to add to cart']);
+	}
+} catch (Throwable $e) {
+	error_log('Exception in add_to_cart_action: ' . $e->getMessage());
+	echo json_encode(['status' => 'error', 'message' => 'Server error']);
 }
 exit();
