@@ -34,7 +34,14 @@ try {
 		echo json_encode(['status' => 'error', 'message' => 'Failed to add to cart']);
 	}
 } catch (Throwable $e) {
-	error_log('Exception in add_to_cart_action: ' . $e->getMessage());
-	echo json_encode(['status' => 'error', 'message' => 'Server error']);
+	// Log full exception (message + trace) for debugging
+	error_log('Exception in add_to_cart_action: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+	// TEMPORARY: include exception message in JSON response to help debug the issue.
+	// Remove or restrict this before deploying to production.
+	echo json_encode([
+		'status' => 'error',
+		'message' => 'Server error',
+		'debug' => $e->getMessage(),
+	]);
 }
 exit();
