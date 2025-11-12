@@ -13,6 +13,7 @@
         <?php if (!isLoggedIn()): ?>
           <li class="nav-item"><a class="nav-link" href="../Login/register.php">Register</a></li>
           <li class="nav-item"><a class="nav-link" href="../Login/login.php">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="/view/cart.php">Cart</a></li>
         <?php else: ?>
           <li class="nav-item">
             <form method="post" action="../Login/logout.php" class="d-inline">
