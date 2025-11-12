@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['status'=>'error'
 
 // fetch cart summary
 $cartCtrl = new cart_controller();
-$summary = $cartCtrl->get_cart_summary_ctr($c_id);
+$summary = $cartCtrl->count_user_cart_ctr($c_id);
 $items = $summary['items'] ?? [];
 $total_amount = $summary['total_amount'] ?? 0.0;
 

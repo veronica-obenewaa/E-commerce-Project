@@ -92,11 +92,14 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           <div class="card product-card h-100"> 
             <img src="<?= UPLOAD_BASE_URL . htmlspecialchars($p['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['product_title']) ?>">
             <div class="card-body">
+              
               <span class="badge-cat"><?= htmlspecialchars($p['cat_name'] ?? 'Uncategorized') ?></span>
               <h6 class="mt-2"><?= htmlspecialchars($p['product_title']) ?></h6>
               <p class="price mb-1">GHS <?= number_format($p['product_price'],2) ?></p>
               <p class="text-muted small mb-2"><?= htmlspecialchars($p['brand_name'] ?? '') ?></p>
-              <button class="btn btn-outline-success w-100">Add to Cart</button>
+              <div id="cartMsg-<?= $p['p_id'] ?>"></div>
+              <button class="btn btn-outline-success w-100 add-to-cart-btn" data-product-id="<?= $p['p_id'] ?>" data-qty="1">Add to Cart</button>
+              
             </div>
           </div>
         </div>

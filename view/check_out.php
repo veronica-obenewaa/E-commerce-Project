@@ -3,7 +3,7 @@ require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/cart_controller.php';
 if (!isLoggedIn()) { header('Location: ../Login/login.php'); exit(); }
 $cartCtrl = new cart_controller();
-$summary = $cartCtrl->get_cart_summary_ctr(getUserId());
+$summary = $cartCtrl->count_user_cart_ctr(getUserId());
 $items = $summary['items'] ?? [];
 $total = $summary['total_amount'] ?? 0.0;
 ?>

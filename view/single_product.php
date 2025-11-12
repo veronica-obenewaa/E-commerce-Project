@@ -52,7 +52,8 @@ if (!$productData) {
       <p><strong>Keywords:</strong> <?= htmlspecialchars($productData['product_keywords']) ?></p>
 
       <div class="mt-4">
-        <button class="btn btn-success btn-lg">Add to Cart</button>
+        <div id="cartMsg" class="mb-2"></div>
+        <button class="btn btn-outline-success w-100 btn-add-to-cart" data-product-id="<?= $productData['p_id'] ?>">Add to Cart</button>
         <a href="all_product.php" class="btn btn-outline-secondary btn-lg ms-2">Back to Products</a>
       </div>
     </div>
