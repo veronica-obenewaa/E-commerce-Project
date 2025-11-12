@@ -98,7 +98,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
               <p class="price mb-1">GHS <?= number_format($p['product_price'],2) ?></p>
               <p class="text-muted small mb-2"><?= htmlspecialchars($p['brand_name'] ?? '') ?></p>
               <div id="cartMsg-<?= $p['p_id'] ?>"></div>
-              <button class="btn btn-outline-success w-100 add-to-cart-btn" data-product-id="<?= $p['p_id'] ?>" data-qty="1">Add to Cart</button>
+              <button class="btn btn-outline-success w-100 btn-add-to-cart" data-product-id="<?= $p['p_id'] ?>" data-qty="1">Add to Cart</button>
               
             </div>
           </div>
@@ -113,6 +113,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/view_product.js"></script>
+<script src="../js/cart.js"></script>
 
 </body>
 </html>
