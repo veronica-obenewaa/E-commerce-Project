@@ -1,0 +1,17 @@
+<?php
+require_once __DIR__ . '/../settings/core.php';
+require_once __DIR__ . '/../controllers/cart_controller.php';
+header('Content-Type: application/json');
+
+if (!isLoggedIn()) { echo json_encode(['status'=>'error','message'=>'Unauthorized']); exit(); }
+$customer_id = getUserId();
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['status'=>'error','message'=>'Invalid request']); exit(); }
+
+$product_id = intval($_POST['product_id'] ?? 0);
+if ($product_id <= 0) { echo json_encode(['status'=>'error','message'=>'Invalid product']); exit(); }
+
+$ctrl = new cart_controller();
+$res = $ctrl->remove_from_cart_ctr($c_id, $p_id);
+echo json_encode($res);
+exit();
