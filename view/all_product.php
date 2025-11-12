@@ -97,8 +97,8 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
               <h6 class="mt-2"><?= htmlspecialchars($p['product_title']) ?></h6>
               <p class="price mb-1">GHS <?= number_format($p['product_price'],2) ?></p>
               <p class="text-muted small mb-2"><?= htmlspecialchars($p['brand_name'] ?? '') ?></p>
-              <div id="cartMsg-<?= $p['p_id'] ?>"></div>
-              <button class="btn btn-outline-success w-100 btn-add-to-cart" data-product-id="<?= $p['p_id'] ?>" data-qty="1">Add to Cart</button>
+              <div id="cartMsg-<?= $p['product_id'] ?>"></div>
+              <button class="btn btn-outline-success w-100 btn-add-to-cart" data-product-id="<?= $p['product_id'] ?>" data-qty="1">Add to Cart</button>
               
             </div>
           </div>

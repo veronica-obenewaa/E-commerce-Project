@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!productId) return;
 
+      // debug: log the outgoing add-to-cart request
+      console.log('Add to cart request:', { productId, qty });
+
       fetch(addUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

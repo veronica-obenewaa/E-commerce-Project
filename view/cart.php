@@ -5,9 +5,14 @@ if (!isLoggedIn()) {
   header('Location: ../Login/login.php'); exit();
 }
 $cartCtrl = new cart_controller();
-$summary = $cartCtrl->count_user_cart_ctr(getUserId());
-$items = $summary['items'] ?? [];
-$total = $summary['total_amount'] ?? 0.0;
+// get items for the logged-in user
+$items = $cartCtrl->get_user_cart_ctr(getUserId());
+if (!is_array($items)) $items = [];
+// compute total amount from items
+$total = 0.0;
+foreach ($items as $it_calc) {
+  $total += (floatval($it_calc['qty']) * floatval($it_calc['product_price']));
+}
 ?>
 <!doctype html>
 <html>
@@ -26,12 +31,11 @@ $total = $summary['total_amount'] ?? 0.0;
     <table class="table">
       <thead><tr><th>Image</th><th>Product</th><th>Price</th><th width="120">Qty</th><th>Subtotal</th><th></th></tr></thead>
       <tbody>
-      <?php foreach($items as $it): 
+      <?php foreach($items as $it):
         $subtotal = floatval($it['qty']) * floatval($it['product_price']);
       ?>
-        <tr data-product-id="<?= $it['product_id'] ?>">
-          <!--<td><img src="/<//?= htmlspecialchars($it['product_image'] ?: 'uploads/placeholder.png') ?>" style="width:80px;height:60px;object-fit:cover"></td>-->
-          <td><img src="<?= UPLOAD_BASE_URL . htmlspecialchars($p['product_image']) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['product_title']) ?>" style="width:80px;height:60px;object-fit:cover"></td>
+        <tr data-product-id="<?= $it['p_id'] ?>">
+          <td><img src="<?= UPLOAD_BASE_URL . htmlspecialchars($it['product_image'] ?: 'placeholder.png') ?>" style="width:80px;height:60px;object-fit:cover"></td>
           <td><?= htmlspecialchars($it['product_title']) ?></td>
           <td>GHS <?= number_format($it['product_price'],2) ?></td>
           <td>
