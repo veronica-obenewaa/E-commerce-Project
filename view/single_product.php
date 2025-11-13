@@ -29,11 +29,11 @@ if (!$productData) {
   </style>
 </head>
 <body>
-<nav class="navbar navbar-light bg-white shadow-sm">
+<!--<nav class="navbar navbar-light bg-white shadow-sm">
   <div class="container">
     <a class="navbar-brand fw-bold" href="../index.php">E-Pharmacy</a>
   </div>
-</nav>
+</nav>-->
 
 <div class="container py-5">
   <div class="row g-4 align-items-start">

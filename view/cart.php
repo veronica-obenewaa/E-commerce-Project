@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../view/header.php';
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/cart_controller.php';
 if (!isLoggedIn()) {
