@@ -58,7 +58,7 @@ foreach ($items as $it_calc) {
       </div>
       <div>
   <strong>Total: GHS <?= number_format($total,2) ?></strong>
-  <a href="/view/check_out.php" class="btn btn-success ms-3">Proceed to Checkout</a>
+  <a href="check_out.php" class="btn btn-success ms-3">Proceed to Checkout</a>
       </div>
     </div>
   <?php endif; ?>
