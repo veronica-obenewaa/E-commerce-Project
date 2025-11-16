@@ -53,7 +53,7 @@ if ($result['status'] === 'success') {
     if ($role == 1) { // admin
         $redirect = '../admin/product.php';
     } elseif ($role == 3) { // pharmaceutical company
-        $redirect = '../company/dashboard.php';
+        $redirect = '../view/dashboard.php';
     } elseif ($role == 4) { // physician
         $redirect = '../physician/dashboard.php';
     }
