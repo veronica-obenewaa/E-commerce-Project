@@ -127,6 +127,49 @@ class CustomerController {
         return $this->customerModel->checkHospitalRegistration($reg);
     }
 
+    // Fetch company profile by customer_id (for pharmaceutical companies)
+    public function get_company_profile($customer_id) {
+        if (empty($customer_id)) {
+            return ['status' => 'error', 'message' => 'Invalid customer ID'];
+        }
+        $customer = $this->customerModel->getCustomerById($customer_id);
+        if (!$customer) {
+            return ['status' => 'error', 'message' => 'Customer not found'];
+        }
+        return ['status' => 'success', 'data' => $customer];
+    }
+
+    // Update company profile (name, contact, location)
+    public function update_company_profile_ctr($data) {
+        $customer_id = isset($data['customer_id']) ? intval($data['customer_id']) : 0;
+        if ($customer_id <= 0) {
+            return ['status' => 'error', 'message' => 'Invalid customer ID'];
+        }
+
+        $errors = [];
+        if (empty($data['customer_name'])) $errors[] = "Contact person name is required";
+        if (empty($data['company_name'])) $errors[] = "Company name is required";
+        if (empty($data['customer_country'])) $errors[] = "Country is required";
+        if (empty($data['customer_city'])) $errors[] = "City is required";
+        if (empty($data['customer_contact'])) $errors[] = "Contact number is required";
+
+        if (!empty($errors)) {
+            return ['status' => 'error', 'message' => implode(', ', $errors)];
+        }
+
+        $result = $this->customerModel->editCustomer(
+            $customer_id,
+            $data['customer_name'],
+            $data['customer_country'],
+            $data['customer_city'],
+            $data['customer_contact']
+        );
+
+        return $result
+            ? ['status' => 'success', 'message' => 'Profile updated successfully']
+            : ['status' => 'error', 'message' => 'Failed to update profile'];
+    }
+
   
     public function edit_customer_ctr($kwargs) {
         if (empty($kwargs['customer_id'])) return ['status' => 'error', 'message' => 'Customer ID is required'];

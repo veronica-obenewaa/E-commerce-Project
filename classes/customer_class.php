@@ -50,12 +50,18 @@ class customer_class extends db_connection
         return $result ? $insertId : false;
     }
 
-	
-
 	//--SELECT CUSTOMER BY ID--//
-
-
-	//--UPDATE--//
+    public function getCustomerById($customer_id) {
+        $conn = $this->db_conn();
+        $sql = "SELECT * FROM customer WHERE customer_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $customer_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $customer = $result->fetch_assoc();
+        $stmt->close();
+        return $customer;
+    }
     public function editCustomer($customer_id, $customer_name, $customer_country, $customer_city, $customer_contact) {
         $conn = $this->db_conn();
         $sql = "UPDATE customer SET customer_name = ?, customer_country = ?, customer_city = ?, customer_contact = ? WHERE customer_id = ?";

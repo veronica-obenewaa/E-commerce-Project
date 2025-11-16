@@ -46,11 +46,23 @@ if ($result['status'] === 'success') {
     $_SESSION['customer_email'] = $customerData['customer_email'];
     $_SESSION['logged_in'] = true;
     
+    // Determine redirect based on role
+    $role = $customerData['role_id'] ?? $customerData['user_role'];
+    $redirect = '../index.php'; // default for customers
+    
+    if ($role == 1) { // admin
+        $redirect = '../admin/product.php';
+    } elseif ($role == 3) { // pharmaceutical company
+        $redirect = '../company/dashboard.php';
+    } elseif ($role == 4) { // physician
+        $redirect = '../physician/dashboard.php';
+    }
+    
     // Return success response
     echo json_encode([
         'status' => 'success', 
         'message' => 'Login successful',
-        'redirect' => '../index.php'
+        'redirect' => $redirect
     ]);
 } else {
     // Return error response

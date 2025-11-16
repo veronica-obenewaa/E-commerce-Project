@@ -44,6 +44,10 @@
                             <div class="d-grid">
                                 <button type="submit" id="submitBtn" class="btn btn-primary">Login</button>
                             </div>
+
+                            <div class="text-center mt-3">
+                                <p>Don't have an account? <a href="register.php">Register here</a></p>
+                            </div>
                         </form>
                     </div>
                 </div>
