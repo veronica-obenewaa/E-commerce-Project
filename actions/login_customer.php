@@ -47,8 +47,8 @@ if ($result['status'] === 'success') {
     $_SESSION['logged_in'] = true;
     
     // Determine redirect based on role
-    $role = $customerData['role_id'] ?? $customerData['user_role'];
-    $redirect = '../index.php'; // default for customers
+    // $role = $customerData['role_id'] ?? $customerData['user_role'];
+    // $redirect = '../index.php'; // default for customers
     
     if ($role == 1) { // admin
         $redirect = '../admin/product.php';
