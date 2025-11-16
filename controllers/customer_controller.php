@@ -50,23 +50,64 @@ class CustomerController {
             $errors[] = "Contact number already exists";
         }
 
+        // Additional fields depending on role
+        $role = isset($kwargs['user_role']) ? (int)$kwargs['user_role'] : 2;
+        if ($role === 3) { // Pharmaceutical company
+            if (empty($kwargs['company_name'])) $errors[] = "Company name is required for pharmaceutical registrations";
+            if (empty($kwargs['pharmaceutical_registration_number'])) $errors[] = "Pharmaceutical registration number is required";
+            // uniqueness check
+            if (!empty($kwargs['pharmaceutical_registration_number']) && $this->customerModel->checkPharmaRegistration($kwargs['pharmaceutical_registration_number'])) {
+                $errors[] = "Pharmaceutical registration number already exists";
+            }
+        }
+
+        if ($role === 4) { // Physician
+            if (empty($kwargs['hospital_name'])) $errors[] = "Hospital name is required for physician registrations";
+            if (empty($kwargs['hospital_registration_number'])) $errors[] = "Hospital registration number is required";
+            // uniqueness check
+            if (!empty($kwargs['hospital_registration_number']) && $this->customerModel->checkHospitalRegistration($kwargs['hospital_registration_number'])) {
+                $errors[] = "Hospital registration number already exists";
+            }
+        }
+
         if (!empty($errors)) {
             return ['status' => 'error', 'message' => implode(', ', $errors)];
         }
-
-        $result = $this->customerModel->addCustomer(
+        // Create customer and return inserted id
+        $customer_id = $this->customerModel->addCustomer(
             $kwargs['customer_name'],
             $kwargs['customer_email'],
             $kwargs['customer_pass'],
             $kwargs['customer_country'],
             $kwargs['customer_city'],
             $kwargs['customer_contact'],
-            $kwargs['user_role'] ?? 2
+            $role,
+            $kwargs['role_id'] ?? null,
+            $kwargs['company_name'] ?? null,
+            $kwargs['pharmaceutical_registration_number'] ?? null,
+            $kwargs['hospital_name'] ?? null,
+            $kwargs['hospital_registration_number'] ?? null
         );
 
-        return $result 
-            ? ['status' => 'success', 'message' => 'Registration successful'] 
-            : ['status' => 'error', 'message' => 'Registration failed. Please try again.'];
+        if (!$customer_id) {
+            return ['status' => 'error', 'message' => 'Failed to create customer'];
+        }
+
+        // If physician and specializations provided, attach them
+        if ($role === 4 && !empty($kwargs['medical_specializations'])) {
+            $specs = $kwargs['medical_specializations'];
+            if (!is_array($specs)) {
+                // accept comma-separated string
+                $specs = array_map('trim', explode(',', $specs));
+            }
+            foreach ($specs as $specName) {
+                if (empty($specName)) continue;
+                $specId = $this->customerModel->addSpecialization($specName);
+                if ($specId) $this->customerModel->addCustomerSpecialization($customer_id, $specId);
+            }
+        }
+
+        return ['status' => 'success', 'message' => 'Registration successful', 'customer_id' => $customer_id];
     }
 
  
@@ -75,6 +116,15 @@ class CustomerController {
             return ['status' => 'error', 'message' => 'Email and password are required'];
         }
         return $this->customerModel->getCustomerByEmail($kwargs['customer_email'], $kwargs['customer_pass']);
+    }
+
+    // AJAX helpers for checking registration numbers from front-end
+    public function checkPharma($reg) {
+        return $this->customerModel->checkPharmaRegistration($reg);
+    }
+
+    public function checkHospital($reg) {
+        return $this->customerModel->checkHospitalRegistration($reg);
     }
 
   

@@ -75,7 +75,11 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
   <div class="container">
     <h1>Welcome to E-Pharmacy Ghana</h1>
     <p class="mt-3 mb-4">Your trusted platform for genuine medications and health products from verified pharmaceutical suppliers.</p>
-    <a href="view/all_product.php" class="btn btn-success btn-lg px-4">Browse All Products</a>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="Login/register_company.php" class="btn btn-outline-primary btn-lg px-4">Pharmaceutical Company</a>
+      <a href="view/all_product.php" class="btn btn-success btn-lg px-4">Browse Medications</a>
+      <a href="Login/register_physician.php" class="btn btn-outline-secondary btn-lg px-4">Physician</a>
+    </div>
   </div>
 </section>
 

@@ -22,7 +22,8 @@ function getUserId() {
 
 //function to check for role
 function getUserRole() {
-    return $_SESSION['user_role'] ?? null;
+    // Prefer the newer `role_id` if present, fall back to legacy `user_role`.
+    return $_SESSION['role_id'] ?? $_SESSION['user_role'] ?? null;
 }
 
 function isLoggedIn() {

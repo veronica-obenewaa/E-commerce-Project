@@ -39,7 +39,9 @@ if ($result['status'] === 'success') {
     $customerData = $result['data'];
     
     $_SESSION['customer_id'] = $customerData['customer_id'];
-    $_SESSION['user_role'] = $customerData['user_role'];
+    // store both legacy user_role and new role_id if available
+    $_SESSION['user_role'] = $customerData['user_role'] ?? null;
+    if (isset($customerData['role_id'])) $_SESSION['role_id'] = $customerData['role_id'];
     $_SESSION['customer_name'] = $customerData['customer_name'];
     $_SESSION['customer_email'] = $customerData['customer_email'];
     $_SESSION['logged_in'] = true;

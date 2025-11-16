@@ -39,6 +39,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['check_email'])) {
 
 }
 
+// pharmaceutical registration number availability
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['check_pharma'])) {
+    $reg = filter_var($_GET['check_pharma'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (empty($reg)) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid registration number']);
+        exit();
+    }
+    try {
+        $exists = $customerController->checkPharma($reg);
+        echo json_encode(['status' => 'success', 'exists' => $exists]);
+    } catch (Throwable $e) {
+        echo json_encode(['status' => 'error', 'message' => 'Server error']);
+    }
+    exit();
+}
+
+// hospital registration number availability
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['check_hospital'])) {
+    $reg = filter_var($_GET['check_hospital'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (empty($reg)) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid registration number']);
+        exit();
+    }
+    try {
+        $exists = $customerController->checkHospital($reg);
+        echo json_encode(['status' => 'success', 'exists' => $exists]);
+    } catch (Throwable $e) {
+        echo json_encode(['status' => 'error', 'message' => 'Server error']);
+    }
+    exit();
+}
+
 //customer registration
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize input
@@ -49,8 +81,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'customer_country' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'customer_city' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
         'customer_contact' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
-        'user_role'=> FILTER_SANITIZE_NUMBER_INT
+            'user_role'=> FILTER_SANITIZE_NUMBER_INT,
+            'company_name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'pharmaceutical_registration_number' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'hospital_name' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+            'hospital_registration_number' => FILTER_SANITIZE_FULL_SPECIAL_CHARS
     ]);
+
+        // medical_specializations may be sent as array (multiple select)
+        if (isset($_POST['medical_specializations'])) {
+            $data['medical_specializations'] = $_POST['medical_specializations'];
+        }
 
     try {
         $response = $customerController->register_customer_ctr($data);
