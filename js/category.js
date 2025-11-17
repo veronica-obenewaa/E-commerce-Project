@@ -131,54 +131,10 @@
 // });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Resolve the actions folder base dynamically from the script tag that loaded this file.
-    // This avoids fragile relative paths when the app is served from different base paths or behind proxies.
-    function resolveActionsBase() {
-        const scripts = document.getElementsByTagName('script');
-        for (let i = scripts.length - 1; i >= 0; i--) {
-            const s = scripts[i];
-            if (!s.src) continue;
-            if (s.src.indexOf('category.js') !== -1) {
-                try {
-                    const url = new URL(s.src, window.location.href);
-                    const pathname = url.pathname;
-                    // If path contains a /js/ segment, replace it with /actions/
-                    const m = pathname.match(/(.*)\/js\/[^^/]+$/);
-                    if (m && m[1]) {
-                        return url.origin + m[1] + '/actions/';
-                    }
-                    // fallback: use same directory as script, go up one and append actions
-                    const dir = pathname.substring(0, pathname.lastIndexOf('/'));
-                    return url.origin + dir.replace(/\/js$/, '') + '/actions/';
-                } catch (e) {
-                    // ignore and try fallbacks below
-                }
-            }
-        }
-
-        // Fallback candidate bases (try them relative to current location)
-        const candidates = [
-            '../actions/',
-            '/mvc_skeleton_template/actions/',
-            '/actions/',
-            './actions/'
-        ];
-        for (const c of candidates) {
-            try {
-                const full = new URL(c, window.location.href).href;
-                return full.endsWith('/') ? full : full + '/';
-            } catch (e) {}
-        }
-
-        // Last resort
-        return '/actions/';
-    }
-
-    const ACTIONS_BASE = resolveActionsBase();
-    const fetchUrl = ACTIONS_BASE + 'fetch_category_action.php';
-    const addUrl = ACTIONS_BASE + 'add_category_action.php';
-    const updateUrl = ACTIONS_BASE + 'update_category_action.php';
-    const deleteUrl = ACTIONS_BASE + 'delete_category_action.php';
+    const fetchUrl = '../actions/fetch_category_action.php';
+    const addUrl = '../actions/add_category_action.php';
+    const updateUrl = '../actions/update_category_action.php';
+    const deleteUrl = '../actions/delete_category_action.php';
 
     const listEl = document.getElementById('categoryList');
     const addForm = document.getElementById('addCategoryForm');
