@@ -41,11 +41,6 @@ function isCustomer() {
     return getUserRole() == 2;
 }
 
-// Check if user is a pharmaceutical company (role 3)
-function isCompany() {
-    return getUserRole() == 3;
-}
-
 
 
 

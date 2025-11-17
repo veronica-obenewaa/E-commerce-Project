@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/../settings/core.php';
 
-// protect route: allow admins and pharmaceutical companies
-if (!isLoggedIn() || (!isAdmin() && !isCompany())) {
-  header('Location: ../Login/login.php');
-  exit();
+// protect route
+if (!isLoggedIn() || !isAdmin()) {
+    header('Location: ../Login/login.php');
+    exit();
 }
 ?>
 <!doctype html>

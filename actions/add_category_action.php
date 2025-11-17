@@ -5,7 +5,7 @@ require_once __DIR__ . '/../controllers/category_controller.php';
 header('Content-Type: application/json');
 
 
-if(!isLoggedIn() || (!isAdmin() && !isCompany())) {
+if(!isLoggedIn() || !isAdmin()) {
     echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
     exit();
 }
