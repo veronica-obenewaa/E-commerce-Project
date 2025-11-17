@@ -4,8 +4,12 @@ require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/category_controller.php';
 require_once __DIR__ . '/../controllers/brand_controller.php';
 
-if (!isLoggedIn() || !isAdmin()) {
-    header('Location: ../Login/login.php'); exit;
+// Allow admin users and pharmaceutical companies (role 3) to add products
+if (!isLoggedIn() || !(isAdmin() || getUserRole() == 3)) {
+    // If not authorized, redirect to login and include return URL so user can be taken back after login
+    $return = urlencode('../admin/product_add.php');
+    header('Location: ../Login/login.php?redirect=' . $return);
+    exit;
 }
 
 $catCtrl = new CategoryController();

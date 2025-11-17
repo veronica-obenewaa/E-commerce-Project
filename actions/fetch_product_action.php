@@ -3,7 +3,8 @@ require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/product_controller.php';
 header('Content-Type: application/json');
 
-if(!isLoggedIn() || !isAdmin()) {
+// allow admins and pharmaceutical companies to fetch their products
+if(!isLoggedIn() || !(isAdmin() || getUserRole() == 3)) {
     echo json_encode(['status'=>'error', 'message'=>'Unauthorised']);
     exit;
 }

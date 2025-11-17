@@ -41,6 +41,12 @@
 
                             <div id="msg" class="mt-3"></div>
 
+                            <?php if (!empty($_GET['redirect'])): ?>
+                                <input type="hidden" id="redirect" name="redirect" value="<?= htmlspecialchars($_GET['redirect']) ?>">
+                            <?php else: ?>
+                                <input type="hidden" id="redirect" name="redirect" value="">
+                            <?php endif; ?>
+
                             <div class="d-grid">
                                 <button type="submit" id="submitBtn" class="btn btn-primary">Login</button>
                             </div>

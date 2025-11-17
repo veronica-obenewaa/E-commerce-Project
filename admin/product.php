@@ -1,8 +1,10 @@
 <?php
 // admin/product.php
 require_once __DIR__ . '/../settings/core.php';
-if (!isLoggedIn() || !isAdmin()) {
-    header('Location: ../Login/login.php'); exit;
+// allow admins and pharmaceutical companies to view/manage their products
+if (!isLoggedIn() || !(isAdmin() || getUserRole() == 3)) {
+    $return = urlencode('../admin/product.php');
+    header('Location: ../Login/login.php?redirect=' . $return); exit;
 }
 ?>
 

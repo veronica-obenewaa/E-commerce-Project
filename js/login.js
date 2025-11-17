@@ -27,10 +27,13 @@ $(document).ready(function() {
             return;
         }
 
+        // include optional redirect field from the login form (if present)
+        const redirectVal = $("#redirect").length ? $("#redirect").val() : '';
+
         $.ajax({
             url: "../actions/login_customer.php",
             type: "POST",
-            data: {customer_email:customer_email, customer_pass:customer_pass},
+            data: {customer_email:customer_email, customer_pass:customer_pass, redirect: redirectVal},
             datatype: "json",
             success: function (response){
                 if(response.status === "success"){

@@ -58,6 +58,16 @@ if ($result['status'] === 'success') {
         $redirect = '../physician/dashboard.php';
     }
     
+    // If a redirect was posted from login form (e.g. user was sent to login from a protected page), prefer it
+    $posted_redirect = isset($_POST['redirect']) ? trim($_POST['redirect']) : '';
+    if (!empty($posted_redirect)) {
+        // Basic safety: do not allow absolute/external URLs
+        $lower = strtolower($posted_redirect);
+        if (strpos($lower, 'http://') === false && strpos($lower, 'https://') === false && strpos($lower, '//') === false) {
+            $redirect = $posted_redirect;
+        }
+    }
+    
     // Return success response
     echo json_encode([
         'status' => 'success', 
