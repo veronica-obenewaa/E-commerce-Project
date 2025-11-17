@@ -88,12 +88,12 @@ if (!$companyData || $companyData['status'] !== 'success') {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showSection('add-medication')">
+                    <a class="nav-link" href="../admin/product_add.php" onclick="showSection('add-medication')">
                         <i class="fas fa-pills"></i> Add Medications
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="showSection('medications')">
+                    <a class="nav-link" href="../admin/product.php" onclick="showSection('medications')">
                         <i class="fas fa-list"></i> My Medications
                     </a>
                 </li>
@@ -146,10 +146,10 @@ if (!$companyData || $companyData['status'] !== 'success') {
                                     <h5 class="mb-0">Quick Actions</h5>
                                 </div>
                                 <div class="card-body">
-                                    <a href="#" onclick="showSection('add-medication')" class="btn btn-primary me-2">
+                                    <a href="../admin/product_add.php" onclick="showSection('add-medication')" class="btn btn-primary me-2">
                                         <i class="fas fa-plus"></i> Add New Medication
                                     </a>
-                                    <a href="#" onclick="showSection('medications')" class="btn btn-outline-primary">
+                                    <a href="../admin/product.php" onclick="showSection('medications')" class="btn btn-outline-primary">
                                         <i class="fas fa-list"></i> View All Medications
                                     </a>
                                 </div>
