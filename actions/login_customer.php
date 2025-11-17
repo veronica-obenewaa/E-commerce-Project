@@ -62,7 +62,8 @@ if ($result['status'] === 'success') {
     echo json_encode([
         'status' => 'success', 
         'message' => 'Login successful',
-        'redirect' => $redirect
+        'redirect' => $redirect,
+        'role' => $role
     ]);
 } else {
     // Return error response
