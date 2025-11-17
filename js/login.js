@@ -36,11 +36,15 @@ $(document).ready(function() {
                 if(response.status === "success"){
                     $("#msg").html(
                         `<div class="alert alert-success">${response.message}</div>`
-
                     );
 
                     setTimeout(() => {
-                        window.location.href ="../index.php";
+                        // Redirect to server-provided URL if available, otherwise default to home
+                        if (response.redirect) {
+                            window.location.href = response.redirect;
+                        } else {
+                            window.location.href = "../index.php";
+                        }
                     }, 1500)
                 } else {
                     $("#msg").html(
