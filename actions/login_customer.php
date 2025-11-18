@@ -46,19 +46,18 @@ if ($result['status'] === 'success') {
     $_SESSION['customer_email'] = $customerData['customer_email'];
     $_SESSION['logged_in'] = true;
     
-    // Determine redirect based on role
+    // Determine redirect based on role (default fallback)
     $role = $customerData['role_id'] ?? $customerData['user_role'];
-    $redirect = '../index.php'; // default for customers
+    $redirect = '../index.php'; // default for customers (role 2)
     
-    if ($role == 1) { // admin
-        $redirect = '../admin/product.php';
-    } elseif ($role == 3) { // pharmaceutical company
+    if ($role == 1) { // pharmaceutical company
         $redirect = '../view/dashboard.php';
-    } elseif ($role == 4) { // physician
+    } elseif ($role == 3) { // physician
         $redirect = '../physician/dashboard.php';
     }
     
     // If a redirect was posted from login form (e.g. user was sent to login from a protected page), prefer it
+    // This ensures that clicking "Add Medication" redirects back to add product page after login
     $posted_redirect = isset($_POST['redirect']) ? trim($_POST['redirect']) : '';
     if (!empty($posted_redirect)) {
         // Basic safety: do not allow absolute/external URLs

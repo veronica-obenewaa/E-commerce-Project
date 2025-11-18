@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/customer_controller.php';
 
-// Only allow pharmaceutical companies (role_id = 3)
-if (!isLoggedIn() || getUserRole() != 3) {
+// Only allow pharmaceutical companies (role_id = 1)
+if (!isLoggedIn() || getUserRole() != 1) {
     header('Location: ../Login/login.php');
     exit;
 }
