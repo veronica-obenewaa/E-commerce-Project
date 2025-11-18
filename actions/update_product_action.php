@@ -19,8 +19,8 @@ $created_by = getUserId();
 
 $data = [
     'product_id' => intval($_POST['product_id'] ?? 0),
-    'product_cat' => intval($_POST['product_cat'] ?? 0),
-    'product_brand' => intval($_POST['product_brand'] ?? 0),
+    'product_cat' => trim($_POST['product_cat'] ?? ''),
+    'product_brand' => trim($_POST['product_brand'] ?? ''),
     'product_title' => trim($_POST['product_title'] ?? ''),
     'product_price' => floatval($_POST['product_price'] ?? 0),
     'product_desc' => trim($_POST['product_desc'] ?? ''),

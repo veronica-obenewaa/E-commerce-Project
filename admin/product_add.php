@@ -4,8 +4,9 @@ require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/category_controller.php';
 require_once __DIR__ . '/../controllers/brand_controller.php';
 
-// Allow admin users and pharmaceutical companies (role 3) to add products
-if (!isLoggedIn() || !(isAdmin() || getUserRole() == 3)) {
+// Allow admin/pharmaceutical company users (role 1) to add products
+// With new role mapping: 1=pharmaceutical company, 2=customer, 3=physician
+if (!isLoggedIn() || !isAdmin()) {
     // If not authorized, redirect to login and include return URL so user can be taken back after login
     $return = urlencode('../admin/product_add.php');
     header('Location: ../Login/login.php?redirect=' . $return);

@@ -16,7 +16,24 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const fd = new FormData(addForm);
             fetch(addForm.action, { method: 'POST', body: fd })
-            .then(r => r.json())
+            .then(r => {
+                // Check for HTTP errors
+                if (!r.ok) {
+                    // Try to parse JSON error response, fall back to status text
+                    return r.text().then(text => {
+                        let errorMsg = 'HTTP ' + r.status + ' ' + r.statusText;
+                        try {
+                            const json = JSON.parse(text);
+                            if (json.message) errorMsg = json.message;
+                        } catch (e) {
+                            // Not JSON, use the status text
+                            errorMsg = text || errorMsg;
+                        }
+                        throw new Error(errorMsg);
+                    });
+                }
+                return r.json();
+            })
             .then(j => {
                 showMsg(document.getElementById('addMsg'), j.status === 'success' ? 'success' : 'danger', j.message || 'Response');
                 if (j.status === 'success') {
@@ -25,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(err => {
-                showMsg(document.getElementById('addMsg'), 'danger', 'Error connecting to server');
-                console.error(err);
+                showMsg(document.getElementById('addMsg'), 'danger', 'Error: ' + (err.message || 'Unable to connect to server'));
+                console.error('Add product error:', err);
             });
         });
     }
