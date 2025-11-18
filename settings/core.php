@@ -30,15 +30,25 @@ function isLoggedIn() {
     return isset($_SESSION['customer_id']) && !empty($_SESSION['customer_id']);
 }
 
-// Check if user is admin
+// Role mapping (updated): 1 = pharmaceutical company, 2 = customer, 3 = physician
+// Check if user is admin/pharmaceutical company (role 1)
 function isAdmin() {
     return getUserRole() == 1;
 }
 
-
 // Check if user is customer
 function isCustomer() {
     return getUserRole() == 2;
+}
+
+// Check if user is a pharmaceutical company (role 1)
+function isCompany() {
+    return getUserRole() == 1;
+}
+
+// Check if user is a physician (role 3)
+function isPhysician() {
+    return getUserRole() == 3;
 }
 
 

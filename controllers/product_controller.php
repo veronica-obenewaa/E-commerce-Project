@@ -12,8 +12,8 @@ class product_controller {
 
     //add product controller
     public function add_product_ctr($data) {
-        $product_cat = intval($data['product_cat'] ?? 0);
-        $product_brand = intval($data['product_brand'] ?? 0);
+        $product_cat = trim($data['product_cat'] ?? '');
+        $product_brand = trim($data['product_brand'] ?? '');
         $product_title = trim($data['product_title'] ?? '');
         $product_price = floatval($data['product_price'] ?? 0);
         $product_desc = trim($data['product_desc'] ?? '');
@@ -21,7 +21,7 @@ class product_controller {
         $created_by = intval($data['created_by'] ?? 0);
         $product_image = $data['product_image'] ?? null;
 
-        if($product_cat <= 0 || $product_title === '' || $product_price <= 0) {
+        if($product_cat === '' || $product_title === '' || $product_price <= 0) {
             return ['status' => 'error', 'message' => 'Required fields missing or invalid'];
 
         }
@@ -37,8 +37,8 @@ class product_controller {
     //update product
     public function update_product_ctr($data) {
         $product_id = intval($data['product_id'] ?? 0);
-        $product_cat = intval($data['product_cat'] ?? 0);
-        $product_brand = intval($data['product_brand'] ?? 0);
+        $product_cat = trim($data['product_cat'] ?? '');
+        $product_brand = trim($data['product_brand'] ?? '');
         $product_title = trim($data['product_title'] ?? '');
         $product_price = floatval($data['product_price'] ?? 0);
         $product_desc = trim($data['product_desc'] ?? '');

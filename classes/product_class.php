@@ -11,7 +11,7 @@ class product_class extends db_connection
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) return false;
-        $stmt->bind_param("iisdsssi",
+        $stmt->bind_param("sssdsssi",
             $product_cat,
             $product_brand,
             $product_title,
@@ -36,7 +36,7 @@ class product_class extends db_connection
                     WHERE product_id=? AND created_by=?";
             $stmt = $conn->prepare($sql);
             if (!$stmt) return false;
-            $stmt->bind_param("iisdsssii",
+            $stmt->bind_param("sssdssii",
                 $product_cat,
                 $product_brand,
                 $product_title,
@@ -52,7 +52,7 @@ class product_class extends db_connection
                     WHERE product_id=? AND created_by=?";
             $stmt = $conn->prepare($sql);
             if (!$stmt) return false;
-            $stmt->bind_param("iisdssii",
+            $stmt->bind_param("sssdssii",
                 $product_cat,
                 $product_brand,
                 $product_title,

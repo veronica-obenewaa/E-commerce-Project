@@ -11,13 +11,6 @@ if (!isLoggedIn() || !(isAdmin() || getUserRole() == 3)) {
     header('Location: ../Login/login.php?redirect=' . $return);
     exit;
 }
-
-$catCtrl = new CategoryController();
-$cats = $catCtrl->fetch_categories_ctr(getUserId())['data'] ?? [];
-
-$brandCtrl = new BrandController();
-$brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
-
 ?>
 
 <!DOCTYPE html>
@@ -36,21 +29,11 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Category</label>
-                <select name="product_cat" class="form-select" required>
-                    <option value="">Select category</option>
-                    <?php foreach($cats as $c): ?>
-                        <option value="<?=htmlspecialchars($c['cat_id'])?>"><?=htmlspecialchars($c['cat_name'])?></option>
-                    <?php endforeach; ?>
-                </select>
+                <input type="text" name="product_cat" class="form-control" placeholder="e.g., Pain Relief" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label>Brand</label>
-                <select name="product_brand" class="form-select" required>
-                    <option value="">Select brand</option>
-                    <?php foreach($brands as $b): ?>
-                        <option value="<?=htmlspecialchars($b['brand_id'])?>"><?=htmlspecialchars($b['brand_name'])?></option>
-                    <?php endforeach; ?>
-                </select>
+                <input type="text" name="product_brand" class="form-control" placeholder="e.g., Aspirin" required>
             </div>
         </div>
 
