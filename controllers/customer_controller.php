@@ -52,7 +52,7 @@ class CustomerController {
 
         // Additional fields depending on role
         $role = isset($kwargs['user_role']) ? (int)$kwargs['user_role'] : 2;
-        if ($role === 3) { // Pharmaceutical company
+        if ($role === 1) { // Pharmaceutical company
             if (empty($kwargs['company_name'])) $errors[] = "Company name is required for pharmaceutical registrations";
             if (empty($kwargs['pharmaceutical_registration_number'])) $errors[] = "Pharmaceutical registration number is required";
             // uniqueness check
@@ -61,7 +61,7 @@ class CustomerController {
             }
         }
 
-        if ($role === 4) { // Physician
+        if ($role === 3) { // Physician
             if (empty($kwargs['hospital_name'])) $errors[] = "Hospital name is required for physician registrations";
             if (empty($kwargs['hospital_registration_number'])) $errors[] = "Hospital registration number is required";
             // uniqueness check
@@ -94,7 +94,7 @@ class CustomerController {
         }
 
         // If physician and specializations provided, attach them
-        if ($role === 4 && !empty($kwargs['medical_specializations'])) {
+        if ($role === 3 && !empty($kwargs['medical_specializations'])) {
             $specs = $kwargs['medical_specializations'];
             if (!is_array($specs)) {
                 // accept comma-separated string
