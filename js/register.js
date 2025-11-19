@@ -79,14 +79,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const roleInput = document.querySelector('input[name="user_role"]');
         const role = roleInput ? parseInt(roleInput.value, 10) : 2;
 
-        if (role === 3) { // company
+        if (role === 1) { // pharmaceutical company
             const companyName = document.getElementById('company_name');
             const pharmaReg = document.getElementById('pharmaceutical_registration_number');
             if (!companyName || !companyName.value.trim()) { showError(companyName, 'Company name is required'); ok = false; }
             if (!pharmaReg || !pharmaReg.value.trim()) { showError(pharmaReg, 'Registration number is required'); ok = false; }
         }
 
-        if (role === 4) { // physician
+        if (role === 3) { // physician
             const hospitalName = document.getElementById('hospital_name');
             const hospitalReg = document.getElementById('hospital_registration_number');
             const specs = document.getElementById('medical_specializations');

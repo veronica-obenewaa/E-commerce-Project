@@ -26,7 +26,7 @@
 
                     <div class="card-body">
                         <form method="POST" action="../actions/register_customer_action.php" id="registerForm">
-                            <input type="hidden" name="user_role" value="3">
+                            <input type="hidden" name="user_role" value="1">
 
                             <div class="mb-3">
                                 <label for="customer_name" class="form-label">Full Name</label>
