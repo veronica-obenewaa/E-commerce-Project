@@ -53,7 +53,7 @@ if ($result['status'] === 'success') {
     if ($role == 1) { // pharmaceutical company
         $redirect = '../view/dashboard.php';
     } elseif ($role == 3) { // physician
-        $redirect = '../physician/dashboard.php';
+        $redirect = '../admin/dashboard.php';
     }
     
     // If a redirect was posted from login form (e.g. user was sent to login from a protected page), prefer it
