@@ -36,7 +36,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
 <!-- NAVIGATION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container">
-    <a class="navbar-brand" href="index.php">E-Pharmacy</a>
+    <a class="navbar-brand" href="index.php">Med-ePharma>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>

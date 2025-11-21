@@ -139,6 +139,43 @@ class CustomerController {
         return ['status' => 'success', 'data' => $customer];
     }
 
+    // Fetch physician profile (same underlying data as customer but named helper for clarity)
+    public function get_physician_profile($customer_id) {
+        return $this->get_company_profile($customer_id);
+    }
+
+    // Update physician profile (hospital fields included)
+    public function update_physician_profile_ctr($data) {
+        $customer_id = isset($data['customer_id']) ? intval($data['customer_id']) : 0;
+        if ($customer_id <= 0) {
+            return ['status' => 'error', 'message' => 'Invalid customer ID'];
+        }
+
+        $errors = [];
+        if (empty($data['customer_name'])) $errors[] = "Full name is required";
+        if (empty($data['hospital_name'])) $errors[] = "Hospital name is required";
+        if (empty($data['hospital_registration_number'])) $errors[] = "Hospital registration number is required";
+        if (empty($data['customer_country'])) $errors[] = "Country is required";
+        if (empty($data['customer_city'])) $errors[] = "City is required";
+        if (empty($data['customer_contact'])) $errors[] = "Contact number is required";
+
+        if (!empty($errors)) {
+            return ['status' => 'error', 'message' => implode(', ', $errors)];
+        }
+
+        $res = $this->customerModel->updatePhysicianProfile(
+            $customer_id,
+            $data['customer_name'],
+            $data['customer_country'],
+            $data['customer_city'],
+            $data['customer_contact'],
+            $data['hospital_name'],
+            $data['hospital_registration_number']
+        );
+
+        return $res ? ['status' => 'success', 'message' => 'Profile updated successfully'] : ['status' => 'error', 'message' => 'Failed to update profile'];
+    }
+
     // Update company profile (name, contact, location)
     public function update_company_profile_ctr($data) {
         $customer_id = isset($data['customer_id']) ? intval($data['customer_id']) : 0;

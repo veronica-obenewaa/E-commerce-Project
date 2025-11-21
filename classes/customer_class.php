@@ -72,6 +72,17 @@ class customer_class extends db_connection
         return $result;
     }
 
+    // Update physician specific fields including hospital info
+    public function updatePhysicianProfile($customer_id, $customer_name, $customer_country, $customer_city, $customer_contact, $hospital_name = null, $hospital_registration_number = null) {
+        $conn = $this->db_conn();
+        $sql = "UPDATE customer SET customer_name = ?, customer_country = ?, customer_city = ?, customer_contact = ?, hospital_name = ?, hospital_registration_number = ? WHERE customer_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssssi", $customer_name, $customer_country, $customer_city, $customer_contact, $hospital_name, $hospital_registration_number, $customer_id);
+        $result = $stmt->execute();
+        $stmt->close();
+        return $result;
+    }
+
     //--DELETE--//
     public function deleteCustomer($customer_id) {
         $conn = $this->db_conn();
