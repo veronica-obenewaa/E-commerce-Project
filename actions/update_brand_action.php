@@ -16,8 +16,7 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $data = [
     'brand_id' => intval($_POST['brand_id'] ?? null),
-    'brand_name' => trim($_POST['brand_name'] ?? ''),
-    'created_by' => getUserId()
+    'brand_name' => trim($_POST['brand_name'] ?? '')
 ];
 
 $ctrl = new BrandController();

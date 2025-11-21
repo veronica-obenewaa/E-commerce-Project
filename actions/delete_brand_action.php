@@ -15,18 +15,14 @@ if($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
+
 $brand_id = intval($_POST['brand_id'] ?? 0);
-$created_by = getUserId();
-
-
 if(!$brand_id) {
     echo json_encode(['status' => 'error', 'message' => 'invalid brand ID']);
     exit();
 }
-
 $ctrl = new BrandController();
-$response = $ctrl->delete_brand_ctr($brand_id, $created_by);
-
+$response = $ctrl->delete_brand_ctr($brand_id);
 echo json_encode($response);
 exit();
 
