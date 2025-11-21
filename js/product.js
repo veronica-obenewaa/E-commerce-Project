@@ -3,11 +3,64 @@ document.addEventListener('DOMContentLoaded', function() {
     const addForm = document.getElementById('addProductForm');
     const bulkForm = document.getElementById('bulkUploadForm');
     const productListEl = document.getElementById('productList');
+        const categorySelect = document.getElementById('product_cat');
+        const brandSelect = document.getElementById('product_brand');
 
     function showMsg(el, type, text) {
         if (!el) return;
         el.innerHTML = `<div class="alert alert-${type}">${text}</div>`;
         setTimeout(()=> el.innerHTML = '', 4000);
+    }
+    // Fetch and populate category dropdown
+    async function populateCategories() {
+        if (!categorySelect) return;
+        try {
+            const res = await fetch('../actions/fetch_category_action.php');
+            const j = await res.json();
+            if (j.status !== 'success') {
+                categorySelect.innerHTML = '<option value="">Failed to load</option>';
+                return;
+            }
+            const rows = j.data;
+            if (!rows.length) {
+                categorySelect.innerHTML = '<option value="">No categories</option>';
+                return;
+            }
+            let html = '<option value="">Select Category</option>';
+            rows.forEach(c => {
+                html += `<option value="${c.cat_id}">${escapeHtml(c.cat_name)}</option>`;
+            });
+            categorySelect.innerHTML = html;
+        } catch (e) {
+            categorySelect.innerHTML = '<option value="">Error loading</option>';
+            console.error(e);
+        }
+    }
+
+    // Fetch and populate brand dropdown
+    async function populateBrands() {
+        if (!brandSelect) return;
+        try {
+            const res = await fetch('../actions/fetch_brand_action.php');
+            const j = await res.json();
+            if (j.status !== 'success') {
+                brandSelect.innerHTML = '<option value="">Failed to load</option>';
+                return;
+            }
+            const rows = j.data;
+            if (!rows.length) {
+                brandSelect.innerHTML = '<option value="">No brands</option>';
+                return;
+            }
+            let html = '<option value="">Select Brand</option>';
+            rows.forEach(b => {
+                html += `<option value="${b.brand_id}">${escapeHtml(b.brand_name)}</option>`;
+            });
+            brandSelect.innerHTML = html;
+        } catch (e) {
+            brandSelect.innerHTML = '<option value="">Error loading</option>';
+            console.error(e);
+        }
     }
 
     if (addForm) {
@@ -15,6 +68,19 @@ document.addEventListener('DOMContentLoaded', function() {
             // default form submit will post to add_product_action.php and return JSON
             e.preventDefault();
             const fd = new FormData(addForm);
+                // Validate dropdowns
+                const catVal = categorySelect ? categorySelect.value : '';
+                const brandVal = brandSelect ? brandSelect.value : '';
+                if (!catVal) {
+                    showMsg(document.getElementById('addMsg'), 'danger', 'Please select a category');
+                    return;
+                }
+                if (!brandVal) {
+                    showMsg(document.getElementById('addMsg'), 'danger', 'Please select a brand');
+                    return;
+                }
+                fd.set('product_cat', catVal);
+                fd.set('product_brand', brandVal);
             fetch(addForm.action, { method: 'POST', body: fd })
             .then(r => {
                 // Check for HTTP errors
@@ -134,4 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
     if (productListEl) fetchProducts();
+        // Populate dropdowns on page load
+        populateCategories();
+        populateBrands();
 });
