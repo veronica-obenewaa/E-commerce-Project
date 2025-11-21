@@ -30,11 +30,11 @@ if (!isLoggedIn() || !isAdmin()) {
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label>Category</label>
-                <select name="product_cat" class="form-control" id="product_cat" placeholder="e.g., Pain Relief" required>
+                <select name="product_cat" class="form-control" id="product_cat" placeholder="e.g., Pain Relief" required></select>
             </div>
             <div class="col-md-6 mb-3">
                 <label>Brand</label>
-                <select name="product_brand" class="form-control" id = "product_brand" placeholder="e.g., Aspirin" required>
+                <select name="product_brand" class="form-control" id="product_brand" placeholder="e.g., Aspirin" required></select>
             </div>
         </div>
 
