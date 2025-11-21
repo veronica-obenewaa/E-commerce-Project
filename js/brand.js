@@ -7,6 +7,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const listEl = document.getElementById('brandList');
     const addForm = document.getElementById('addBrandForm');
     const updateForm = document.getElementById('updateBrandForm');
+    const brandSelect = document.getElementById('brandSelect');
+    // Fetch and populate brand dropdown
+    async function populateBrandsDropdown() {
+        if (!brandSelect) return;
+        try {
+            const res = await fetch(fetchUrl);
+            const j = await res.json();
+            if (j.status !== 'success') {
+                brandSelect.innerHTML = '<option value="">Failed to load</option>';
+                return;
+            }
+            const rows = j.data;
+            if (!rows.length) {
+                brandSelect.innerHTML = '<option value="">No brands</option>';
+                return;
+            }
+            let html = '<option value="">Select Brand</option>';
+            rows.forEach(b => {
+                html += `<option value="${b.brand_id}">${escapeHtml(b.brand_name)}</option>`;
+            });
+            brandSelect.innerHTML = html;
+        } catch (e) {
+            brandSelect.innerHTML = '<option value="">Error loading</option>';
+            console.error(e);
+        }
+    }
 
     //Show message in alert boxes
     function showMsg(container, type, text) {
@@ -106,19 +132,63 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    //UPDATE BRAND
+    // ADD BRAND
+    if (addForm) {
+        addForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('addMsg');
+            // If using dropdown for brand selection
+            if (brandSelect) {
+                const brandVal = brandSelect.value;
+                if (!brandVal) {
+                    showMsg(msg, 'danger', 'Please select a brand');
+                    return;
+                }
+                const fd = new FormData(addForm);
+                fd.set('brand_id', brandVal);
+                fetch(addUrl, { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(j => {
+                    showMsg(msg, j.status === 'success' ? 'success' : 'danger', j.message || 'Response');
+                    if (j.status === 'success') {
+                        addForm.reset();
+                        brandSelect.selectedIndex = 0;
+                    }
+                })
+                .catch(() => showMsg(msg, 'danger', 'Error adding brand'));
+            } else {
+                // fallback to text input
+                const name = addForm.querySelector('input[name="brand_name"]').value.trim();
+                if (!name) {
+                    showMsg(msg, 'danger', 'Brand name is required');
+                    return;
+                }
+                const fd = new FormData();
+                fd.append('brand_name', name);
+                fetch(addUrl, { method: 'POST', body: fd })
+                .then(r => r.json())
+                .then(j => {
+                    showMsg(msg, j.status === 'success' ? 'success' : 'danger', j.message || 'Response');
+                    if (j.status === 'success') addForm.reset();
+                })
+                .catch(() => showMsg(msg, 'danger', 'Error adding brand'));
+            }
+        });
+    }
+    // UPDATE BRAND
     if (updateForm) {
         updateForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const id = updateForm.querySelector('input[name="brand_id"]').value;
             const name = updateForm.querySelector('input[name="brand_name"]').value.trim();
             const msg = document.getElementById('updateMsg');
-            if (!id || !name) return showMsg(msg, 'danger', 'Invalid data');
-
+            if (!id || !name) {
+                showMsg(msg, 'danger', 'Brand ID and name required');
+                return;
+            }
             const fd = new FormData();
             fd.append('brand_id', id);
             fd.append('brand_name', name);
-
             fetch(updateUrl, { method: 'POST', body: fd })
             .then(r => r.json())
             .then(j => {
@@ -153,4 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //INITIAL LOAD (only on brand.php page)
     if (listEl) fetchBrands();
+    // Populate brand dropdown on page load
+    populateBrandsDropdown();
 });
