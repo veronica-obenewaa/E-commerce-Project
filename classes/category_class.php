@@ -37,9 +37,8 @@ class category_class extends db_connection {
     //get category created by a specific user
     public function getCategoryByUser($customer_id) {
         $conn = $this->db_conn();
-        $sql = "SELECT cat_id, cat_name, created_at FROM categories WHERE created_by = ? ORDER BY cat_name ASC";
+        $sql = "SELECT cat_id, cat_name, created_at FROM categories ORDER BY cat_name ASC";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $customer_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $rows = $result->fetch_all(MYSQLI_ASSOC);
@@ -95,9 +94,9 @@ class category_class extends db_connection {
     #get a category by id and owner
     public function getCategoryById($cat_id, $customer_id) {
         $conn = $this->db_conn();
-        $sql = "SELECT cat_id, cat_name, created_at FROM categories WHERE cat_id = ? AND created_by = ?";
+        $sql = "SELECT cat_id, cat_name, created_at FROM categories WHERE cat_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $cat_id, $customer_id);
+        $stmt->bind_param("i", $cat_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
