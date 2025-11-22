@@ -99,6 +99,19 @@
                 $('#customer_country').val(p.customer_country || '');
                 $('#customer_city').val(p.customer_city || '');
                 $('#customer_contact').val(p.customer_contact || '');
+                // populate dashboard summary fields
+                if (typeof $('#summary_name') !== 'undefined') {
+                    $('#summary_name').text(p.customer_name || '<?php echo htmlspecialchars($physician_name ?? ""); ?>');
+                }
+                if (typeof $('#summary_hospital') !== 'undefined') {
+                    $('#summary_hospital').text(p.hospital_name || '-');
+                }
+                if (typeof $('#summary_hospital_reg') !== 'undefined') {
+                    $('#summary_hospital_reg').text(p.hospital_registration_number || '-');
+                }
+                if (typeof $('#summary_contact') !== 'undefined') {
+                    $('#summary_contact').text(p.customer_contact || '-');
+                }
                 $('#profileMsg').html('');
             })
             .catch(function(err){
@@ -139,6 +152,7 @@
         // initial load
         fetchBookings();
         fetchAppointmentCount();
+        fetchProfile();
 
         // sidebar navigation helper
         window.showSection = function(sectionId) {
