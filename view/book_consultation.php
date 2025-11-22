@@ -3,8 +3,8 @@ require_once __DIR__ . '/../settings/core.php';
 
 // Check if user is logged in
 if (!isLoggedIn()) {
-    $_SESSION['redirect_after_login'] = 'book_consultation.php';
-    header('Location: ../Login/login.php');
+    // Pass redirect as GET parameter (relative to Login/login.php)
+    header('Location: ../Login/login.php?redirect=../view/book_consultation.php');
     exit;
 }
 
