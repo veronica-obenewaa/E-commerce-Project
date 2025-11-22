@@ -10,9 +10,19 @@ if (!isLoggedIn()) {
     exit;
 }
 
-// Only allow customers (role 2) to book appointments
+// Only allow registered customers (role 2) to book appointments
 if (!isCustomer() && getUserRole() != 2) {
-    echo json_encode(['status' => 'error', 'message' => 'Only customers can book appointments']);
+    $userRole = getUserRole();
+    $roleName = 'Unknown';
+    if ($userRole == 1) {
+        $roleName = 'Pharmaceutical Company';
+    } elseif ($userRole == 3) {
+        $roleName = 'Physician';
+    }
+    echo json_encode([
+        'status' => 'error', 
+        'message' => 'Only registered customers can book appointments. You are logged in as a ' . $roleName . '.'
+    ]);
     exit;
 }
 

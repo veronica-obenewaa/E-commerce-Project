@@ -8,6 +8,23 @@ if (!isLoggedIn()) {
     exit;
 }
 
+// Only allow registered customers (role 2) to book appointments
+if (!isCustomer() && getUserRole() != 2) {
+    // Redirect based on user role
+    $userRole = getUserRole();
+    if ($userRole == 1) {
+        // Pharmaceutical company
+        header('Location: ../view/dashboard.php');
+    } elseif ($userRole == 3) {
+        // Physician
+        header('Location: ../admin/dashboard.php');
+    } else {
+        // Unknown role, redirect to home
+        header('Location: ../index.php');
+    }
+    exit;
+}
+
 // Get health conditions and notes from previous page
 $health_conditions = $_POST['health_conditions'] ?? '';
 $additional_notes = $_POST['additional_notes'] ?? '';
