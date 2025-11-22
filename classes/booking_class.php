@@ -35,6 +35,19 @@ class booking_class extends db_connection {
         return $res ? $insertId : false;
     }
 
+    // Update booking status (scheduled, completed, cancelled)
+    public function updateBookingStatus($booking_id, $status) {
+        $allowed = ['scheduled','completed','cancelled'];
+        if (!in_array($status, $allowed)) return false;
+        $conn = $this->db_conn();
+        $sql = "UPDATE physician_bookings SET status = ? WHERE booking_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $status, $booking_id);
+        $res = $stmt->execute();
+        $stmt->close();
+        return $res;
+    }
+
 }
 
 ?>

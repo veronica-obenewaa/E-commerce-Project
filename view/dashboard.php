@@ -88,12 +88,12 @@ if (!$companyData || $companyData['status'] !== 'success') {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../admin/product_add.php" onclick="showSection('add-medication')">
+                    <a class="nav-link" href="#" onclick="window.location.href='../admin/product_add.php'; return false;">
                         <i class="fas fa-pills"></i> Add Medications
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../admin/product.php" onclick="showSection('medications')">
+                    <a class="nav-link" href="#" onclick="window.location.href='../admin/product.php'; return false;">
                         <i class="fas fa-list"></i> My Medications
                     </a>
                 </li>
@@ -216,15 +216,26 @@ if (!$companyData || $companyData['status'] !== 'success') {
             </div>
 
             <!-- Add Medication Section -->
+            <!-- Add Medication / My Medications: open in full pages rather than iframe -->
             <div id="add-medication" class="section" style="display: none;">
                 <h2 class="mb-4"><i class="fas fa-plus-circle"></i> Add Medication</h2>
-                <iframe src="../admin/product_add.php" style="width: 100%; height: 800px; border: none;"></iframe>
+                <div class="card">
+                    <div class="card-body">
+                        <p>To add a new medication, click the button below to open the full Add Medication page.</p>
+                        <a href="../admin/product_add.php" class="btn btn-primary">Open Add Medication</a>
+                    </div>
+                </div>
             </div>
 
             <!-- My Medications Section -->
             <div id="medications" class="section" style="display: none;">
                 <h2 class="mb-4"><i class="fas fa-list"></i> My Medications</h2>
-                <iframe src="../admin/product.php" style="width: 100%; height: 800px; border: none;"></iframe>
+                <div class="card">
+                    <div class="card-body">
+                        <p>View and manage your medications on the full Products page.</p>
+                        <a href="../admin/product.php" class="btn btn-outline-primary">Open My Medications</a>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -19,6 +19,14 @@ class BookingController {
     public function createBooking($physician_id, $patient_id, $appointment_datetime, $reason_text) {
         return $this->bookingModel->createBooking($physician_id, $patient_id, $appointment_datetime, $reason_text);
     }
+
+    public function updateBookingStatus($booking_id, $status) {
+        if (empty($booking_id) || !is_numeric($booking_id)) {
+            return ['status' => 'error', 'message' => 'Invalid booking id'];
+        }
+        $res = $this->bookingModel->updateBookingStatus(intval($booking_id), $status);
+        return $res ? ['status' => 'success', 'message' => 'Booking status updated'] : ['status' => 'error', 'message' => 'Failed to update booking status'];
+    }
 }
 
 ?>

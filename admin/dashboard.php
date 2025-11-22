@@ -12,23 +12,53 @@ $physician_name = $_SESSION['customer_name'] ?? 'Physician';
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Physician Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Physician Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f5f5f5; }
+    .navbar { background: linear-gradient(135deg, #0b6623 0%, #14a851 100%); }
+    .navbar-brand { font-weight: 700; color: white !important; }
+    .sidebar { background: white; border-right: 1px solid #ddd; }
+    .sidebar .nav-link { color: #333; border-left: 3px solid transparent; padding: 12px 20px; }
+    .sidebar .nav-link:hover { background-color: #f8f9fa; }
+    .sidebar .nav-link.active { background-color: #e8f5e9; border-left-color: #0b6623; color: #0b6623; font-weight: 600; }
+    .card { border: none; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .card-header { background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; }
+    .stat-card { text-align: center; padding: 20px; }
+    .stat-number { font-size: 2rem; font-weight: 700; color: #0b6623; }
+    .stat-label { color: #666; font-size: 0.9rem; }
+    .btn-primary { background-color: #0b6623; border-color: #0b6623; }
+    .btn-primary:hover { background-color: #09531d; border-color: #09531d; }
+  </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="../index.php">Med-ePharma</a>
-    <div class="d-flex">
-      <div class="me-3">Welcome, <?php echo htmlspecialchars($physician_name); ?></div>
-      <form method="post" action="../Login/logout.php"><button class="btn btn-outline-secondary btn-sm">Logout</button></form>
+    <a class="navbar-brand" href="../index.php">
+      <i class="fas fa-user-md"></i> Med-ePharma
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <span class="nav-link text-white">Welcome, <?php echo htmlspecialchars($_SESSION['customer_name'] ?? 'Physician'); ?></span>
+        </li>
+        <li class="nav-item">
+          <form method="post" action="../Login/logout.php" class="d-inline">
+            <button class="btn btn-outline-light btn-sm">Logout</button>
+          </form>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
-
-</div>
 
 <div class="container-fluid">
   <div class="row" style="min-height: 90vh;">

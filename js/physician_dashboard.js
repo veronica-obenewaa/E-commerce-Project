@@ -5,6 +5,11 @@
         var patient = b.patient_name ? (b.patient_name + (b.patient_contact ? (' - ' + b.patient_contact) : '')) : 'Unknown patient';
         var reason = b.reason_text ? b.reason_text : '';
         var statusBadge = '<span class="badge bg-secondary">' + (b.status || 'scheduled') + '</span>';
+        var actions = '';
+        if ((b.status || 'scheduled') !== 'completed') {
+            actions += '<button class="btn btn-sm btn-success me-1 mark-complete" data-id="' + b.booking_id + '">Complete</button>';
+        }
+        actions += '<button class="btn btn-sm btn-danger me-1 mark-cancel" data-id="' + b.booking_id + '">Cancel</button>';
 
         var html = '<div class="list-group-item">'
             + '<div class="d-flex w-100 justify-content-between">'
@@ -12,7 +17,10 @@
             + '<small>' + dateStr + '</small>'
             + '</div>'
             + '<p class="mb-1">' + escapeHtml(reason) + '</p>'
+            + '<div class="d-flex justify-content-between align-items-center">'
             + '<small>' + statusBadge + '</small>'
+            + '<div>' + actions + '</div>'
+            + '</div>'
             + '</div>';
         return html;
     }
@@ -154,5 +162,34 @@
 
         // handle profile form submit
         $(document).on('submit', '#physProfileForm', submitProfileForm);
+
+        // booking action handlers (delegate)
+        $(document).on('click', '.mark-complete', function(){
+            var id = $(this).data('id');
+            updateBookingStatus(id, 'completed');
+        });
+        $(document).on('click', '.mark-cancel', function(){
+            var id = $(this).data('id');
+            if (!confirm('Mark booking as cancelled?')) return;
+            updateBookingStatus(id, 'cancelled');
+        });
     });
+
+    function updateBookingStatus(booking_id, status) {
+        fetch('../actions/update_booking_status.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'booking_id=' + encodeURIComponent(booking_id) + '&status=' + encodeURIComponent(status)
+        })
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+            if (data.status === 'success') {
+                fetchBookings();
+                fetchAppointmentCount();
+            } else {
+                alert(data.message || 'Failed to update booking');
+            }
+        })
+        .catch(function(err){ console.error(err); alert('Error updating booking'); });
+    }
 })();
