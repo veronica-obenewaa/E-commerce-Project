@@ -28,60 +28,131 @@ $physician_name = $_SESSION['customer_name'] ?? 'Physician';
   </div>
 </nav>
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-12">
-            <ul class="nav nav-tabs mb-3" id="physTabs" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings" type="button" role="tab">Bookings</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab">Profile</button>
-              </li>
-            </ul>
+</div>
 
-            <div class="tab-content">
-              <div class="tab-pane fade show active" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
-                <h5>Bookings</h5>
-                <p class="text-muted">Below are upcoming and past bookings. Use the reason field for a short clinical note.</p>
-                <div id="bookingsMsg"></div>
-                <div id="bookingsList" class="list-group"></div>
+<div class="container-fluid">
+  <div class="row" style="min-height: 90vh;">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 p-3 sidebar" style="background:white; border-right:1px solid #ddd;">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link active" href="#" onclick="showSection('dashboard')">
+            <i class="fas fa-chart-line"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showSection('profile')">
+            <i class="fas fa-user-md"></i> Profile
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" onclick="showSection('bookings')">
+            <i class="fas fa-calendar-check"></i> My Bookings
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+
+      <!-- Dashboard Section -->
+      <div id="dashboard" class="section">
+        <div class="row mb-4">
+          <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-chart-line"></i> Dashboard</h2>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Profile Summary</h5>
               </div>
+              <div class="card-body">
+                <p><strong>Name:</strong> <span id="summary_name"><?php echo htmlspecialchars($physician_name); ?></span></p>
+                <p><strong>Hospital:</strong> <span id="summary_hospital">-</span></p>
+                <p><strong>Registration #:</strong> <span id="summary_hospital_reg">-</span></p>
+                <p><strong>Contact:</strong> <span id="summary_contact">-</span></p>
+                <a href="#" onclick="showSection('profile')" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="card stat-card text-center p-3">
+                  <div class="stat-number" id="appt-count">0</div>
+                  <div class="stat-label">Appointments</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <h5 class="mt-3">Profile</h5>
-                <div id="profileMsg"></div>
-                <form id="physProfileForm" class="mt-3">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header"><h5 class="mb-0">Quick Actions</h5></div>
+              <div class="card-body">
+                <a href="#" onclick="showSection('bookings')" class="btn btn-primary me-2"><i class="fas fa-list"></i> View Bookings</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Section -->
+      <div id="profile" class="section" style="display:none;">
+        <h2 class="mb-4"><i class="fas fa-user-md"></i> Profile</h2>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-body">
+                <form id="physProfileForm">
                   <div class="mb-3">
-                    <label class="form-label">Full name</label>
-                    <input type="text" name="customer_name" id="customer_name" class="form-control" required>
+                    <label for="customer_name" class="form-label">Full name</label>
+                    <input type="text" class="form-control" id="customer_name" name="customer_name" required>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Hospital Name</label>
-                    <input type="text" name="hospital_name" id="hospital_name" class="form-control" required>
+                    <label for="hospital_name" class="form-label">Hospital Name</label>
+                    <input type="text" class="form-control" id="hospital_name" name="hospital_name" required>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Hospital Registration Number</label>
-                    <input type="text" name="hospital_registration_number" id="hospital_registration_number" class="form-control" required>
+                    <label for="hospital_registration_number" class="form-label">Hospital Registration Number</label>
+                    <input type="text" class="form-control" id="hospital_registration_number" name="hospital_registration_number" required>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Country</label>
-                    <input type="text" name="customer_country" id="customer_country" class="form-control" required>
+                    <label for="customer_country" class="form-label">Country</label>
+                    <input type="text" class="form-control" id="customer_country" name="customer_country" required>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">City</label>
-                    <input type="text" name="customer_city" id="customer_city" class="form-control" required>
+                    <label for="customer_city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="customer_city" name="customer_city" required>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label">Contact Number</label>
-                    <input type="text" name="customer_contact" id="customer_contact" class="form-control" required>
+                    <label for="customer_contact" class="form-label">Contact Number</label>
+                    <input type="text" class="form-control" id="customer_contact" name="customer_contact" required>
                   </div>
-                  <button class="btn btn-primary" id="saveProfileBtn">Save Profile</button>
+                  <div id="profileMsg"></div>
+                  <button class="btn btn-primary" id="saveProfileBtn">Update Profile</button>
                 </form>
               </div>
             </div>
+          </div>
         </div>
+      </div>
+
+      <!-- Bookings Section -->
+      <div id="bookings" class="section" style="display:none;">
+        <h2 class="mb-4"><i class="fas fa-calendar-check"></i> My Bookings</h2>
+        <div id="bookingsMsg"></div>
+        <div id="bookingsList" class="list-group"></div>
+      </div>
+
     </div>
+  </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

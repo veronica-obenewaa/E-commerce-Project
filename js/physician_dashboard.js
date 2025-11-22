@@ -53,6 +53,24 @@
             });
     }
 
+    // fetch appointment count for stat card
+    function fetchAppointmentCount() {
+        // reuse bookings endpoint and count
+        fetch('../actions/fetch_physician_bookings.php')
+            .then(function(res){ if (!res.ok) throw new Error('Network response was not ok'); return res.json(); })
+            .then(function(data){
+                if (data.status === 'success' && Array.isArray(data.data)) {
+                    $('#appt-count').text(data.data.length);
+                } else {
+                    $('#appt-count').text('0');
+                }
+            })
+            .catch(function(err){
+                console.error(err);
+                $('#appt-count').text('0');
+            });
+    }
+
     // Profile fetch and update
     function fetchProfile() {
         $('#profileMsg').html('Loading...');
@@ -110,12 +128,29 @@
     }
 
     $(document).ready(function(){
+        // initial load
         fetchBookings();
-        // when profile tab shown, fetch profile
-        $(document).on('shown.bs.tab', 'button[data-bs-toggle="tab"]', function (e) {
-            var target = $(e.target).attr('data-bs-target');
-            if (target === '#profile') fetchProfile();
-        });
+        fetchAppointmentCount();
+
+        // sidebar navigation helper
+        window.showSection = function(sectionId) {
+            // hide all sections
+            document.querySelectorAll('.section').forEach(function(el){ el.style.display = 'none'; });
+            var el = document.getElementById(sectionId);
+            if (el) el.style.display = 'block';
+            // update summary if dashboard shown
+            if (sectionId === 'dashboard') {
+                fetchProfile();
+                fetchAppointmentCount();
+            }
+            if (sectionId === 'bookings') {
+                fetchBookings();
+            }
+            if (sectionId === 'profile') {
+                fetchProfile();
+            }
+            return false;
+        };
 
         // handle profile form submit
         $(document).on('submit', '#physProfileForm', submitProfileForm);
