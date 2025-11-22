@@ -15,6 +15,9 @@ $total = $summary['total_amount'] ?? 0.0;
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+<?php include __DIR__ . '/header.php'; ?>
+
 <div class="container py-4">
   <h3>Checkout (Simulated)</h3>
   <div id="checkoutMsg"></div>

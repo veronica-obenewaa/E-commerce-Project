@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../view/header.php';
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/cart_controller.php';
 if (!isLoggedIn()) {
@@ -23,6 +22,9 @@ foreach ($items as $it_calc) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+<?php include __DIR__ . '/header.php'; ?>
+
 <div class="container py-4">
   <h3>Your Cart</h3>
   <div id="cartMsg"></div>

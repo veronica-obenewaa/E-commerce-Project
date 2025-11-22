@@ -19,8 +19,6 @@ $physician_name = $_SESSION['customer_name'] ?? 'Physician';
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     body { background-color: #f5f5f5; }
-    .navbar { background: linear-gradient(135deg, #0b6623 0%, #14a851 100%); }
-    .navbar-brand { font-weight: 700; color: white !important; }
     .sidebar { background: white; border-right: 1px solid #ddd; }
     .sidebar .nav-link { color: #333; border-left: 3px solid transparent; padding: 12px 20px; }
     .sidebar .nav-link:hover { background-color: #f8f9fa; }
@@ -36,29 +34,7 @@ $physician_name = $_SESSION['customer_name'] ?? 'Physician';
 </head>
 <body>
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="../index.php">
-      <i class="fas fa-user-md"></i> Med-ePharma
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <span class="nav-link text-white">Welcome, <?php echo htmlspecialchars($_SESSION['customer_name'] ?? 'Physician'); ?></span>
-        </li>
-        <li class="nav-item">
-          <form method="post" action="../Login/logout.php" class="d-inline">
-            <button class="btn btn-outline-light btn-sm">Logout</button>
-          </form>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<?php include __DIR__ . '/../view/admin_header.php'; ?>
 
 <div class="container-fluid">
   <div class="row" style="min-height: 90vh;">

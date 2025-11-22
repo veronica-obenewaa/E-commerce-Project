@@ -33,42 +33,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
 </head>
 <body>
 
-<!-- NAVIGATION -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-  <div class="container">
-    <a class="navbar-brand" href="index.php">Med-ePharma>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="view/all_product.php">All Products</a></li>
-      </ul>
-
-	 
-      <form class="d-flex" action="view/product_search_result.php" method="get">
-        <input class="form-control me-2" name="q" type="search" placeholder="Search medicines..." aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-
-      <div class="ms-3 d-flex align-items-center">
-        <?php if (!isLoggedIn()): ?>
-          <a href="Login/register.php" class="btn btn-outline-primary me-2">Register</a>
-          <a href="Login/login.php" class="btn btn-primary">Login</a>
-        <?php else: ?>
-          <form method="post" action="Login/logout.php" class="d-inline">
-            <button class="btn btn-outline-danger me-2">Logout</button>
-          </form>
-          <?php if (isAdmin()): ?>
-            <a href="admin/category_add.php" class="btn btn-secondary me-2">Category</a>
-            <a href="admin/brand_add.php" class="btn btn-secondary me-2">Brand</a>
-            <a href="admin/product_add.php" class="btn btn-success me-2">Add Product</a>
-          <?php endif; ?>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-</nav>
+<?php include __DIR__ . '/view/header.php'; ?>
 
 <!-- HERO -->
 <section class="hero text-center">

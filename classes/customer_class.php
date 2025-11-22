@@ -224,10 +224,47 @@ class customer_class extends db_connection
         return $res;
     }
 
+    // Get all physicians (user_role = 3)
+    public function getAllPhysicians() {
+        $conn = $this->db_conn();
+        $sql = "SELECT c.*, 
+                GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') as specializations
+                FROM customer c
+                LEFT JOIN customer_specializations cs ON c.customer_id = cs.customer_id
+                LEFT JOIN specializations s ON cs.specialization_id = s.id
+                WHERE c.user_role = 3 OR c.role_id = 3
+                GROUP BY c.customer_id
+                ORDER BY c.customer_name ASC";
+        $result = $conn->query($sql);
+        $physicians = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $physicians[] = $row;
+            }
+        }
+        return $physicians;
+    }
 
+    // Get physician by ID with specializations
+    public function getPhysicianById($physician_id) {
+        $conn = $this->db_conn();
+        $sql = "SELECT c.*, 
+                GROUP_CONCAT(DISTINCT s.name SEPARATOR ', ') as specializations
+                FROM customer c
+                LEFT JOIN customer_specializations cs ON c.customer_id = cs.customer_id
+                LEFT JOIN specializations s ON cs.specialization_id = s.id
+                WHERE (c.user_role = 3 OR c.role_id = 3) AND c.customer_id = ?
+                GROUP BY c.customer_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $physician_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $physician = $result->fetch_assoc();
+        $stmt->close();
+        return $physician;
+    }
 
     
-
 
 
 

@@ -10,25 +10,22 @@
 
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../view/all_product.php">All Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="../view/book_consultation.php">Contact Physician</a></li>
         <?php if (!isLoggedIn()): ?>
           <li class="nav-item"><a class="nav-link" href="../Login/register.php">Register</a></li>
           <li class="nav-item"><a class="nav-link" href="../Login/login.php">Login</a></li>
-          <li class="nav-item"><a class="nav-link" href="/view/cart.php">Cart</a></li>
+          <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
         <?php else: ?>
+          <?php if (isCustomer() || getUserRole() == 2): ?>
+            <li class="nav-item"><a class="nav-link" href="user_dashboard.php">My Dashboard</a></li>
+          <?php endif; ?>
+          <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
           <li class="nav-item">
             <form method="post" action="../Login/logout.php" class="d-inline">
               <button class="btn btn-link nav-link" type="submit">Logout</button>
             </form>
           </li>
-          <?php if (isAdmin()): ?>
-            <li class="nav-item"><a class="nav-link" href="../admin/category.php">Category</a></li>
-            <li class="nav-item"><a class="nav-link" href="../admin/brand.php">Brand</a></li>
-            <li class="nav-item">
-              <a class="nav-link btn btn-sm btn-success text-white ms-2" href="../admin/product_add.php">
-                Add Product
-              </a>
-            </li>
-          <?php endif; ?>
         <?php endif; ?>
       </ul>
 

@@ -43,15 +43,7 @@ $pages = ceil($total / $pageSize);
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="../index.php">E-Pharmacy</a>
-    <form class="d-flex ms-auto" method="get" action="product_search_result.php">
-      <input class="form-control me-2" type="search" name="q" placeholder="Search medications..." value="<?= htmlspecialchars($q) ?>">
-      <button class="btn btn-outline-success">Search</button>
-    </form>
-  </div>
-</nav>
+<?php include __DIR__ . '/header.php'; ?>
 
 <div class="container py-4">
   <div class="row mb-3">

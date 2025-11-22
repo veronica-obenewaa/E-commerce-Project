@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../view/header.php';
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/product_controller.php';
 require_once __DIR__ . '/../controllers/category_controller.php';
@@ -31,15 +30,8 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
   </style>
 </head>
 <body>
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="../index.php">E-Pharmacy</a>
-    <div class="ms-auto d-flex align-items-center gap-2">
-      <a class="btn btn-outline-primary me-2" href="../Login/register.php">Register</a>
-      <a class="btn btn-primary" href="../Login/login.php">Login</a>
-    </div>
-  </div>
-</nav>-->
+
+<?php include __DIR__ . '/header.php'; ?>
 
 <section class="hero">
   <div class="container">
