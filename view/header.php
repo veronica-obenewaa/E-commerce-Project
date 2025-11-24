@@ -15,7 +15,7 @@
   
   .premium-navbar .navbar-brand {
     font-family: 'Poppins', sans-serif;
-    color: #ffffff;
+    color: #ffffff !important;
     font-size: 1.45rem;
     font-weight: 800;
     letter-spacing: 0.5px;
@@ -36,7 +36,7 @@
   }
   
   .premium-navbar .nav-link {
-    color: rgba(255, 255, 255);
+    color: #ffffff !important;
     font-weight: 500;
     font-size: 0.95rem;
     padding: 0.6rem 0.9rem;
