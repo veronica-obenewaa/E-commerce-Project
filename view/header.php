@@ -36,7 +36,7 @@
   }
   
   .premium-navbar .nav-link {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255);
     font-weight: 500;
     font-size: 0.95rem;
     padding: 0.6rem 0.9rem;
@@ -52,7 +52,7 @@
   .premium-navbar .nav-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.15);
-    /*transform: translateY(-2px);*/
+    transform: translateY(-2px);
   }
   
   .premium-navbar .nav-link.active {
