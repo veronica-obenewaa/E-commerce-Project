@@ -13,8 +13,8 @@
         <li class="nav-item"><a class="nav-link" href="all_product.php">All Products</a></li>
         <li class="nav-item"><a class="nav-link" href="book_consultation.php">Contact Physician</a></li>
         <?php if (!isLoggedIn()): ?>
-          <li class="nav-item"><a class="nav-link" href="../Login/register.php">Register</a></li>
-          <li class="nav-item"><a class="nav-link" href="../Login/login.php">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?php echo rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); ?>/../Login/register.php">Register</a></li>
+          <li class="nav-item"><a class="nav-link" href="<?php echo rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); ?>/../Login/login.php">Login</a></li>
           <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
         <?php else: ?>
           <?php if (isCustomer() || getUserRole() == 2): ?>
@@ -22,7 +22,7 @@
           <?php endif; ?>
           <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
           <li class="nav-item">
-            <form method="post" action="../Login/logout.php" class="d-inline">
+            <form method="post" action="<?php echo rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); ?>/../Login/logout.php" class="d-inline">
               <button class="btn btn-link nav-link" type="submit">Logout</button>
             </form>
           </li>
