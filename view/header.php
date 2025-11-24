@@ -31,10 +31,8 @@
   
   .brand-icon {
     font-size: 1.8rem;
-    background: linear-gradient(135deg, #f3f3f7ff 0%, #63d5f1ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
   
   .premium-navbar .nav-link {
@@ -81,6 +79,8 @@
     cursor: pointer;
     border-radius: 6px;
     transition: all 0.3s ease;
+    z-index: 1000;
+    position: relative;
   }
   
   .search-toggle:hover {
