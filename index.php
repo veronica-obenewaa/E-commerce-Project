@@ -2,6 +2,7 @@
 require_once __DIR__ . '/settings/core.php';
 require_once __DIR__ . '/controllers/category_controller.php';
 require_once __DIR__ . '/controllers/brand_controller.php';
+include __DIR__ . '/view/header.php';
 
 
 
@@ -33,7 +34,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
 </head>
 <body>
 
-<?php include __DIR__ . '/view/header.php'; ?>
+
 
 <!-- HERO -->
 <section class="hero text-center">
