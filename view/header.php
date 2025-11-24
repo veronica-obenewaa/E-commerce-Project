@@ -10,8 +10,8 @@
 
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav ms-auto align-items-center">
-        <li class="nav-item"><a class="nav-link" href="../view/all_product.php">All Products</a></li>
-        <li class="nav-item"><a class="nav-link" href="../view/book_consultation.php">Contact Physician</a></li>
+        <li class="nav-item"><a class="nav-link" href="all_product.php">All Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="book_consultation.php">Contact Physician</a></li>
         <?php if (!isLoggedIn()): ?>
           <li class="nav-item"><a class="nav-link" href="../Login/register.php">Register</a></li>
           <li class="nav-item"><a class="nav-link" href="../Login/login.php">Login</a></li>

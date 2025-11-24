@@ -4,7 +4,7 @@ require_once __DIR__ . '/../settings/core.php';
 // Check if user is logged in
 if (!isLoggedIn()) {
     // Pass redirect as GET parameter (relative to Login/login.php)
-    header('Location: ../Login/login.php?redirect=../view/book_consultation.php');
+    header('Location: ../Login/login.php?redirect=book_consultation.php');
     exit;
 }
 
@@ -14,7 +14,7 @@ if (!isCustomer() && getUserRole() != 2) {
     $userRole = getUserRole();
     if ($userRole == 1) {
         // Pharmaceutical company
-        header('Location: ../view/dashboard.php');
+        header('Location:dashboard.php');
     } elseif ($userRole == 3) {
         // Physician
         header('Location: ../admin/dashboard.php');
