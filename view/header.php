@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="<?php echo BASE_PATH; ?>/index.php">Med-ePharmacy</a>
+    <a class="navbar-brand fw-bold" href="../index.php">Med-ePharmacy</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
       <span class="navbar-toggler-icon"></span>
@@ -13,16 +13,16 @@
         <li class="nav-item"><a class="nav-link" href="all_product.php">All Products</a></li>
         <li class="nav-item"><a class="nav-link" href="book_consultation.php">Contact Physician</a></li>
         <?php if (!isLoggedIn()): ?>
-          <li class="nav-item"><a class="nav-link" href="<?php echo BASE_PATH; ?>/Login/register.php">Register</a></li>
-          <li class="nav-item"><a class="nav-link" href="<?php echo BASE_PATH; ?>/Login/login.php">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="../Login/register.php">Register</a></li>
+          <li class="nav-item"><a class="nav-link" href="../Login/login.php">Login</a></li>
           <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
         <?php else: ?>
           <?php if (isCustomer() || getUserRole() == 2): ?>
-            <li class="nav-item"><a class="nav-link" href="<?php echo BASE_PATH; ?>/view/user_dashboard.php">My Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="user_dashboard.php">My Dashboard</a></li>
           <?php endif; ?>
           <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
           <li class="nav-item">
-            <form method="post" action="<?php echo BASE_PATH; ?>/Login/logout.php" class="d-inline">
+            <form method="post" action="../Login/logout.php" class="d-inline">
               <button class="btn btn-link nav-link" type="submit">Logout</button>
             </form>
           </li>
