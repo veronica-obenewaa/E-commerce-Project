@@ -18,7 +18,7 @@
           <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
         <?php else: ?>
           <?php if (isCustomer() || getUserRole() == 2): ?>
-            <li class="nav-item"><a class="nav-link" href="user_dashboard.php">My Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo BASE_PATH; ?>/view/user_dashboard.php">My Dashboard</a></li>
           <?php endif; ?>
           <li class="nav-item"><a class="nav-link" href="cart.php">Cart</a></li>
           <li class="nav-item">

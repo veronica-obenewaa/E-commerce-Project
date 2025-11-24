@@ -229,7 +229,8 @@ document.getElementById('appointmentForm').addEventListener('submit', function(e
                 '<div class="alert alert-success">' + data.message + '</div>';
             // Redirect after 1 second
             setTimeout(() => {
-                window.location.href = '../' + (data.redirect || 'view/user_dashboard.php');
+                const basePath = '<?php echo rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\'); ?>';
+                window.location.href = basePath + '/' + (data.redirect || 'view/user_dashboard.php');
             }, 1000);
         } else {
             document.getElementById('formMessage').innerHTML = 
