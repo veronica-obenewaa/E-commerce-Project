@@ -51,14 +51,14 @@
   
   .premium-navbar .nav-link:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
+    /*background: rgba(255, 255, 255, 0.15);*/
     transform: translateY(-2px);
   }
   
   .premium-navbar .nav-link.active {
-    background: rgba(79, 70, 229, 0.3);
+    /*background: rgba(79, 70, 229, 0.3);*/
     color: #ffffff;
-    border-bottom: 2px solid #4f46e5;
+    /*border-bottom: 2px solid #4f46e5;*/
   }
   
   .premium-navbar .nav-icon {
