@@ -52,7 +52,7 @@
   .premium-navbar .nav-link:hover {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+    /*transform: translateY(-2px);*/
   }
   
   .premium-navbar .nav-link.active {
