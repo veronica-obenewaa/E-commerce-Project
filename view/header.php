@@ -10,7 +10,7 @@
     background: linear-gradient(135deg, #0b6623 0%, #0d7a2f 100%);
     padding: 0.75rem 0;
     box-shadow: 0 4px 25px rgba(11, 102, 35, 0.25);
-    border-bottom: 3px solid #4f46e5;
+    border-bottom: 2px solid #ffffffff;
   }
   
   .premium-navbar .navbar-brand {
@@ -31,7 +31,7 @@
   
   .brand-icon {
     font-size: 1.8rem;
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    background: linear-gradient(135deg, #f3f3f7ff 0%, #63d5f1ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
