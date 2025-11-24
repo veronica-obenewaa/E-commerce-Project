@@ -14,7 +14,7 @@ if (!isCustomer() && getUserRole() != 2) {
     $userRole = getUserRole();
     if ($userRole == 1) {
         // Pharmaceutical company
-        header('Location: ../view/dashboard.php');
+        header('Location:dashboard.php');
     } elseif ($userRole == 3) {
         // Physician
         header('Location: ../admin/dashboard.php');

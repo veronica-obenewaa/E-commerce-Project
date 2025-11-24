@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../classes/customer_class.php';
+include __DIR__ . '/header.php';
 
 // Check if user is logged in
 if (!isLoggedIn()) {
@@ -14,7 +15,7 @@ if (!isCustomer() && getUserRole() != 2) {
     $userRole = getUserRole();
     if ($userRole == 1) {
         // Pharmaceutical company
-        header('Location: ../view/dashboard.php');
+        header('Location:dashboard.php');
     } elseif ($userRole == 3) {
         // Physician
         header('Location: ../admin/dashboard.php');
@@ -137,7 +138,7 @@ $physicians = $customerModel->getAllPhysicians();
 </head>
 <body>
 
-<?php include __DIR__ . '/header.php'; ?>
+
 
 <!-- Page Header -->
 <div class="page-header">

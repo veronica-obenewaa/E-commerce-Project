@@ -82,7 +82,7 @@ if ($booking_id) {
         'status' => 'success', 
         'message' => 'Appointment booked successfully!',
         'booking_id' => $booking_id,
-        'redirect' => 'view/user_dashboard.php'
+        'redirect' => '../view/user_dashboard.php'
     ]);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Failed to book appointment. Please try again.']);
