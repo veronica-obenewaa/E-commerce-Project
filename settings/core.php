@@ -5,11 +5,8 @@ session_start();
 //for header redirection
 ob_start();
 
-//funtion to check for login
-// if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
-//     header("Location: ../Login/login.php");
-//     exit;
-// }
+// Define base path for navigation
+define('BASE_PATH', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\'));
 
 define('UPLOAD_BASE_URL', '../');
 
