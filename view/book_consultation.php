@@ -1,29 +1,30 @@
 <?php
 require_once __DIR__ . '/../settings/core.php';
+include __DIR__ . '/header.php';
 
 // Check if user is logged in
-if (!isLoggedIn()) {
-    // Pass redirect as GET parameter (relative to Login/login.php)
-    header('Location: ../Login/login.php?redirect=book_consultation.php');
-    exit;
-}
+// if (!isLoggedIn()) {
+//     // Pass redirect as GET parameter (relative to Login/login.php)
+//     header('Location: ../Login/login.php?redirect=book_consultation.php');
+//     exit;
+// }
 
-// Only allow registered customers (role 2) to book appointments
-if (!isCustomer() && getUserRole() != 2) {
-    // Redirect based on user role
-    $userRole = getUserRole();
-    if ($userRole == 1) {
-        // Pharmaceutical company
-        header('Location:dashboard.php');
-    } elseif ($userRole == 3) {
-        // Physician
-        header('Location: ../admin/dashboard.php');
-    } else {
-        // Unknown role, redirect to home
-        header('Location: ../index.php');
-    }
-    exit;
-}
+// // Only allow registered customers (role 2) to book appointments
+// if (!isCustomer() && getUserRole() != 2) {
+//     // Redirect based on user role
+//     $userRole = getUserRole();
+//     if ($userRole == 1) {
+//         // Pharmaceutical company
+//         header('Location:dashboard.php');
+//     } elseif ($userRole == 3) {
+//         // Physician
+//         header('Location: ../admin/dashboard.php');
+//     } else {
+//         // Unknown role, redirect to home
+//         header('Location: ../index.php');
+//     }
+//     exit;
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +74,7 @@ if (!isCustomer() && getUserRole() != 2) {
 </head>
 <body>
 
-<?php include __DIR__ . '/header.php'; ?>
+
 
 <!-- Main Content -->
 <div class="container">
