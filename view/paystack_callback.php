@@ -59,16 +59,24 @@ error_log("Reference from URL: $reference");
         
         .reference { background: #f9fafb; padding: 15px; border-radius: 8px; margin: 25px 0; word-break: break-all; font-family: monospace; font-size: 12px; color: #6b7280; }
         
-        .error { color: #059669; background: #fee2e2; border: 2px solid #fecaca; padding: 15px; border-radius: 8px; margin: 20px 0; display: none; }
+        .error { color: #991b1b; background: #fee2e2; border: 2px solid #fecaca; padding: 15px; border-radius: 8px; margin: 20px 0; display: none; }
         .success { color: #065f46; background: #d1fae5; border: 2px solid #6ee7b7; padding: 15px; border-radius: 8px; margin: 20px 0; display: none; }
+        
+        .button-group { display: flex; gap: 12px; margin-top: 30px; flex-direction: column; }
+        .btn { padding: 14px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; width: 100%; }
+        .btn-primary { background: linear-gradient(135deg, #059669 0%, #059669 100%); color: white; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4); }
+        .btn-secondary { background: white; color: #374151; border: 2px solid #e5e7eb; }
+        .btn-secondary:hover { background: #f9fafb; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="spinner" id="spinner"></div>
         
-        <h1>Verifying Payment</h1>
-        <p>Please wait while we verify your payment with Paystack...</p>
+        <h1 id="mainTitle">Verifying Payment</h1>
+        <p id="mainText">Please wait while we verify your payment with Paystack...</p>
         
         <div class="reference">
             Payment Reference: <strong><?php echo htmlspecialchars($reference); ?></strong>
@@ -78,8 +86,17 @@ error_log("Reference from URL: $reference");
             <strong>Error:</strong> <span id="errorMessage"></span>
         </div>
         
-        <div class="success" id="successBox">
-            <strong>Success!</strong> Your payment has been verified. Redirecting...
+        <div class="success" id="successBox" style="display: none;">
+            <strong>✅ Success!</strong> Your payment has been verified and your order is confirmed.
+        </div>
+        
+        <div class="button-group" id="buttonGroup" style="display: none;">
+            <button class="btn btn-primary" id="proceedBtn" onclick="proceedToDelivery()">
+                Proceed to Next Step
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.href='../index.php'">
+                Back to Home
+            </button>
         </div>
     </div>
 
@@ -93,6 +110,8 @@ error_log("Reference from URL: $reference");
             'yango': 'https://yango.com/',
             'pickup': 'payment_success.php'  // For personal pickup, show success page
         };
+        
+        let redirectUrl = null;
 
         /**
          * Verify payment with backend
@@ -108,8 +127,8 @@ error_log("Reference from URL: $reference");
                     },
                     body: JSON.stringify({
                         reference: reference,
-                        cart_items: null, // Will be fetched from backend
-                        total_amount: null // Will be calculated from cart
+                        cart_items: null,
+                        total_amount: null
                     })
                 });
                 
@@ -122,46 +141,76 @@ error_log("Reference from URL: $reference");
                 if (data.status === 'success' && data.verified) {
                     // Payment verified successfully
                     document.getElementById('successBox').style.display = 'block';
+                    document.getElementById('mainTitle').textContent = '✅ Payment Successful!';
+                    document.getElementById('mainText').textContent = 'Your payment has been verified. Click the button below to proceed.';
                     
-                    // Get selected delivery service from response (more reliable than sessionStorage)
+                    // Get selected delivery service from response
                     const selectedDelivery = data.delivery_service || sessionStorage.getItem('selectedDelivery') || 'pickup';
-                    const redirectUrl = deliveryUrls[selectedDelivery] || 'payment_success.php';
+                    const baseUrl = deliveryUrls[selectedDelivery] || 'payment_success.php';
                     
                     // Build URL with order parameters
-                    let finalUrl = redirectUrl;
                     if (selectedDelivery === 'pickup') {
-                        finalUrl = `payment_success.php?reference=${encodeURIComponent(data.payment_reference)}&invoice=${encodeURIComponent(data.invoice_no)}&delivery=${selectedDelivery}`;
+                        redirectUrl = `payment_success.php?reference=${encodeURIComponent(data.payment_reference)}&invoice=${encodeURIComponent(data.invoice_no)}&delivery=${selectedDelivery}`;
                     } else {
-                        // For ride services, append order reference so they can track it
-                        finalUrl += (redirectUrl.includes('?') ? '&' : '?') + `order_ref=${encodeURIComponent(data.invoice_no)}`;
+                        redirectUrl = baseUrl + (baseUrl.includes('?') ? '&' : '?') + `order_ref=${encodeURIComponent(data.invoice_no)}`;
                     }
                     
-                    console.log('Redirecting to:', finalUrl);
+                    console.log('Redirect URL set to:', redirectUrl);
                     
-                    // Redirect to selected delivery service
-                    setTimeout(() => {
-                        window.location.replace(finalUrl);
-                    }, 1500);
+                    // Show button
+                    document.getElementById('buttonGroup').style.display = 'flex';
+                    
+                    // Update button text based on delivery service
+                    const btnText = getButtonText(selectedDelivery);
+                    document.getElementById('proceedBtn').innerHTML = btnText;
                     
                 } else {
                     // Payment verification failed
                     const errorMsg = data.message || 'Payment verification failed';
                     showError(errorMsg);
                     
-                    // Redirect after 5 seconds
-                    setTimeout(() => {
-                        window.location.href = 'checkout.php?error=verification_failed';
-                    }, 5000);
+                    // Show back button
+                    document.getElementById('buttonGroup').style.display = 'flex';
+                    document.getElementById('proceedBtn').textContent = 'Retry Payment';
+                    document.getElementById('proceedBtn').onclick = function() {
+                        window.location.href = 'checkout.php';
+                    };
                 }
                 
             } catch (error) {
                 console.error('Verification error:', error);
                 showError('Connection error. Please try again or contact support.');
                 
-                // Redirect after 5 seconds
-                setTimeout(() => {
-                    window.location.href = 'checkout.php?error=connection_error';
-                }, 5000);
+                // Show button
+                document.getElementById('buttonGroup').style.display = 'flex';
+                document.getElementById('proceedBtn').textContent = 'Back to Checkout';
+                document.getElementById('proceedBtn').onclick = function() {
+                    window.location.href = 'checkout.php';
+                };
+            }
+        }
+        
+        /**
+         * Get button text based on delivery service
+         */
+        function getButtonText(service) {
+            const texts = {
+                'bolt': '🚗 Book with Bolt',
+                'uber': '🚙 Book with Uber',
+                'yango': '🚕 Book with Yango',
+                'pickup': '✅ View Order Confirmation'
+            };
+            return texts[service] || '➡️ Continue';
+        }
+        
+        /**
+         * Proceed to delivery service when button clicked
+         */
+        function proceedToDelivery() {
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            } else {
+                console.error('No redirect URL set');
             }
         }
         
@@ -171,6 +220,8 @@ error_log("Reference from URL: $reference");
         function showError(message) {
             document.getElementById('errorBox').style.display = 'block';
             document.getElementById('errorMessage').textContent = message;
+            document.getElementById('mainTitle').textContent = '❌ Payment Verification Failed';
+            document.getElementById('mainText').textContent = '';
         }
         
         // Start verification when page loads
