@@ -1,61 +1,29 @@
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Load checkout summary
-    loadCheckoutSummary();
+    // Initialize checkout with server-side rendered data
+    initializeCheckout();
 });
 
 /**
- * Load checkout summary
+ * Initialize checkout with data from server
  */
-function loadCheckoutSummary() {
-    const container = document.getElementById('checkoutItemsContainer');
+function initializeCheckout() {
+    console.log('Initializing checkout...');
+    console.log('Cart items:', window.currentCartItems);
+    console.log('Total:', window.checkoutTotal);
     
-    if (!container) {
-        console.error('Container not found: checkoutItemsContainer');
-        return;
-    }
-    
-    // Show loading state
-    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280;">Loading order summary...</div>';
-    
-    console.log('Fetching cart data from get_cart_action.php...');
-    
-    fetch('../actions/get_cart_action.php', {
-        method: 'POST'
-    })
-    .then(response => {
-        console.log('Response status:', response.status);
-        return response.text();
-    })
-    .then(text => {
-        console.log('Raw response:', text);
-        try {
-            const data = JSON.parse(text);
-            console.log('Parsed data:', data);
-            
-            if (data.status === 'success') {
-                if (data.items && data.items.length > 0) {
-                    console.log('Displaying', data.items.length, 'items');
-                    displayCheckoutItems(data.items, data.total);
-                } else {
-                    console.log('Cart is empty, redirecting...');
-                    // Cart is empty, redirect back
-                    window.location.href = 'cart.php';
-                }
-            } else {
-                console.error('Error status from server:', data.message);
-                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #dc2626;">Error loading order summary: ' + (data.message || 'Unknown error') + '</div>';
-            }
-        } catch (e) {
-            console.error('JSON Parse error:', e);
-            console.error('Text was:', text);
-            container.innerHTML = '<div style="text-align: center; padding: 40px; color: #dc2626;">Server response error. Please check console.</div>';
+    if (window.currentCartItems && window.checkoutTotal !== undefined) {
+        console.log('Checkout data loaded successfully');
+        // Data is already rendered server-side
+        // Just prepare the payment total for the modal
+        window.checkoutTotal = parseFloat(window.checkoutTotal);
+    } else {
+        console.error('Checkout data not found');
+        const container = document.getElementById('checkoutItemsContainer');
+        if (container) {
+            container.innerHTML = '<div style="text-align: center; padding: 40px; color: #dc2626;">Error: Cart data not available</div>';
         }
-    })
-    .catch(error => {
-        console.error('Fetch error:', error);
-        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #dc2626;">Failed to load order summary. Please check your connection.</div>';
-    });
+    }
 }
 
 /**

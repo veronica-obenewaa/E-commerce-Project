@@ -23,36 +23,36 @@ if (!$cart_items || count($cart_items) == 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Aya Crafts</title>
+    <title>Checkout - Med-ePharma</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #ffffff; }
         
         .navbar { background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%); padding: 20px 0; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); }
         .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
-        .logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; background: linear-gradient(135deg, #059669 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
         
         .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
         
         .page-header { background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%); padding: 50px 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06); margin-bottom: 30px; position: relative; overflow: hidden; }
-        .page-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #dc2626 100%); }
-        .page-title { font-family: 'Cormorant Garamond', serif; font-size: 42px; background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .page-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #059669 0%, #059669 50%, #059669 100%); }
+        .page-title { font-family: 'Cormorant Garamond', serif; font-size: 42px; background: linear-gradient(135deg, #059669 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         .checkout-section { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06); margin-bottom: 20px; }
         
-        .summary-total { font-size: 32px; font-weight: 700; color: #dc2626; padding: 20px 0; text-align: center; border-top: 2px solid #f3f4f6; border-bottom: 2px solid #f3f4f6; margin: 20px 0; }
+        .summary-total { font-size: 32px; font-weight: 700; color: #059669; padding: 20px 0; text-align: center; border-top: 2px solid #f3f4f6; border-bottom: 2px solid #f3f4f6; margin: 20px 0; }
         
         .btn { padding: 16px 40px; border: none; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.4s ease; text-decoration: none; display: inline-block; width: 100%; }
-        .btn-primary { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); color: white; box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(220, 38, 38, 0.4); }
+        .btn-primary { background: linear-gradient(135deg, #059669 0%, #059669 100%); color: white; box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(5, 150, 105, 0.3); }
         .btn-secondary { background: white; color: #374151; border: 2px solid #e5e7eb; }
         
         /* Modal Styles */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .modal-content { background: white; max-width: 500px; width: 90%; padding: 40px; border-radius: 20px; position: relative; transform: scale(0.9); transition: transform 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .modal-content::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #dc2626 0%, #ef4444 100%); border-radius: 20px 20px 0 0; }
+        .modal-content::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #059669 0%, #059669 100%); border-radius: 20px 20px 0 0; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #6b7280; }
-        .modal-close:hover { color: #dc2626; }
+        .modal-close:hover { color: #059669; }
         .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #1a1a1a; margin-bottom: 20px; text-align: center; }
         .modal-buttons { display: flex; gap: 12px; margin-top: 30px; }
         .modal-buttons button { flex: 1; }
@@ -61,7 +61,7 @@ if (!$cart_items || count($cart_items) == 0) {
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.php" class="logo">Aya Crafts</a>
+            <a href="../index.php" class="logo">Med-ePharma</a>
             <div style="display: flex; gap: 20px;">
                 <a href="cart.php" style="color: #374151; text-decoration: none;">← Back to Cart</a>
             </div>
@@ -76,14 +76,45 @@ if (!$cart_items || count($cart_items) == 0) {
 
         <div class="checkout-section">
             <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: 20px;">Order Summary</h2>
-            <div id="checkoutItemsContainer"></div>
+            <div id="checkoutItemsContainer">
+                <?php
+                    if ($cart_items && count($cart_items) > 0) {
+                        $total = 0;
+                        foreach ($cart_items as $item) {
+                            $item_total = floatval($item['qty']) * floatval($item['product_price']);
+                            $total += $item_total;
+                            ?>
+                            <div style="display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #e5e7eb; align-items: center;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: #1f2937; margin-bottom: 5px;"><?php echo htmlspecialchars($item['product_name']); ?></div>
+                                    <div style="font-size: 14px; color: #6b7280;"><?php echo htmlspecialchars($item['qty']); ?> × GHS <?php echo number_format($item['product_price'], 2); ?></div>
+                                </div>
+                                <div style="text-align: right; font-weight: 600; color: #059669; min-width: 100px;">
+                                    GHS <?php echo number_format($item_total, 2); ?>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    <?php } ?>
+            </div>
             
             <div class="summary-total">
-                Total: <span id="checkoutTotal">GHS 0.00</span>
+                Total: <span id="checkoutTotal">GHS <?php echo number_format($total, 2); ?></span>
             </div>
             
             <button onclick="showPaymentModal()" class="btn btn-primary">💳 Proceed to Payment</button>
         </div>
+        
+        <!-- Store cart data as JSON for JavaScript -->
+        <script>
+            const cartData = <?php echo json_encode(['items' => $cart_items, 'total' => $total]); ?>;
+            const cartItems = <?php echo json_encode($cart_items); ?>;
+            const checkoutTotal = <?php echo json_encode($total); ?>;
+            window.currentCartItems = cartItems;
+            window.checkoutTotal = checkoutTotal;
+            console.log('Cart data loaded:', cartData);
+        </script>
     </div>
 
     <!-- Payment Modal -->
@@ -94,7 +125,7 @@ if (!$cart_items || count($cart_items) == 0) {
             
             <div style="text-align: center; margin: 30px 0;">
                 <div style="font-size: 14px; color: #6b7280; margin-bottom: 10px;">Amount to Pay</div>
-                <div id="paymentAmount" style="font-size: 36px; font-weight: 700; color: #dc2626;"></div>
+                <div id="paymentAmount" style="font-size: 36px; font-weight: 700; color: #059669;"></div>
             </div>
             
             <div style="background: linear-gradient(135deg, #1f2937 0%, #374151 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
