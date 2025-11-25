@@ -70,10 +70,10 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       right: 0;
       bottom: 0;
       background: linear-gradient(135deg, 
-        rgba(5, 150, 105, 0.93) 0%, 
-        rgba(16, 185, 129, 0.90) 35%,
-        rgba(52, 211, 153, 0.87) 70%,
-        rgba(110, 231, 183, 0.82) 100%);
+        rgba(5, 150, 105, 0.23) 0%, 
+        rgba(16, 185, 129, 0.50) 35%,
+        rgba(52, 211, 153, 0.37) 70%,
+        rgba(110, 231, 183, 0.42) 100%);
       z-index: 2;
     }
     
@@ -112,8 +112,8 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
     
     /* Brand Title */
     .brand-title {
-      font-size: 4rem;
-      font-weight: 900;
+      font-size: 3rem;
+      font-weight: 500;
       margin-bottom: 1rem;
       background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
       -webkit-background-clip: text;
@@ -129,8 +129,8 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
     }
     
     .tagline {
-      font-size: 3.5rem;
-      font-weight: 900;
+      font-size: 2.5rem;
+      font-weight: 400;
       line-height: 1.2;
       margin-bottom: 1.5rem;
     }
@@ -170,7 +170,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
     }
     
     .stat-number {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: 900;
       display: block;
       margin-bottom: 0.25rem;
