@@ -392,7 +392,7 @@ if (!$productData) {
         
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <button class="btn-add-to-cart" data-product-id="<?= $productData['product_id'] ?>" onclick="addToCart(this)">
+          <button class="btn-add-to-cart" data-product-id="<?= $productData['p_id'] ?>" onclick="addToCart(this)">
             <i class="fas fa-shopping-cart"></i> Add to Cart
           </button>
           <button class="btn-ai-chat">
@@ -425,7 +425,7 @@ if (!$productData) {
     fetch('../actions/add_to_cart_action.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'product_id=' + encodeURIComponent(productId) + '&quantity=' + encodeURIComponent(quantity)
+      body: 'p_id=' + encodeURIComponent(productId) + '&qty=' + encodeURIComponent(quantity)
     })
     .then(res => res.json())
     .then(data => {
