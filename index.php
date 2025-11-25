@@ -85,9 +85,9 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       bottom: 0;
       z-index: 3;
       background: 
-        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(52, 211, 153, 0.4) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.3) 0%, transparent 50%);
+        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 20%),
+        radial-gradient(circle at 85% 80%, rgba(52, 211, 153, 0.4) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.3) 0%, transparent 30%);
       pointer-events: none;
     }
     
