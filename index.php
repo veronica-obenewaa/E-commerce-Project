@@ -53,12 +53,11 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url('./images/gel-capsules-206150.jpg');
+      background-image: url('http://169.239.251.102:442/~veronica.obenewaa/uploads/gel-capsules-206150_1280.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      background-attachment: fixed;
-      filter: brightness(1);
+      filter: brightness(0.7);
       z-index: 1;
     }
     
@@ -71,10 +70,10 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       right: 0;
       bottom: 0;
       background: linear-gradient(135deg, 
-        rgba(5, 150, 105, 0.55) 0%, 
-        rgba(16, 185, 129, 0.50) 35%,
-        rgba(52, 211, 153, 0.45) 70%,
-        rgba(110, 231, 183, 0.40) 100%);
+        rgba(5, 150, 105, 0.93) 0%, 
+        rgba(16, 185, 129, 0.90) 35%,
+        rgba(52, 211, 153, 0.87) 70%,
+        rgba(110, 231, 183, 0.82) 100%);
       z-index: 2;
     }
     
@@ -87,9 +86,9 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       bottom: 0;
       z-index: 3;
       background: 
-        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 20%),
-        radial-gradient(circle at 85% 80%, rgba(52, 211, 153, 0.4) 0%, transparent 20%),
-        radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.3) 0%, transparent 30%);
+        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(52, 211, 153, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.3) 0%, transparent 50%);
       pointer-events: none;
     }
     
