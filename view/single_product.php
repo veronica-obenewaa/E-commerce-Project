@@ -44,21 +44,22 @@ if (!$productData) {
     }
     
     .product-image-container {
-      background: linear-gradient(135deg, #ebf8f9ff 0%, #e0f6ff 100%);
+      background: linear-gradient(135deg, #ebf8f9ff 0%, #e9e9eaff 100%);
       border-radius: 20px;
       padding: 4rem;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 450px;
-      box-shadow: 0 10px 40px rgba(11, 102, 35, 0.15);
+      box-shadow: 0 5px 10px rgba(11, 102, 35, 0.15);
     }
     
     .product-image {
       max-width: 100%;
       max-height: 400px;
       object-fit: contain;
-      border-radius: 15px;
+      border-radius: 12px;
+      transform: rotate(5deg);
     }
     
     .product-title {
