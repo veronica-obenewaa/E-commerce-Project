@@ -9,7 +9,7 @@ require_once '../settings/core.php';
 require_once '../settings/paystack_config.php';
 
 // Check if user is logged in
-if (!is_logged_in()) {
+if (!isLoggedIn()) {
     header('Location: ../login/login.php');
     exit();
 }

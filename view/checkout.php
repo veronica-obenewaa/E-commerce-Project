@@ -1,11 +1,17 @@
 <?php
 require_once '../settings/core.php';
-require_login('../login/login.php');
+
+// Check if user is logged in
+if (!isLoggedIn()) {
+    header('Location: ../Login/login.php');
+    exit();
+}
 
 // Check if cart is not empty
 require_once '../controllers/cart_controller.php';
-$customer_id = get_user_id();
-$cart_items = get_user_cart_ctr($customer_id);
+$customer_id = getUserId();
+$cart_controller = new cart_controller();
+$cart_items = $cart_controller->get_user_cart_ctr($customer_id);
 
 if (!$cart_items || count($cart_items) == 0) {
     header('Location: cart.php');

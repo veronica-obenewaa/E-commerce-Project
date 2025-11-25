@@ -12,7 +12,7 @@ require_once '../settings/paystack_config.php';
 error_log("=== PAYSTACK CALLBACK/VERIFICATION ===");
 
 // Check if user is logged in
-if (!is_logged_in()) {
+if (!isLoggedIn()) {
     echo json_encode([
         'status' => 'error',
         'message' => 'Session expired. Please login again.'
@@ -93,7 +93,8 @@ try {
     // Ensure we have expected total server-side (calculate from cart if frontend didn't send it)
     require_once '../controllers/cart_controller.php';
     if (!$cart_items || count($cart_items) == 0) {
-        $cart_items = get_user_cart_ctr(get_user_id());
+        $cart_controller = new cart_controller();
+        $cart_items = $cart_controller->get_user_cart_ctr(getUserId());
     }
 
     $calculated_total = 0.00;
@@ -132,12 +133,12 @@ try {
     require_once '../controllers/order_controller.php';
     require_once '../settings/db_class.php';
     
-    $customer_id = get_user_id();
-    $customer_name = get_user_name();
+    $customer_id = getUserId();
+    $cart_controller = new cart_controller();
     
     // Get fresh cart items if not provided
     if (!$cart_items || count($cart_items) == 0) {
-        $cart_items = get_user_cart_ctr($customer_id);
+        $cart_items = $cart_controller->get_user_cart_ctr($customer_id);
     }
     
     if (!$cart_items || count($cart_items) == 0) {
@@ -168,13 +169,22 @@ try {
         
         // Add order details for each cart item
         foreach ($cart_items as $item) {
-            $detail_result = add_order_details_ctr($order_id, $item['p_id'], $item['qty']);
+            // Ensure we have the correct field name for product ID
+            $product_id = $item['p_id'] ?? $item['product_id'] ?? null;
+            $quantity = $item['qty'] ?? 0;
             
-            if (!$detail_result) {
-                throw new Exception("Failed to add order details for product: {$item['p_id']}");
+            if (!$product_id || $quantity <= 0) {
+                error_log("Invalid cart item: " . json_encode($item));
+                throw new Exception("Invalid cart item data");
             }
             
-            error_log("Order detail added - Product: {$item['p_id']}, Qty: {$item['qty']}");
+            $detail_result = add_order_details_ctr($order_id, $product_id, $quantity);
+            
+            if (!$detail_result) {
+                throw new Exception("Failed to add order details for product: {$product_id}");
+            }
+            
+            error_log("Order detail added - Product: {$product_id}, Qty: {$quantity}");
         }
         
         // Record payment in database
@@ -197,7 +207,7 @@ try {
         error_log("Payment recorded - ID: $payment_id, Reference: $reference");
         
         // Empty the customer's cart
-        $empty_result = empty_cart_ctr($customer_id);
+        $empty_result = $cart_controller->empty_cart_ctr($customer_id);
         
         if (!$empty_result) {
             throw new Exception("Failed to empty cart");
@@ -214,9 +224,6 @@ try {
         unset($_SESSION['paystack_amount']);
         unset($_SESSION['paystack_timestamp']);
         
-        // Log user activity
-        log_user_activity("Completed payment via Paystack - Invoice: $invoice_no, Amount: GHS $total_amount, Reference: $reference");
-        
         // Return success response
         echo json_encode([
             'status' => 'success',
@@ -227,7 +234,6 @@ try {
             'total_amount' => number_format($total_amount, 2),
             'currency' => 'GHS',
             'order_date' => date('F j, Y', strtotime($order_date)),
-            'customer_name' => $customer_name,
             'item_count' => count($cart_items),
             'payment_reference' => $reference,
             'payment_method' => ucfirst($payment_method),

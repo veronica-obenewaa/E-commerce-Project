@@ -6,8 +6,8 @@
 require_once 'db_cred.php';
 
 // Paystack API Keys
-define('PAYSTACK_SECRET_KEY', 'sk_test_e8d5eef29c47b0e87880e5f8faa20a5c4999d160'); //replace with your secret key
-define('PAYSTACK_PUBLIC_KEY', 'pk_test_f7f851907f26ea0cec49b13286eb4dd6da13ef14'); //replace with your public key
+define('PAYSTACK_SECRET_KEY', 'sk_test_ad9ab59a5b041136614a61de7d8e881d606ac065'); //replace with your secret key
+define('PAYSTACK_PUBLIC_KEY', 'pk_test_32b00defd8c10a9b0ea3f9337f4b05f593182134'); //replace with your public key
 
 // Paystack URLs
 define('PAYSTACK_API_URL', 'https://api.paystack.co');

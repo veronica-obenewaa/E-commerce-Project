@@ -2,9 +2,13 @@
 require_once '../settings/core.php';
 require_once '../controllers/order_controller.php';
 
-require_login('../login/login.php');
+// Check if user is logged in
+if (!isLoggedIn()) {
+    header('Location: ../Login/login.php');
+    exit();
+}
 
-$customer_id = get_user_id();
+$customer_id = getUserId();
 $invoice_no = isset($_GET['invoice']) ? htmlspecialchars($_GET['invoice']) : '';
 $reference = isset($_GET['reference']) ? htmlspecialchars($_GET['reference']) : '';
 ?>
