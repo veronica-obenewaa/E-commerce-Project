@@ -10,36 +10,47 @@ $customer_id = getUserId();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['status'=>'error','message'=>'Invalid request']); exit(); }
 
-// fetch cart summary
+// fetch cart items
 $cartCtrl = new cart_controller();
-$summary = $cartCtrl->count_user_cart_ctr($c_id);
-$items = $summary['items'] ?? [];
-$total_amount = $summary['total_amount'] ?? 0.0;
+$items = $cartCtrl->get_user_cart_ctr($customer_id);
 
 if (!$items || count($items) === 0) {
     echo json_encode(['status'=>'error','message'=>'Cart is empty']); exit();
 }
 
+// calculate total amount
+$total_amount = 0.0;
+foreach ($items as $item) {
+    $total_amount += floatval($item['qty']) * floatval($item['product_price']);
+}
+
 // generate invoice - unique
-$invoice_no = 'INV-' . time() . '-' . bin2hex(random_bytes(4));
+$invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
+$order_date = date('Y-m-d');
+$order_status = 'Pending';
 
 // create order
-$orderCtrl = new order_controller();
-$order_id = $orderCtrl->create_order_ctr($customer_id, $invoice_no, $total_amount);
+$order_id = create_order_ctr($customer_id, $invoice_no, $order_date, $order_status);
 if (!$order_id) {
     echo json_encode(['status'=>'error','message'=>'Failed to create order']); exit();
 }
 
-// add order details
-$ok = $orderCtrl->add_order_details_ctr($order_id, $items);
-if (!$ok) {
-    echo json_encode(['status'=>'error','message'=>'Failed to add order details']); exit();
+// add order details for each item
+foreach ($items as $item) {
+    $product_id = $item['p_id'] ?? $item['product_id'] ?? null;
+    $qty = $item['qty'] ?? 0;
+    
+    if ($product_id && $qty > 0) {
+        $ok = add_order_details_ctr($order_id, $product_id, $qty);
+        if (!$ok) {
+            echo json_encode(['status'=>'error','message'=>'Failed to add order details']); exit();
+        }
+    }
 }
 
-// record simulated payment
-$paid = $orderCtrl->record_payment_ctr($order_id, $total_amount);
-if (!$paid) {
-    // continue but flag failure
+// record payment
+$payment_id = record_payment_ctr($total_amount, $customer_id, $order_id, 'GHS', $order_date);
+if (!$payment_id) {
     echo json_encode(['status'=>'error','message'=>'Payment record failed']); exit();
 }
 
