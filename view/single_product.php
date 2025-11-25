@@ -37,7 +37,8 @@ if (!$productData) {
     
     .product-hero {
       background: #ffffff;
-      padding: 3rem 0;
+      padding: 3rem;
+      padding-left: 2rem;
       margin-top: 2rem;
       margin-bottom: 3rem;
     }
@@ -45,7 +46,7 @@ if (!$productData) {
     .product-image-container {
       background: linear-gradient(135deg, #ebf8f9ff 0%, #e0f6ff 100%);
       border-radius: 20px;
-      padding: 3rem;
+      padding: 4rem;
       display: flex;
       align-items: center;
       justify-content: center;
