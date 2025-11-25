@@ -138,6 +138,7 @@ if (!$productData) {
       padding: 1.5rem;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      display: none;
     }
     
     .description-title {
@@ -298,7 +299,7 @@ if (!$productData) {
 
 <div class="container py-5">
   <div class="product-hero">
-    <div class="row g-5 align-items-center">
+    <div class="row g-5 align-items-start">
       <!-- Product Image -->
       <div class="col-lg-5">
         <div class="product-image-container">
@@ -324,8 +325,9 @@ if (!$productData) {
           </span>
         </div>
         
-        <!-- Info Section -->
+        <!-- All Info in One Card -->
         <div class="info-section">
+          <!-- Info Items -->
           <div class="info-item">
             <div class="info-icon"><i class="fas fa-building"></i></div>
             <div>
@@ -357,22 +359,22 @@ if (!$productData) {
               <div class="info-value"><?= htmlspecialchars($productData['brand_name'] ?? 'Generic') ?></div>
             </div>
           </div>
-        </div>
-        
-        <!-- Description -->
-        <div class="description-section mt-4">
-          <div class="description-title">About this product</div>
-          <div class="description-text">
-            <?= nl2br(htmlspecialchars($productData['product_desc'])) ?>
-          </div>
-          <?php if (!empty($productData['product_keywords'])): ?>
-            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-              <strong style="color: #4b7c7c;">Keywords:</strong>
-              <div style="color: #1a3a3a; margin-top: 0.5rem;">
-                <?= htmlspecialchars($productData['product_keywords']) ?>
-              </div>
+          
+          <!-- Description Inside Same Card -->
+          <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb;">
+            <div class="description-title" style="margin-bottom: 0.75rem;">About this product</div>
+            <div class="description-text">
+              <?= nl2br(htmlspecialchars($productData['product_desc'])) ?>
             </div>
-          <?php endif; ?>
+            <?php if (!empty($productData['product_keywords'])): ?>
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                <strong style="color: #4b7c7c;">Keywords:</strong>
+                <div style="color: #1a3a3a; margin-top: 0.5rem;">
+                  <?= htmlspecialchars($productData['product_keywords']) ?>
+                </div>
+              </div>
+            <?php endif; ?>
+          </div>
         </div>
         
         <!-- Quantity Control -->

@@ -150,10 +150,11 @@ class product_class extends db_connection
     //fetch single product details for customers
     public function view_single_product($product_id) {
         $conn = $this->db_conn();
-        $sql = "SELECT p.*, c.cat_name, b.brand_name
+        $sql = "SELECT p.*, c.cat_name, b.brand_name, cust.company_name, cust.customer_city as location
                 FROM products p
                 LEFT JOIN categories c ON p.product_cat = c.cat_id
                 LEFT JOIN brands b ON p.product_brand = b.brand_id
+                LEFT JOIN customer cust ON p.created_by = cust.customer_id
                 WHERE p.product_id = ? LIMIT 1";
         $stmt = $conn->prepare($sql);
         if(!$stmt) return null;
