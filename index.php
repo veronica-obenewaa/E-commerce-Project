@@ -70,10 +70,15 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       right: 0;
       bottom: 0;
       background: linear-gradient(135deg, 
-        rgba(5, 150, 105, 0.23) 0%, 
+        /*rgba(5, 150, 105, 0.23) 0%, 
         rgba(16, 185, 129, 0.50) 35%,
         rgba(52, 211, 153, 0.37) 70%,
-        rgba(110, 231, 183, 0.42) 100%);
+        rgba(110, 231, 183, 0.42) 100%);*/
+
+        rgba(5, 150, 105, 0.23) 0%, 
+        rgba(1, 17, 12, 0.5) 35%,
+        rgba(77, 97, 90, 0.37) 70%,
+        rgba(32, 56, 47, 0.42) 100%);
       z-index: 2;
     }
     
