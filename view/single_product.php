@@ -43,9 +43,9 @@ if (!$productData) {
     }
     
     .product-image-container {
-      background: linear-gradient(135deg, #b0e0e6 0%, #e0f6ff 100%);
+      background: linear-gradient(135deg, #ebf8f9ff 0%, #e0f6ff 100%);
       border-radius: 20px;
-      padding: 2rem;
+      padding: 3rem;
       display: flex;
       align-items: center;
       justify-content: center;
