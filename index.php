@@ -53,7 +53,7 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       left: 0;
       right: 0;
       bottom: 0;
-      background-image: url('/images/gel-capsules-206150.jpg');
+      background-image: url('images/gel-capsules-206150.jpg');
       background-size: cover;
       background-position: center;
       filter: brightness(0.7);
