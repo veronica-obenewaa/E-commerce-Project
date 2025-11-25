@@ -17,69 +17,481 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-Pharmacy Ghana | Trusted Medications</title>
+  <title>Med-ePharma | Medication & Teleconsultation Platform</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: 'Inter', system-ui, sans-serif; background-color: #f7f9fc; }
-    .navbar-brand { font-weight: 700; color: #0b6623 !important; }
-    .hero {
-      background: linear-gradient(135deg, #e6fff2 0%, #ffffff 100%);
-      padding: 80px 0;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .hero h1 { font-size: 2.5rem; font-weight: 700; color: #0b6623; }
-    .hero p { color: #555; font-size: 1.1rem; }
-    .search-box { max-width: 500px; }
-    .filter-bar select { min-width: 180px; }
+    
+    body { 
+      font-family: 'Inter', system-ui, sans-serif; 
+      background: #000;
+      overflow-x: hidden;
+    }
+    
+    /* Hero Section with Background Image */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Background Image */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('/images/gel-capsules-206150.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.7);
+      z-index: 1;
+    }
+    
+    /* Gradient Overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, 
+        rgba(5, 150, 105, 0.93) 0%, 
+        rgba(16, 185, 129, 0.90) 35%,
+        rgba(52, 211, 153, 0.87) 70%,
+        rgba(110, 231, 183, 0.82) 100%);
+      z-index: 2;
+    }
+    
+    /* Additional gradient layers for depth */
+    .gradient-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(52, 211, 153, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: white;
+      padding: 2rem;
+    }
+    
+    /* Top Left Icon */
+    .top-icon {
+      position: absolute;
+      top: 3rem;
+      left: 3rem;
+      z-index: 10;
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Brand Title */
+    .brand-title {
+      font-size: 4rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+    }
+    
+    .brand-separator {
+      display: inline-block;
+      margin: 0 1rem;
+      opacity: 0.7;
+    }
+    
+    .tagline {
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tagline-green {
+      background: linear-gradient(135deg, #6ee7b7 0%, #34d399 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .tagline-yellow {
+      background: linear-gradient(135deg, #fde047 0%, #facc15 50%, #eab308 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 3rem;
+      opacity: 0.95;
+    }
+    
+    /* Statistics */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 900;
+      display: block;
+      margin-bottom: 0.25rem;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+    
+    /* Buttons */
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    
+    .btn-hero {
+      padding: 1.25rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn-primary-hero {
+      background: linear-gradient(135deg, #6ee7b7 0%, #10b981 100%);
+      color: #064e3b;
+    }
+    
+    .btn-primary-hero:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+      color: #064e3b;
+    }
+    
+    .btn-secondary-hero {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .btn-secondary-hero:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    
+    /* Features */
+    .features-container {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .feature-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 0.875rem 1.75rem;
+      border-radius: 50px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 1.05rem;
+    }
+    
+    .feature-badge i {
+      font-size: 1.3rem;
+      color: #fde047;
+    }
+    
+    /* Filter Section */
+    .filter-section {
+      background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
+      padding: 4rem 0;
+      position: relative;
+      z-index: 5;
+    }
+    
+    .filter-title {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 2.5rem;
+    }
+    
+    .form-select {
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+      padding: 1rem 1.25rem;
+      font-size: 1.05rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      background: white;
+    }
+    
+    .form-select:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    }
+    
+    .btn-filter {
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-weight: 700;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+    }
+    
+    .btn-filter:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+    }
+    
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, #f8fafb 0%, #ffffff 100%);
+      padding: 2rem 0;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .brand-title {
+        font-size: 2.5rem;
+      }
+      
+      .tagline {
+        font-size: 2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+      
+      .stats-container {
+        gap: 2rem;
+      }
+      
+      .btn-hero {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .top-icon {
+        top: 1.5rem;
+        left: 1.5rem;
+        font-size: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
-
-
-
-<!-- HERO -->
-<section class="hero text-center">
-  <div class="container">
-    <h1>Welcome to E-Pharmacy Ghana</h1>
-    <p class="mt-3 mb-4">Your trusted platform for genuine medications and health products from verified pharmaceutical suppliers.</p>
-    <div class="d-flex justify-content-center gap-3">
-      <a href="Login/register_company.php" class="btn btn-outline-primary btn-lg px-4">Pharmaceutical Company</a>
-      <a href="view/all_product.php" class="btn btn-success btn-lg px-4">Browse Medications</a>
-      <a href="Login/register_physician.php" class="btn btn-outline-secondary btn-lg px-4">Physician</a>
+<!-- Hero Section -->
+<section class="hero">
+  <!-- Background capsule image will be added via inline style -->
+  <div class="gradient-layer"></div>
+  
+  <!-- Top Left Icon -->
+  <div class="top-icon">
+    <i class="fas fa-notes-medical"></i>
+  </div>
+  
+  <div class="hero-content">
+    <!-- Statistics -->
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-number" data-target="10000">0</span>
+        <span class="stat-label">• Physicians</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="50000">0</span>
+        <span class="stat-label">• Medications</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" data-target="1000">0</span>
+        <span class="stat-label">• Pharmaceutical Companies</span>
+      </div>
+    </div>
+    
+    <!-- Main Title -->
+    <h1 class="brand-title">
+      Med-ePharma Ghana <span class="brand-separator">—</span>
+    </h1>
+    <h2 class="tagline">
+      <span class="tagline-green">Trusted, Genuine &</span><br>
+      <span class="tagline-yellow">Verified</span>
+    </h2>
+    
+    <p class="hero-subtitle">Your Gateway to Quality Healthcare & Medication</p>
+    
+    <!-- Main Action Buttons -->
+    <div class="hero-buttons">
+      <a href="view/all_product.php" class="btn-hero btn-primary-hero">
+        <i class="fas fa-th-large"></i>
+        Browse Medications
+      </a>
+      <a href="Login/register_physician.php" class="btn-hero btn-secondary-hero">
+        <i class="fas fa-user-md"></i>
+        Physician
+      </a>
+      <a href="Login/register_company.php" class="btn-hero btn-secondary-hero">
+        <i class="fas fa-building"></i>
+        Pharmaceutical Company
+      </a>
+    </div>
+    
+    <!-- Feature Badges -->
+    <div class="features-container">
+      <div class="feature-badge">
+        <i class="fas fa-check-circle"></i>
+        Verified Meds
+      </div>
+      <div class="feature-badge">
+        <i class="fas fa-stethoscope"></i>
+        Experienced Doctors
+      </div>
+      <div class="feature-badge">
+        <i class="fas fa-tag"></i>
+        Affordable Meds
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FILTERS -->
-<div class="container py-4">
-  <h4 class="mb-3 text-success">Filter Products</h4>
-  <form class="row g-3 filter-bar" action="view/product_search_result.php" method="get">
-    <div class="col-md-4">
-      <select class="form-select" name="cat_id">
-        <option value="0">All Categories</option>
-        <?php foreach ($categories as $cat): ?>
-          <option value="<?= $cat['cat_id'] ?>"><?= htmlspecialchars($cat['cat_name']) ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <div class="col-md-4">
-      <select class="form-select" name="brand_id">
-        <option value="0">All Brands</option>
-        <?php foreach ($brands as $b): ?>
-          <option value="<?= $b['brand_id'] ?>"><?= htmlspecialchars($b['brand_name']) ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <div class="col-md-4 d-grid">
-      <button type="submit" class="btn btn-outline-success">Apply Filters</button>
-    </div>
-  </form>
+<!-- Filter Section -->
+<div class="filter-section">
+  <div class="container">
+    <h4 class="filter-title text-center">Filter Medications</h4>
+    <form class="row g-4" action="view/product_search_result.php" method="get">
+      <div class="col-md-4">
+        <select class="form-select" name="cat_id">
+          <option value="0">All Categories</option>
+          <?php foreach ($categories as $cat): ?>
+            <option value="<?= $cat['cat_id'] ?>"><?= htmlspecialchars($cat['cat_name']) ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" name="brand_id">
+          <option value="0">All Brands</option>
+          <?php foreach ($brands as $b): ?>
+            <option value="<?= $b['brand_id'] ?>"><?= htmlspecialchars($b['brand_name']) ?></option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div class="col-md-4 d-grid">
+        <button type="submit" class="btn-filter">
+          <i class="fas fa-search"></i> Apply Filters
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 
-<!-- FOOTER -->
-<footer class="bg-white text-center py-3 mt-5 border-top">
-  <small class="text-muted">&copy; <?= date('Y') ?> E-Pharmacy Ghana. All Rights Reserved.</small>
+<!-- Footer -->
+<footer class="text-center">
+  <div class="container">
+    <small class="text-muted">&copy; <span id="year"></span> Med-ePharma. All Rights Reserved.</small>
+  </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Animated counter for statistics
+  function animateCounter(element) {
+    const target = parseInt(element.getAttribute('data-target'));
+    const duration = 2000;
+    const increment = target / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        element.textContent = target.toLocaleString() + '+';
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(current).toLocaleString() + '+';
+      }
+    }, 16);
+  }
+  
+  // Trigger animation on page load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.stat-number').forEach(el => {
+      animateCounter(el);
+    });
+  });
+  
+  // Set current year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
