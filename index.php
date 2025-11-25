@@ -387,8 +387,8 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
       Med-ePharma Ghana <span class="brand-separator">—</span>
     </h1>
     <h2 class="tagline">
-      <span class="tagline-green">Trusted, Genuine &</span><br>
-      <span class="tagline-yellow">Verified</span>
+      <span class="tagline-green">Trusted, Genuine & Verified</span><br>
+      <!--<span class="tagline-yellow">Verified</span>-->
     </h2>
     
     <p class="hero-subtitle">Your Gateway to Quality Healthcare & Medication</p>
