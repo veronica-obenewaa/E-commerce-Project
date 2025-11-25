@@ -37,13 +37,13 @@ if (!$productData) {
     
     .product-hero {
       background: #ffffff;
-      padding: 3rem;
+      padding: 4rem;
       padding-left: 2rem;
       margin-top: 2rem;
       margin-bottom: 3rem;
     }
     
-    .product-image-container {
+   /* .product-image-container {
       background: linear-gradient(135deg, #ebf8f9ff 0%, #e9e9eaff 100%);
       border-radius: 20px;
       padding: 4rem;
@@ -53,7 +53,7 @@ if (!$productData) {
       min-height: 450px;
       box-shadow: 0 5px 10px rgba(11, 102, 35, 0.15);
       transform: rotate(5deg);
-    }
+    }*/
     
     .product-image {
       max-width: 100%;
