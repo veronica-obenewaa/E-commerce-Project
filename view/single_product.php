@@ -52,6 +52,7 @@ if (!$productData) {
       justify-content: center;
       min-height: 450px;
       box-shadow: 0 5px 10px rgba(11, 102, 35, 0.15);
+      transform: rotate(5deg);
     }
     
     .product-image {
@@ -59,7 +60,7 @@ if (!$productData) {
       max-height: 400px;
       object-fit: contain;
       border-radius: 12px;
-      transform: rotate(5deg);
+      /*transform: rotate(5deg);*/
     }
     
     .product-title {
