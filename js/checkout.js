@@ -138,7 +138,8 @@ function processCheckout() {
         },
         body: JSON.stringify({
             amount: window.checkoutTotal,
-            email: customerEmail
+            email: customerEmail,
+            delivery_service: selectedDelivery
         })
     })
     .then(response => response.json())

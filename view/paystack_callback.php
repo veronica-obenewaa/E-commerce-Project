@@ -31,7 +31,7 @@ error_log("Reference from URL: $reference");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Processing Payment - Aya Crafts</title>
+    <title>Processing Payment - Med-ePharma</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
@@ -43,7 +43,7 @@ error_log("Reference from URL: $reference");
             width: 50px;
             height: 50px;
             border: 4px solid #f3f4f6;
-            border-top: 4px solid #dc2626;
+            border-top: 4px solid #059669;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 30px;
@@ -59,7 +59,7 @@ error_log("Reference from URL: $reference");
         
         .reference { background: #f9fafb; padding: 15px; border-radius: 8px; margin: 25px 0; word-break: break-all; font-family: monospace; font-size: 12px; color: #6b7280; }
         
-        .error { color: #dc2626; background: #fee2e2; border: 2px solid #fecaca; padding: 15px; border-radius: 8px; margin: 20px 0; display: none; }
+        .error { color: #059669; background: #fee2e2; border: 2px solid #fecaca; padding: 15px; border-radius: 8px; margin: 20px 0; display: none; }
         .success { color: #065f46; background: #d1fae5; border: 2px solid #6ee7b7; padding: 15px; border-radius: 8px; margin: 20px 0; display: none; }
     </style>
 </head>
@@ -123,18 +123,20 @@ error_log("Reference from URL: $reference");
                     // Payment verified successfully
                     document.getElementById('successBox').style.display = 'block';
                     
-                    // Get selected delivery service from session storage
-                    const selectedDelivery = sessionStorage.getItem('selectedDelivery') || 'pickup';
+                    // Get selected delivery service from response (more reliable than sessionStorage)
+                    const selectedDelivery = data.delivery_service || sessionStorage.getItem('selectedDelivery') || 'pickup';
                     const redirectUrl = deliveryUrls[selectedDelivery] || 'payment_success.php';
                     
                     // Build URL with order parameters
                     let finalUrl = redirectUrl;
                     if (selectedDelivery === 'pickup') {
-                        finalUrl = `payment_success.php?reference=${encodeURIComponent(reference)}&invoice=${encodeURIComponent(data.invoice_no)}&delivery=${selectedDelivery}`;
+                        finalUrl = `payment_success.php?reference=${encodeURIComponent(data.payment_reference)}&invoice=${encodeURIComponent(data.invoice_no)}&delivery=${selectedDelivery}`;
                     } else {
                         // For ride services, append order reference so they can track it
                         finalUrl += (redirectUrl.includes('?') ? '&' : '?') + `order_ref=${encodeURIComponent(data.invoice_no)}`;
                     }
+                    
+                    console.log('Redirecting to:', finalUrl);
                     
                     // Redirect to selected delivery service
                     setTimeout(() => {

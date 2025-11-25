@@ -223,6 +223,8 @@ try {
         unset($_SESSION['paystack_ref']);
         unset($_SESSION['paystack_amount']);
         unset($_SESSION['paystack_timestamp']);
+        $delivery_service = $_SESSION['paystack_delivery_service'] ?? 'pickup';
+        unset($_SESSION['paystack_delivery_service']);
         
         // Return success response
         echo json_encode([
@@ -231,6 +233,7 @@ try {
             'message' => 'Payment successful! Order confirmed.',
             'order_id' => $order_id,
             'invoice_no' => $invoice_no,
+            'delivery_service' => $delivery_service,
             'total_amount' => number_format($total_amount, 2),
             'currency' => 'GHS',
             'order_date' => date('F j, Y', strtotime($order_date)),

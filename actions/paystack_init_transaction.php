@@ -20,6 +20,7 @@ if (!isLoggedIn()) {
 $input = json_decode(file_get_contents('php://input'), true);
 $amount = isset($input['amount']) ? floatval($input['amount']) : 0;
 $customer_email = isset($input['email']) ? trim($input['email']) : '';
+$delivery_service = isset($input['delivery_service']) ? trim($input['delivery_service']) : 'pickup';
 
 if (!$amount || !$customer_email) {
     echo json_encode([
@@ -66,8 +67,9 @@ try {
         $_SESSION['paystack_ref'] = $reference;
         $_SESSION['paystack_amount'] = $amount;
         $_SESSION['paystack_timestamp'] = time();
+        $_SESSION['paystack_delivery_service'] = $delivery_service;  // Store delivery service
         
-        error_log("Paystack transaction initialized successfully - Reference: $reference");
+        error_log("Paystack transaction initialized successfully - Reference: $reference, Delivery: $delivery_service");
         
         echo json_encode([
             'status' => 'success',
