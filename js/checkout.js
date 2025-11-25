@@ -159,6 +159,9 @@ function processCheckout() {
         return;
     }
     
+    // Get selected delivery service from session storage (set in cart.php)
+    const selectedDelivery = sessionStorage.getItem('selectedDelivery') || 'pickup';
+    
     // Step 1: Initialize Paystack transaction
     fetch('../actions/paystack_init_transaction.php', {
         method: 'POST',
@@ -179,6 +182,9 @@ function processCheckout() {
             window.paymentReference = data.reference;
             window.cartItems = window.currentCartItems || null;
             window.totalAmount = window.checkoutTotal;
+            
+            // Ensure selected delivery service is stored in session storage
+            sessionStorage.setItem('selectedDelivery', selectedDelivery);
             
             // Redirect to Paystack payment page
             closePaymentModal();

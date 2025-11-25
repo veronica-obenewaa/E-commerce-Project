@@ -493,15 +493,12 @@ foreach ($items as $it_calc) {
     
     const deliveryService = selectedDelivery.value;
     
-    // Simulate redirect based on delivery service
-    const urls = {
-      'bolt': 'https://www.bolt.eu/',
-      'uber': 'https://www.uber.com/',
-      'yango': 'https://yango.com/',
-      'pickup': 'check_out.php'
-    };
+    // Store selected delivery service in session storage
+    sessionStorage.setItem('selectedDelivery', deliveryService);
     
-    window.location.href = urls[deliveryService];
+    // Proceed to checkout to process payment via Paystack
+    // After successful payment, user will be redirected to the selected delivery service
+    window.location.href = 'checkout.php';
   }
 
   // Remove cart item
@@ -523,7 +520,7 @@ foreach ($items as $it_calc) {
 </body>
 </html>
 
-  const emptyBtn = document.getElementById('emptyCartBtn');
+  <!-- const emptyBtn = document.getElementById('emptyCartBtn');
   if (emptyBtn) emptyBtn.addEventListener('click', () => {
     if (!confirm('Empty cart?')) return;
     emptyCart((res)=> {
@@ -534,4 +531,4 @@ foreach ($items as $it_calc) {
 });
 </script>
 </body>
-</html>
+</html> -->

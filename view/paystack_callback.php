@@ -85,6 +85,16 @@ error_log("Reference from URL: $reference");
 
     <script>
         /**
+         * Get delivery service URLs
+         */
+        const deliveryUrls = {
+            'bolt': 'https://www.bolt.eu/',
+            'uber': 'https://www.uber.com/',
+            'yango': 'https://yango.com/',
+            'pickup': 'payment_success.php'  // For personal pickup, show success page
+        };
+
+        /**
          * Verify payment with backend
          */
         async function verifyPayment() {
@@ -113,11 +123,23 @@ error_log("Reference from URL: $reference");
                     // Payment verified successfully
                     document.getElementById('successBox').style.display = 'block';
                     
-                    // Redirect to success page immediately
+                    // Get selected delivery service from session storage
+                    const selectedDelivery = sessionStorage.getItem('selectedDelivery') || 'pickup';
+                    const redirectUrl = deliveryUrls[selectedDelivery] || 'payment_success.php';
+                    
+                    // Build URL with order parameters
+                    let finalUrl = redirectUrl;
+                    if (selectedDelivery === 'pickup') {
+                        finalUrl = `payment_success.php?reference=${encodeURIComponent(reference)}&invoice=${encodeURIComponent(data.invoice_no)}&delivery=${selectedDelivery}`;
+                    } else {
+                        // For ride services, append order reference so they can track it
+                        finalUrl += (redirectUrl.includes('?') ? '&' : '?') + `order_ref=${encodeURIComponent(data.invoice_no)}`;
+                    }
+                    
+                    // Redirect to selected delivery service
                     setTimeout(() => {
-                        // Redirect to orders or success page
-                        window.location.replace(`payment_success.php?reference=${encodeURIComponent(reference)}&invoice=${encodeURIComponent(data.invoice_no)}`);
-                    }, 500);
+                        window.location.replace(finalUrl);
+                    }, 1500);
                     
                 } else {
                     // Payment verification failed
