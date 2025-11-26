@@ -13,7 +13,11 @@ class BookingController {
             return ['status' => 'error', 'message' => 'Invalid physician id'];
         }
         $rows = $this->bookingModel->getBookingsByPhysician(intval($physician_id));
-        return ['status' => 'success', 'data' => $rows];
+        // Filter out cancelled bookings
+        $active_rows = array_filter($rows, function($row) {
+            return ($row['status'] ?? 'scheduled') !== 'cancelled';
+        });
+        return ['status' => 'success', 'data' => array_values($active_rows)];
     }
 
     public function createBooking($physician_id, $patient_id, $appointment_datetime, $reason_text) {

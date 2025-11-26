@@ -26,9 +26,15 @@ $appointments = $bookingClass->getBookingsByPatient($customer_id);
 $notificationClass = new notification_class();
 $unread_notifications = $notificationClass->getUnreadNotifications($customer_id);
 
-// Count appointments
-$total_appointments = count($appointments);
-$upcoming_appointments = array_filter($appointments, function($apt) {
+// Filter out cancelled appointments
+$active_appointments = array_filter($appointments, function($apt) {
+    $status = $apt['status'] ?? 'scheduled';
+    return $status !== 'cancelled';
+});
+
+// Count appointments (excluding cancelled)
+$total_appointments = count($active_appointments);
+$upcoming_appointments = array_filter($active_appointments, function($apt) {
     $status = $apt['status'] ?? 'scheduled';
     $datetime = $apt['appointment_datetime'] ?? null;
     return ($status === 'scheduled' && $datetime && strtotime($datetime) >= time());
