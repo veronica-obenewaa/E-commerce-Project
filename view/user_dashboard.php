@@ -18,6 +18,26 @@ $customer_city = $_SESSION['customer_city'] ?? 'N/A';
 $customer_country = $_SESSION['customer_country'] ?? 'N/A';
 $customer_contact = $_SESSION['customer_contact'] ?? 'N/A';
 
+// If profile fields are empty, fetch from database
+if (empty($_SESSION['customer_city']) || empty($_SESSION['customer_country']) || empty($_SESSION['customer_contact'])) {
+    $customerClass = new customer_class();
+    $customerData = $customerClass->getCustomerById($customer_id);
+    if ($customerData) {
+        $customer_name = $customerData['customer_name'] ?? $customer_name;
+        $customer_email = $customerData['customer_email'] ?? $customer_email;
+        $customer_city = $customerData['customer_city'] ?? 'N/A';
+        $customer_country = $customerData['customer_country'] ?? 'N/A';
+        $customer_contact = $customerData['customer_contact'] ?? 'N/A';
+        
+        // Update session with fetched data
+        $_SESSION['customer_name'] = $customer_name;
+        $_SESSION['customer_email'] = $customer_email;
+        $_SESSION['customer_city'] = $customer_city;
+        $_SESSION['customer_country'] = $customer_country;
+        $_SESSION['customer_contact'] = $customer_contact;
+    }
+}
+
 // Fetch user appointments
 $bookingClass = new booking_class();
 $appointments = $bookingClass->getBookingsByPatient($customer_id);

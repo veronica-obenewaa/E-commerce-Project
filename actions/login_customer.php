@@ -44,6 +44,9 @@ if ($result['status'] === 'success') {
     if (isset($customerData['role_id'])) $_SESSION['role_id'] = $customerData['role_id'];
     $_SESSION['customer_name'] = $customerData['customer_name'];
     $_SESSION['customer_email'] = $customerData['customer_email'];
+    $_SESSION['customer_city'] = $customerData['customer_city'] ?? '';
+    $_SESSION['customer_country'] = $customerData['customer_country'] ?? '';
+    $_SESSION['customer_contact'] = $customerData['customer_contact'] ?? '';
     $_SESSION['logged_in'] = true;
     
     // Determine redirect based on role (default fallback)
