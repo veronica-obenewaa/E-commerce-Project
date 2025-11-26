@@ -5,46 +5,63 @@ class notification_class extends db_connection {
 
     // Create a notification for booking cancellation
     public function createNotification($booking_id, $patient_id, $physician_id, $notification_type = 'cancellation', $message = null) {
-        $conn = $this->db_conn();
-        
-        if (empty($message)) {
-            $message = $notification_type === 'cancellation' 
-                ? 'Your consultation appointment has been cancelled by the physician.' 
-                : 'You have a new notification about your appointment.';
+        try {
+            $conn = $this->db_conn();
+            
+            if (empty($message)) {
+                $message = $notification_type === 'cancellation' 
+                    ? 'Your consultation appointment has been cancelled by the physician.' 
+                    : 'You have a new notification about your appointment.';
+            }
+            
+            $sql = "INSERT INTO booking_notifications (booking_id, patient_id, physician_id, notification_type, message) 
+                    VALUES (?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                // Table may not exist yet
+                return false;
+            }
+            $stmt->bind_param("iisss", $booking_id, $patient_id, $physician_id, $notification_type, $message);
+            $result = $stmt->execute();
+            $insertId = $conn->insert_id;
+            $stmt->close();
+            
+            return $result ? $insertId : false;
+        } catch (Exception $e) {
+            error_log("Error creating notification: " . $e->getMessage());
+            return false;
         }
-        
-        $sql = "INSERT INTO booking_notifications (booking_id, patient_id, physician_id, notification_type, message) 
-                VALUES (?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iisss", $booking_id, $patient_id, $physician_id, $notification_type, $message);
-        $result = $stmt->execute();
-        $insertId = $conn->insert_id;
-        $stmt->close();
-        
-        return $result ? $insertId : false;
     }
 
     // Get unread notifications for a patient
     public function getUnreadNotifications($patient_id) {
-        $conn = $this->db_conn();
-        $sql = "SELECT n.*, 
-                c.customer_name as physician_name, c.hospital_name,
-                pb.appointment_datetime, pb.status as booking_status
-                FROM booking_notifications n
-                LEFT JOIN customer c ON n.physician_id = c.customer_id
-                LEFT JOIN physician_bookings pb ON n.booking_id = pb.booking_id
-                WHERE n.patient_id = ? AND n.is_read = FALSE
-                ORDER BY n.created_at DESC";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $patient_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $notifications = [];
-        while ($row = $result->fetch_assoc()) {
-            $notifications[] = $row;
+        try {
+            $conn = $this->db_conn();
+            $sql = "SELECT n.*, 
+                    c.customer_name as physician_name, c.hospital_name,
+                    pb.appointment_datetime, pb.status as booking_status
+                    FROM booking_notifications n
+                    LEFT JOIN customer c ON n.physician_id = c.customer_id
+                    LEFT JOIN physician_bookings pb ON n.booking_id = pb.booking_id
+                    WHERE n.patient_id = ? AND n.is_read = FALSE
+                    ORDER BY n.created_at DESC";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                return [];
+            }
+            $stmt->bind_param("i", $patient_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $notifications = [];
+            while ($row = $result->fetch_assoc()) {
+                $notifications[] = $row;
+            }
+            $stmt->close();
+            return $notifications;
+        } catch (Exception $e) {
+            error_log("Error getting unread notifications: " . $e->getMessage());
+            return [];
         }
-        $stmt->close();
-        return $notifications;
     }
 
     // Get all notifications for a patient

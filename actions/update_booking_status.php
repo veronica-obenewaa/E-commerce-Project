@@ -7,8 +7,14 @@ require_once __DIR__ . '/../classes/notification_class.php';
 header('Content-Type: application/json');
 
 // Only allow logged-in physicians to update their bookings
-if (!isLoggedIn() || getUserRole() != 3) {
-    echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+$userRole = getUserRole();
+if (!isLoggedIn()) {
+    echo json_encode(['status' => 'error', 'message' => 'Unauthorized - Not logged in']);
+    exit;
+}
+
+if ($userRole != 3) {
+    echo json_encode(['status' => 'error', 'message' => 'Unauthorized - Physician only (Role: ' . $userRole . ')']);
     exit;
 }
 

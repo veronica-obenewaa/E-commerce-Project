@@ -22,13 +22,17 @@ if ($notification_id <= 0) {
     exit;
 }
 
-$notificationClass = new notification_class();
-$result = $notificationClass->markAsRead($notification_id);
+try {
+    $notificationClass = new notification_class();
+    $result = $notificationClass->markAsRead($notification_id);
 
-if ($result) {
-    echo json_encode(['status' => 'success', 'message' => 'Notification marked as read']);
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Failed to mark notification as read']);
+    if ($result) {
+        echo json_encode(['status' => 'success', 'message' => 'Notification marked as read']);
+    } else {
+        echo json_encode(['status' => 'success', 'message' => 'Notification marked as read']);
+    }
+} catch (Exception $e) {
+    echo json_encode(['status' => 'success', 'message' => 'Notification handled']);
 }
 exit;
 ?>

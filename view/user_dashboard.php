@@ -3,6 +3,7 @@ require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../classes/booking_class.php';
 require_once __DIR__ . '/../classes/customer_class.php';
 require_once __DIR__ . '/../classes/order_class.php';
+require_once __DIR__ . '/../classes/notification_class.php';
 
 // Only allow logged in customers (role 2)
 if (!isLoggedIn() || (!isCustomer() && getUserRole() != 2)) {
@@ -20,6 +21,10 @@ $customer_contact = $_SESSION['customer_contact'] ?? 'N/A';
 // Fetch user appointments
 $bookingClass = new booking_class();
 $appointments = $bookingClass->getBookingsByPatient($customer_id);
+
+// Fetch unread notifications
+$notificationClass = new notification_class();
+$unread_notifications = $notificationClass->getUnreadNotifications($customer_id);
 
 // Count appointments
 $total_appointments = count($appointments);
@@ -219,6 +224,9 @@ try {
         <!-- Main Content -->
         <div class="col-md-9 col-lg-10 p-4">
             <h2 class="mb-4"><i class="fas fa-user"></i> User Dashboard</h2>
+
+            <!-- Notifications Section -->
+            <div id="notificationsContainer"></div>
 
             <!-- Profile Section -->
             <div class="profile-section">
@@ -439,6 +447,65 @@ try {
 </div>
 
 <script>
+// Fetch and display notifications
+function loadNotifications() {
+    fetch('../actions/get_unread_notifications.php')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('notificationsContainer');
+            if (data.status === 'success' && data.data && data.data.length > 0) {
+                let html = '';
+                data.data.forEach(notification => {
+                    const notifClass = notification.notification_type === 'cancellation' ? 'danger' : 'info';
+                    const notifIcon = notification.notification_type === 'cancellation' ? 'ban' : 'bell';
+                    html += `
+                        <div class="alert alert-${notifClass} alert-dismissible fade show" role="alert" id="notification-${notification.notification_id}">
+                            <i class="fas fa-${notifIcon}"></i>
+                            <strong>${notification.notification_type === 'cancellation' ? 'Appointment Cancelled' : 'Notification'}:</strong>
+                            ${notification.message}
+                            ${notification.physician_name ? `<br><small>Dr. ${notification.physician_name}</small>` : ''}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" 
+                                    onclick="dismissNotification(${notification.notification_id})"></button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading notifications:', error);
+        });
+}
+
+function dismissNotification(notificationId) {
+    fetch('../actions/mark_notification_read.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'notification_id=' + notificationId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const notifElement = document.getElementById('notification-' + notificationId);
+            if (notifElement) {
+                notifElement.remove();
+            }
+        }
+    })
+    .catch(error => console.error('Error dismissing notification:', error));
+}
+
+// Load notifications on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadNotifications();
+    // Refresh notifications every 30 seconds
+    setInterval(loadNotifications, 30000);
+});
+
 document.getElementById('editProfileForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
