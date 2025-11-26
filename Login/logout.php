@@ -8,7 +8,7 @@ $_SESSION = [];
 // Destroy the session
 session_destroy();
 
-// Redirect to login page (adjust path if needed)
-header("Location: login.php");
+// Redirect to register page
+header("Location:login.php");
 exit();
 
