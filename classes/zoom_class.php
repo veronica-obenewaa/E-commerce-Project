@@ -36,10 +36,11 @@ class ZoomAPI {
                 'Content-Type: application/x-www-form-urlencoded'
             ],
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query([
-                'grant_type' => 'account_credentials',
-                'account_id' => $this->account_id
-            ]),
+            // CURLOPT_POSTFIELDS => http_build_query([
+            //     'grant_type' => 'account_credentials',
+            //     'account_id' => $this->account_id
+            // ]),
+            CURLOPT_POSTFIELDS => '',
             CURLOPT_TIMEOUT => 30,
             CURLOPT_SSL_VERIFYPEER => true
         ]);

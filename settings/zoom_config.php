@@ -10,7 +10,8 @@ define('ZOOM_CLIENT_SECRET', getenv('ZOOM_CLIENT_SECRET') ?: 'dna3AQRTc2nqVzb6Ct
 define('ZOOM_ACCOUNT_ID', getenv('ZOOM_ACCOUNT_ID') ?: 'ETka8FtcS8KsScZN3EOHJw');
 
 // Zoom API Endpoints
-define('ZOOM_API_BASE_URL', 'https://zoom.us/oauth/token');
+//define('ZOOM_API_BASE_URL', 'https://zoom.us/oauth/token');
+define('ZOOM_API_BASE_URL', 'https://zoom.us/oauth/token?grant_type=account_credentials&account_id=' . ZOOM_ACCOUNT_ID);
 define('ZOOM_API_CREATE_MEETING', 'https://api.zoom.us/v2/users/me/meetings');
 define('ZOOM_API_UPDATE_MEETING', 'https://api.zoom.us/v2/meetings');
 define('ZOOM_API_DELETE_MEETING', 'https://api.zoom.us/v2/meetings');
