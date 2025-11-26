@@ -5,6 +5,25 @@
         var patient = b.patient_name ? (b.patient_name + (b.patient_contact ? (' - ' + b.patient_contact) : '')) : 'Unknown patient';
         var reason = b.reason_text ? b.reason_text : '';
         var statusBadge = '<span class="badge bg-secondary">' + (b.status || 'scheduled') + '</span>';
+        
+        // Zoom link section
+        var zoomSection = '';
+        if (b.zoom_join_url && (b.zoom_status || 'pending') === 'created') {
+            var zoomHtml = '<div style="background: linear-gradient(135deg, #e6f7ff 0%, #f0f8ff 100%); border-left: 4px solid #0066cc; padding: 0.75rem; border-radius: 6px; margin-top: 0.75rem;">'
+                + '<i class="fas fa-video"></i> <strong>Zoom Meeting Ready</strong>';
+            if (b.zoom_password) {
+                zoomHtml += '<br><small style="color: #666;">Password: <code>' + escapeHtml(b.zoom_password) + '</code></small>';
+            }
+            zoomHtml += '<br><a href="' + escapeHtml(b.zoom_join_url) + '" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #0066cc 0%, #004499 100%); border: none; color: white; padding: 0.4rem 1rem; border-radius: 4px; text-decoration: none; font-weight: 600; margin-top: 0.5rem; font-size: 0.9rem;">'
+                + '<i class="fas fa-video"></i> Start Meeting</a>'
+                + '</div>';
+            zoomSection = zoomHtml;
+        } else if ((b.zoom_status || 'pending') === 'pending') {
+            zoomSection = '<div style="background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%); border-left: 4px solid #ffb300; padding: 0.75rem; border-radius: 6px; margin-top: 0.75rem;">'
+                + '<i class="fas fa-hourglass-half"></i> <strong>Zoom Meeting Link</strong> - Pending creation'
+                + '</div>';
+        }
+        
         var actions = '';
         if ((b.status || 'scheduled') !== 'completed') {
             actions += '<button class="btn btn-sm btn-success me-1 mark-complete" data-id="' + b.booking_id + '">Complete</button>';
@@ -17,7 +36,8 @@
             + '<small>' + dateStr + '</small>'
             + '</div>'
             + '<p class="mb-1">' + escapeHtml(reason) + '</p>'
-            + '<div class="d-flex justify-content-between align-items-center">'
+            + zoomSection
+            + '<div class="d-flex justify-content-between align-items-center" style="margin-top: 0.75rem;">'
             + '<small>' + statusBadge + '</small>'
             + '<div>' + actions + '</div>'
             + '</div>'

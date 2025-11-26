@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../settings/db_class.php");
+require_once(__DIR__ . "/zoom_class.php");
 
 class booking_class extends db_connection {
 
@@ -76,6 +77,153 @@ class booking_class extends db_connection {
         $res = $stmt->execute();
         $stmt->close();
         return $res;
+    }
+
+    // Create and link Zoom meeting to booking
+    public function createZoomMeeting($booking_id, $appointment_datetime, $physician_name, $patient_name) {
+        $conn = $this->db_conn();
+        
+        // Get booking details
+        $sql = "SELECT * FROM physician_bookings WHERE booking_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $booking_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $booking = $result->fetch_assoc();
+        $stmt->close();
+
+        if (!$booking) {
+            return ['success' => false, 'error' => 'Booking not found'];
+        }
+
+        // Initialize Zoom API
+        $zoomAPI = new ZoomAPI();
+        
+        // Format appointment datetime for Zoom
+        $datetime = DateTime::createFromFormat('Y-m-d H:i:s', $appointment_datetime);
+        if (!$datetime) {
+            return ['success' => false, 'error' => 'Invalid appointment datetime'];
+        }
+
+        $meeting_data = [
+            'topic' => 'Consultation: ' . htmlspecialchars($physician_name) . ' - ' . htmlspecialchars($patient_name),
+            'start_time' => $datetime->format('Y-m-d\TH:i:s'),
+            'duration' => 60,
+            'password' => $this->generateMeetingPassword()
+        ];
+
+        $zoom_result = $zoomAPI->createMeeting($meeting_data);
+
+        if (!$zoom_result['success']) {
+            return [
+                'success' => false,
+                'error' => $zoom_result['error'] ?? 'Failed to create Zoom meeting'
+            ];
+        }
+
+        // Update booking with Zoom details
+        $sql = "UPDATE physician_bookings 
+                SET zoom_meeting_id = ?, 
+                    zoom_join_url = ?, 
+                    zoom_start_url = ?, 
+                    zoom_password = ?,
+                    zoom_created_at = NOW(),
+                    zoom_status = 'created'
+                WHERE booking_id = ?";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param(
+            "ssssi",
+            $zoom_result['meeting_id'],
+            $zoom_result['join_url'],
+            $zoom_result['start_url'],
+            $zoom_result['password'],
+            $booking_id
+        );
+        
+        $res = $stmt->execute();
+        $stmt->close();
+
+        if ($res) {
+            return [
+                'success' => true,
+                'meeting_id' => $zoom_result['meeting_id'],
+                'join_url' => $zoom_result['join_url'],
+                'start_url' => $zoom_result['start_url'],
+                'password' => $zoom_result['password']
+            ];
+        } else {
+            return ['success' => false, 'error' => 'Failed to save Zoom meeting details'];
+        }
+    }
+
+    // Update booking with Zoom meeting info (when created afterwards)
+    public function updateBookingWithZoom($booking_id, $zoom_meeting_id, $zoom_join_url, $zoom_start_url, $zoom_password) {
+        $conn = $this->db_conn();
+        $sql = "UPDATE physician_bookings 
+                SET zoom_meeting_id = ?, 
+                    zoom_join_url = ?, 
+                    zoom_start_url = ?, 
+                    zoom_password = ?,
+                    zoom_created_at = NOW(),
+                    zoom_status = 'created'
+                WHERE booking_id = ?";
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssssi", $zoom_meeting_id, $zoom_join_url, $zoom_start_url, $zoom_password, $booking_id);
+        $res = $stmt->execute();
+        $stmt->close();
+        return $res;
+    }
+
+    // Cancel Zoom meeting
+    public function cancelZoomMeeting($booking_id) {
+        $conn = $this->db_conn();
+        
+        // Get meeting ID
+        $sql = "SELECT zoom_meeting_id FROM physician_bookings WHERE booking_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $booking_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+
+        if (!$row || !$row['zoom_meeting_id']) {
+            return false;
+        }
+
+        // Delete from Zoom
+        $zoomAPI = new ZoomAPI();
+        if (!$zoomAPI->deleteMeeting($row['zoom_meeting_id'])) {
+            return false;
+        }
+
+        // Update booking status
+        $sql = "UPDATE physician_bookings SET zoom_status = 'cancelled' WHERE booking_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $booking_id);
+        $res = $stmt->execute();
+        $stmt->close();
+        return $res;
+    }
+
+    // Get booking with Zoom details
+    public function getBookingWithZoom($booking_id) {
+        $conn = $this->db_conn();
+        $sql = "SELECT * FROM physician_bookings WHERE booking_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $booking_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+        return $row;
+    }
+
+    // Generate a secure random password for Zoom meeting
+    private function generateMeetingPassword() {
+        return substr(base64_encode(random_bytes(12)), 0, 12);
     }
 
 }

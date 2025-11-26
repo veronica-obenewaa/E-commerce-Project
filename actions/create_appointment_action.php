@@ -74,16 +74,44 @@ $bookingClass = new booking_class();
 $booking_id = $bookingClass->createBooking($physician_id, $patient_id, $appointment_datetime, $reason_text, $health_conditions);
 
 if ($booking_id) {
+    // Get physician and patient names for Zoom meeting topic
+    require_once __DIR__ . '/../classes/customer_class.php';
+    $customerClass = new customer_class();
+    $physician = $customerClass->getPhysicianById($physician_id);
+    $patient = $customerClass->getCustomerById($patient_id);
+    
+    $physician_name = $physician['customer_name'] ?? 'Physician';
+    $patient_name = $patient['customer_name'] ?? 'Patient';
+    
+    // Create Zoom meeting
+    $zoom_result = $bookingClass->createZoomMeeting(
+        $booking_id,
+        $appointment_datetime,
+        $physician_name,
+        $patient_name
+    );
+    
     // Clear session booking data
     unset($_SESSION['booking_health_conditions']);
     unset($_SESSION['booking_additional_notes']);
     
-    echo json_encode([
-        'status' => 'success', 
-        'message' => 'Appointment booked successfully!',
-        'booking_id' => $booking_id,
-        'redirect' => '../view/user_dashboard.php'
-    ]);
+    if ($zoom_result['success']) {
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'Appointment booked successfully! Zoom meeting link has been created.',
+            'booking_id' => $booking_id,
+            'zoom_link' => $zoom_result['join_url'],
+            'redirect' => '../view/user_dashboard.php'
+        ]);
+    } else {
+        // Booking created but Zoom meeting failed
+        echo json_encode([
+            'status' => 'partial', 
+            'message' => 'Appointment booked, but Zoom meeting could not be created: ' . ($zoom_result['error'] ?? 'Unknown error'),
+            'booking_id' => $booking_id,
+            'redirect' => '../view/user_dashboard.php'
+        ]);
+    }
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Failed to book appointment. Please try again.']);
 }

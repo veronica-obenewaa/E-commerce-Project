@@ -137,6 +137,31 @@ try {
             font-weight: 700;
             margin-bottom: 1rem;
         }
+        .zoom-link-section {
+            background: linear-gradient(135deg, #e6f7ff 0%, #f0f8ff 100%);
+            border-left: 4px solid #0066cc;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+        .zoom-button {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .zoom-button:hover {
+            background: linear-gradient(135deg, #004499 0%, #003366 100%);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -273,6 +298,35 @@ try {
                                     <?php endif; ?>
                                 </div>
                             </div>
+                            
+                            <!-- Zoom Link Section -->
+                            <?php if (!empty($appointment['zoom_join_url']) && ($appointment['zoom_status'] ?? 'pending') === 'created'): ?>
+                                <div class="zoom-link-section">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="fas fa-video"></i>
+                                            <strong>Zoom Meeting Ready</strong>
+                                            <?php if (!empty($appointment['zoom_password'])): ?>
+                                                <p style="font-size: 0.85rem; margin: 0.5rem 0 0 0; color: #666;">
+                                                    Password: <code><?php echo htmlspecialchars($appointment['zoom_password']); ?></code>
+                                                </p>
+                                            <?php endif; ?>
+                                        </div>
+                                        <a href="<?php echo htmlspecialchars($appointment['zoom_join_url']); ?>" 
+                                           target="_blank" 
+                                           class="zoom-button" 
+                                           title="Join Zoom meeting">
+                                            <i class="fas fa-video"></i> Join Meeting
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php elseif (($appointment['zoom_status'] ?? 'pending') === 'pending'): ?>
+                                <div class="zoom-link-section">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    <strong>Zoom Meeting Link</strong> - Pending creation
+                                    <small class="d-block mt-2" style="color: #666;">The meeting link will be available shortly before your appointment.</small>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>

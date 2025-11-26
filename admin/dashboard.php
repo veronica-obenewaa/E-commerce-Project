@@ -30,6 +30,8 @@ $physician_name = $_SESSION['customer_name'] ?? 'Physician';
     .stat-label { color: #666; font-size: 0.9rem; }
     .btn-primary { background-color: #0b6623; border-color: #0b6623; }
     .btn-primary:hover { background-color: #09531d; border-color: #09531d; }
+    .list-group-item { padding: 1rem; margin-bottom: 1rem; background: white; border-radius: 8px; border: 1px solid #dee2e6; }
+    .zoom-link-badge { display: inline-block; background: linear-gradient(135deg, #0066cc 0%, #004499 100%); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; margin-left: 0.5rem; }
   </style>
 </head>
 <body>
