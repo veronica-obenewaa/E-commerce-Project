@@ -12,6 +12,10 @@ if (!isLoggedIn() || (!isCustomer() && getUserRole() != 2)) {
 
 $customer_id = getUserId();
 $customer_name = $_SESSION['customer_name'] ?? 'User';
+$customer_email = $_SESSION['customer_email'] ?? 'N/A';
+$customer_city = $_SESSION['customer_city'] ?? 'N/A';
+$customer_country = $_SESSION['customer_country'] ?? 'N/A';
+$customer_contact = $_SESSION['customer_contact'] ?? 'N/A';
 
 // Fetch user appointments
 $bookingClass = new booking_class();
@@ -162,6 +166,27 @@ try {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
         }
+        .profile-row {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .profile-row:last-child {
+            border-bottom: none;
+        }
+        .profile-label {
+            font-weight: 600;
+            color: #0b6623;
+            width: 40%;
+        }
+        .profile-value {
+            color: #333;
+        }
+        .modal-header {
+            background: linear-gradient(135deg, #0b6623 0%, #09531d 100%);
+        }
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
     </style>
 </head>
 <body>
@@ -198,19 +223,31 @@ try {
             <!-- Profile Section -->
             <div class="profile-section">
                 <h5 class="section-title"><i class="fas fa-user-circle"></i> Profile Information</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Name:</strong> <?php echo htmlspecialchars($customer_name); ?></p>
-                        <p><strong>Email:</strong> <?php echo htmlspecialchars($_SESSION['customer_email'] ?? 'N/A'); ?></p>
+                <div class="profile-row">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="profile-row"><span class="profile-label">Name:</span> <span class="profile-value"><?php echo htmlspecialchars($customer_name); ?></span></p>
+                            <p class="profile-row"><span class="profile-label">Email:</span> <span class="profile-value"><?php echo htmlspecialchars($customer_email); ?></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="profile-row"><span class="profile-label">Phone:</span> <span class="profile-value"><?php echo htmlspecialchars($customer_contact); ?></span></p>
+                            <p class="profile-row"><span class="profile-label">City:</span> <span class="profile-value"><?php echo htmlspecialchars($customer_city); ?></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="profile-row"><span class="profile-label">Country:</span> <span class="profile-value"><?php echo htmlspecialchars($customer_country); ?></span></p>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <a href="../view/all_product.php" class="btn btn-outline-primary btn-sm me-2">
-                            <i class="fas fa-shopping-cart"></i> View Medications
-                        </a>
-                        <a href="book_consultation.php" class="btn btn-primary btn-sm">
-                            <i class="fas fa-calendar-plus"></i> Book New Consultation
-                        </a>
-                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                    <a href="../view/all_product.php" class="btn btn-outline-primary btn-sm me-2">
+                        <i class="fas fa-shopping-cart"></i> View Medications
+                    </a>
+                    <a href="book_consultation.php" class="btn btn-primary btn-sm">
+                        <i class="fas fa-calendar-plus"></i> Book New Consultation
+                    </a>
                 </div>
             </div>
 
@@ -346,6 +383,98 @@ try {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileLabel" style="color: white;">
+                    <i class="fas fa-edit"></i> Edit Your Profile
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editProfileForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="editName" name="customer_name" 
+                               value="<?php echo htmlspecialchars($customer_name); ?>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email (Read-only)</label>
+                        <input type="email" class="form-control" id="editEmail" 
+                               value="<?php echo htmlspecialchars($customer_email); ?>" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPhone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="editPhone" name="customer_contact" 
+                               value="<?php echo htmlspecialchars($customer_contact); ?>" 
+                               placeholder="+234 800 000 0000" required>
+                        <small class="form-text text-muted">Include country code (e.g., +234, +1)</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCity" class="form-label">City</label>
+                        <input type="text" class="form-control" id="editCity" name="customer_city" 
+                               value="<?php echo htmlspecialchars($customer_city); ?>" 
+                               placeholder="Lagos, New York, etc.">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCountry" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="editCountry" name="customer_country" 
+                               value="<?php echo htmlspecialchars($customer_country); ?>" 
+                               placeholder="Nigeria, USA, etc.">
+                    </div>
+                    <div id="editMessage" class="mb-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('editProfileForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+    
+    const formData = new FormData(this);
+    
+    fetch('../actions/update_customer_profile_action.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        const messageDiv = document.getElementById('editMessage');
+        
+        if (data.status === 'success') {
+            messageDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> ' + data.message + '</div>';
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            messageDiv.innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> ' + data.message + '</div>';
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
+    })
+    .catch(error => {
+        document.getElementById('editMessage').innerHTML = '<div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> An error occurred. Please try again.</div>';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        console.error('Error:', error);
+    });
+});
+</script>
 </body>
 </html>
 

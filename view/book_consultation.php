@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../settings/core.php';
+require_once __DIR__ . '/../classes/notification_class.php';
 include __DIR__ . '/header.php';
 
 // Check if user is logged in
@@ -25,6 +26,14 @@ include __DIR__ . '/header.php';
 //     }
 //     exit;
 // }
+
+// Get unread notifications for logged-in user
+$unread_notifications = [];
+if (isLoggedIn() && isCustomer()) {
+    $customer_id = getUserId();
+    $notificationClass = new notification_class();
+    $unread_notifications = $notificationClass->getUnreadNotifications($customer_id);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,6 +79,49 @@ include __DIR__ . '/header.php';
             color: #666;
             margin-bottom: 2rem;
         }
+        .notification-alert {
+            border-left: 4px solid #dc3545;
+            background-color: #fff5f5;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        .notification-alert.info {
+            border-left-color: #0066cc;
+            background-color: #e6f7ff;
+        }
+        .notification-alert.warning {
+            border-left-color: #ff9800;
+            background-color: #fff8e1;
+        }
+        .notification-alert.success {
+            border-left-color: #4caf50;
+            background-color: #f1f8e9;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .alert-close-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 1.25rem;
+            padding: 0;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        .alert-close-btn:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -80,6 +132,39 @@ include __DIR__ . '/header.php';
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            <!-- Display Cancellation Alerts -->
+            <?php if (!empty($unread_notifications)): ?>
+                <?php foreach ($unread_notifications as $notification): 
+                    if ($notification['notification_type'] === 'cancellation'):
+                ?>
+                        <div class="notification-alert" id="notification-<?php echo $notification['notification_id']; ?>">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: #d32f2f; margin-bottom: 0.5rem;">
+                                        <i class="fas fa-ban"></i> Appointment Cancelled
+                                    </div>
+                                    <div style="color: #555; font-size: 0.95rem;">
+                                        <?php echo htmlspecialchars($notification['message']); ?>
+                                    </div>
+                                    <?php if (!empty($notification['physician_name'])): ?>
+                                        <div style="color: #888; font-size: 0.85rem; margin-top: 0.5rem;">
+                                            <strong>Dr.</strong> <?php echo htmlspecialchars($notification['physician_name']); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                <button type="button" class="alert-close-btn" 
+                                        onclick="dismissNotification(<?php echo $notification['notification_id']; ?>)" 
+                                        title="Dismiss">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                <?php 
+                    endif;
+                endforeach; 
+                ?>
+            <?php endif; ?>
+
             <div class="consultation-card">
                 <h2 class="page-title"><i class="fas fa-calendar-check"></i> Book Your Consultation</h2>
                 <p class="page-subtitle">Please provide your health information to help us connect you with the right physician.</p>
@@ -145,8 +230,46 @@ document.getElementById('consultationForm').addEventListener('submit', function(
     // Form will submit normally if validation passes
     return true;
 });
+
+// Function to dismiss notification and mark as read
+function dismissNotification(notificationId) {
+    const alertElement = document.getElementById('notification-' + notificationId);
+    
+    if (alertElement) {
+        // Fade out animation
+        alertElement.style.opacity = '0';
+        alertElement.style.transition = 'opacity 0.3s ease-out';
+        
+        setTimeout(() => {
+            alertElement.remove();
+            
+            // Mark as read on server
+            fetch('../actions/mark_notification_read.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'notification_id=' + notificationId
+            }).catch(error => console.error('Error marking notification as read:', error));
+        }, 300);
+    }
+}
+
+// Auto-mark notifications as read after 10 seconds if not dismissed
+document.addEventListener('DOMContentLoaded', function() {
+    const notifications = document.querySelectorAll('[id^="notification-"]');
+    notifications.forEach(notification => {
+        setTimeout(() => {
+            const notificationId = notification.id.replace('notification-', '');
+            if (document.getElementById('notification-' + notificationId)) {
+                dismissNotification(notificationId);
+            }
+        }, 10000); // 10 seconds
+    });
+});
 </script>
 
 </body>
 </html>
+
 

@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../settings/core.php';
 require_once __DIR__ . '/../controllers/booking_controller.php';
+require_once __DIR__ . '/../classes/booking_class.php';
+require_once __DIR__ . '/../classes/notification_class.php';
 
 header('Content-Type: application/json');
 
@@ -27,6 +29,26 @@ if ($booking_id <= 0 || !in_array($status, $allowed)) {
 
 $ctrl = new BookingController();
 $result = $ctrl->updateBookingStatus($booking_id, $status);
+
+// If status is cancelled, create notification for patient
+if ($result['status'] === 'success' && $status === 'cancelled') {
+    $bookingClass = new booking_class();
+    $booking = $bookingClass->getBookingWithZoom($booking_id);
+    
+    if ($booking) {
+        $notificationClass = new notification_class();
+        $physician_id = $booking['physician_id'];
+        $patient_id = $booking['patient_id'];
+        $appointment_datetime = $booking['appointment_datetime'];
+        
+        $message = 'Your consultation appointment scheduled for ' . 
+                   date('F j, Y \a\t g:i A', strtotime($appointment_datetime)) . 
+                   ' has been cancelled by the physician.';
+        
+        // Create notification
+        $notificationClass->createNotification($booking_id, $patient_id, $physician_id, 'cancellation', $message);
+    }
+}
 
 echo json_encode($result);
 exit;
