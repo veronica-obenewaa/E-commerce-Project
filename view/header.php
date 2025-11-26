@@ -131,7 +131,7 @@
   }
   
   .logout-btn {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    /* background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); */
     color: #ffffff;
     padding: 0.6rem 1.3rem;
     border-radius: 25px;
@@ -147,7 +147,8 @@
   }
   
   .logout-btn:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
   }
@@ -223,16 +224,16 @@
             <i class="fas fa-user-doctor nav-icon"></i> Contact Physician
           </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#about">
             <i class="fas fa-circle-info nav-icon"></i> About
           </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#contact">
             <i class="fas fa-envelope nav-icon"></i> Contact Us
           </a>
-        </li>
+        </li> -->
         
         <?php if (!isLoggedIn()): ?>
           <li class="nav-item">
