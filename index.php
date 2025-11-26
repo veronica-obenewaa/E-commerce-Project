@@ -432,33 +432,43 @@ $brands = $brandCtrl->fetch_brand_ctr(getUserId())['data'] ?? [];
   </div>
 </section>
 
-<!-- Filter Section -->
+<!-- About Us & Contact Us Section -->
 <div class="filter-section">
   <div class="container">
-    <h4 class="filter-title text-center">Filter Medications</h4>
-    <form class="row g-4" action="view/product_search_result.php" method="get">
-      <div class="col-md-4">
-        <select class="form-select" name="cat_id">
-          <option value="0">All Categories</option>
-          <?php foreach ($categories as $cat): ?>
-            <option value="<?= $cat['cat_id'] ?>"><?= htmlspecialchars($cat['cat_name']) ?></option>
-          <?php endforeach; ?>
-        </select>
+    <h4 class="filter-title text-center mb-5">Explore Med-ePharma</h4>
+    <div class="row g-4">
+      <!-- About Us Card -->
+      <div class="col-md-6">
+        <div style="background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.07); height: 100%; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 12px 24px rgba(0,0,0,0.1)'; this.style.transform='translateY(-5px)'" onmouseout="this.style.boxShadow='0 4px 6px rgba(0,0,0,0.07)'; this.style.transform='translateY(0)'">
+          <div style="color: #10b981; font-size: 2.5rem; margin-bottom: 1rem;">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <h5 style="color: #1f2937; font-weight: 800; margin-bottom: 1rem; font-size: 1.5rem;">About Med-ePharma</h5>
+          <p style="color: #6b7280; line-height: 1.6; margin-bottom: 1.5rem;">
+            Learn about our mission to revolutionize healthcare access in Ghana. Discover how Med-ePharma is connecting patients with certified pharmaceutical suppliers and licensed physicians.
+          </p>
+          <a href="view/about_us.php" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; padding: 0.875rem 1.75rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(5, 150, 105, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(5, 150, 105, 0.3)'">
+            <i class="fas fa-arrow-right"></i> Learn More
+          </a>
+        </div>
       </div>
-      <div class="col-md-4">
-        <select class="form-select" name="brand_id">
-          <option value="0">All Brands</option>
-          <?php foreach ($brands as $b): ?>
-            <option value="<?= $b['brand_id'] ?>"><?= htmlspecialchars($b['brand_name']) ?></option>
-          <?php endforeach; ?>
-        </select>
+
+      <!-- Contact Us Card -->
+      <div class="col-md-6">
+        <div style="background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.07); height: 100%; transition: all 0.3s ease;" onmouseover="this.style.boxShadow='0 12px 24px rgba(0,0,0,0.1)'; this.style.transform='translateY(-5px)'" onmouseout="this.style.boxShadow='0 4px 6px rgba(0,0,0,0.07)'; this.style.transform='translateY(0)'">
+          <div style="color: #10b981; font-size: 2.5rem; margin-bottom: 1rem;">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <h5 style="color: #1f2937; font-weight: 800; margin-bottom: 1rem; font-size: 1.5rem;">Get In Touch</h5>
+          <p style="color: #6b7280; line-height: 1.6; margin-bottom: 1.5rem;">
+            Have questions or need support? Our friendly team is here to help. Reach out to us and we'll respond as quickly as possible.
+          </p>
+          <a href="view/contact_us.php" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; padding: 0.875rem 1.75rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(5, 150, 105, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(5, 150, 105, 0.3)'">
+            <i class="fas fa-arrow-right"></i> Contact Us
+          </a>
+        </div>
       </div>
-      <div class="col-md-4 d-grid">
-        <button type="submit" class="btn-filter">
-          <i class="fas fa-search"></i> Apply Filters
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
 </div>
 
