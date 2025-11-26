@@ -16,7 +16,7 @@ class ZoomAPI {
     }
 
     /**
-     * Get or refresh access token from Zoom
+     * Get or refresh access token from Zoom using OAuth
      */
     private function getAccessToken() {
         // Check if token is still valid
@@ -24,30 +24,44 @@ class ZoomAPI {
             return $this->access_token;
         }
 
-        $auth = base64_encode($this->client_id . ':' . $this->client_secret);
+        // For Server-to-Server OAuth, send credentials in Authorization header (Base64)
+        $auth_string = base64_encode($this->client_id . ':' . $this->client_secret);
         
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => ZOOM_API_BASE_URL,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => [
-                'Authorization: Basic ' . $auth,
+                'Authorization: Basic ' . $auth_string,
                 'Content-Type: application/x-www-form-urlencoded'
             ],
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => 'grant_type=account_credentials&account_id=' . $this->account_id
+            CURLOPT_POSTFIELDS => http_build_query([
+                'grant_type' => 'account_credentials',
+                'account_id' => $this->account_id
+            ]),
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_SSL_VERIFYPEER => true
         ]);
 
         $response = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
         curl_close($ch);
 
+        if ($curl_error) {
+            error_log("Zoom API cURL Error: " . $curl_error);
+            return false;
+        }
+
         if ($http_code !== 200) {
+            error_log("Zoom API Error - HTTP $http_code: " . $response);
             return false;
         }
 
         $data = json_decode($response, true);
         if (!isset($data['access_token'])) {
+            error_log("Zoom API Error: No access token in response. " . $response);
             return false;
         }
 
@@ -103,15 +117,24 @@ class ZoomAPI {
                 'Content-Type: application/json'
             ],
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => json_encode($payload)
+            CURLOPT_POSTFIELDS => json_encode($payload),
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_SSL_VERIFYPEER => true
         ]);
 
         $response = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
         curl_close($ch);
+
+        if ($curl_error) {
+            error_log("Zoom Meeting Create cURL Error: " . $curl_error);
+            return ['success' => false, 'error' => 'Network error: ' . $curl_error];
+        }
 
         if ($http_code !== 201) {
             $error_data = json_decode($response, true);
+            error_log("Zoom Meeting Create Error - HTTP $http_code: " . $response);
             return [
                 'success' => false,
                 'error' => $error_data['message'] ?? 'Failed to create Zoom meeting',

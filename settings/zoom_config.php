@@ -5,8 +5,8 @@
  */
 
 // Zoom API Credentials
-define('ZOOM_CLIENT_ID', getenv('ZOOM_CLIENT_ID') ?: 'AjNXZCo3SwWLMiwrdyJHA');
-define('ZOOM_CLIENT_SECRET', getenv('ZOOM_CLIENT_SECRET') ?: 'c1RT51ZP6W38daJRW6oGCKHbSgaKWVC4');
+define('ZOOM_CLIENT_ID', getenv('ZOOM_CLIENT_ID') ?: 'engGtFqRmiwcSxN64azvA');
+define('ZOOM_CLIENT_SECRET', getenv('ZOOM_CLIENT_SECRET') ?: 'dna3AQRTc2nqVzb6CtF20uwkkwqV08hF');
 define('ZOOM_ACCOUNT_ID', getenv('ZOOM_ACCOUNT_ID') ?: 'ETka8FtcS8KsScZN3EOHJw');
 
 // Zoom API Endpoints
