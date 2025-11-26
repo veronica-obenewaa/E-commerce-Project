@@ -37,11 +37,13 @@ class ZoomAPI {
                 'Content-Type: application/x-www-form-urlencoded'
             ],
             CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => "",
             CURLOPT_TIMEOUT => 30,
             CURLOPT_SSL_VERIFYPEER => true
         ]);
 
         $response = curl_exec($ch);
+        error_log("ZOOM TOKEN RAW RESPONSE: " . $response);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curl_error = curl_error($ch);
         curl_close($ch);
