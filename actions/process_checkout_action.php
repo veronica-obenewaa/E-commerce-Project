@@ -54,8 +54,11 @@ if (!$payment_id) {
     echo json_encode(['status'=>'error','message'=>'Payment record failed']); exit();
 }
 
-// empty cart
-$cartCtrl->empty_cart_ctr($customer_id);
+// empty cart after successful checkout
+$cartEmptied = $cartCtrl->empty_cart_ctr($customer_id);
+if (!$cartEmptied) {
+    error_log("Warning: Failed to empty cart for customer: $customer_id");
+}
 
 // return success with order reference
 echo json_encode(['status'=>'success','message'=>'Checkout complete','order_id'=>$order_id,'invoice_no'=>$invoice_no]);

@@ -71,7 +71,7 @@ error_log("Reference from URL: $reference");
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
     </style>
 </head>
-<body>
+</body>
     <div class="container">
         <div class="spinner" id="spinner"></div>
         
