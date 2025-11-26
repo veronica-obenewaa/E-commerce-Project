@@ -12,9 +12,9 @@ define('ZOOM_ACCOUNT_ID', getenv('ZOOM_ACCOUNT_ID') ?: 'ETka8FtcS8KsScZN3EOHJw')
 // Zoom API Endpoints
 //define('ZOOM_API_BASE_URL', 'https://zoom.us/oauth/token');
 define('ZOOM_API_BASE_URL', 'https://zoom.us/oauth/token?grant_type=account_credentials&account_id=ETka8FtcS8KsScZN3EOHJw');
-define('ZOOM_API_CREATE_MEETING', 'https://api.zoom.us/v2/users/me/meetings');
-define('ZOOM_API_UPDATE_MEETING', 'https://api.zoom.us/v2/meetings');
-define('ZOOM_API_DELETE_MEETING', 'https://api.zoom.us/v2/meetings');
+define('ZOOM_API_CREATE_MEETING', 'https://api-us.zoom.us/v2/users/me/meetings');
+define('ZOOM_API_UPDATE_MEETING', 'https://api-us.zoom.us/v2/meetings');
+define('ZOOM_API_DELETE_MEETING', 'https://api-us.zoom.us/v2/meetings');
 
 // Default meeting settings
 define('ZOOM_MEETING_DURATION', 60); // in minutes
