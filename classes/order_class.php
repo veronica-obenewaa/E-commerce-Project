@@ -16,8 +16,8 @@ class order_class extends db_connection {
      * @param string $order_status - Order status (e.g., 'Pending', 'Completed')
      * @return int|false - Returns order_id if successful, false if failed
      */
-   public function create_order($customer_id, $invoice_no, $order_date, $order_status) {
-    error_log("=== CREATE_ORDER METHOD CALLED ===");
+    public function create_order($customer_id, $invoice_no, $order_date, $order_status) {
+        error_log("=== CREATE_ORDER METHOD CALLED ===");
         try {
             // Get connection first
             $conn = $this->db_conn();
@@ -27,23 +27,24 @@ class order_class extends db_connection {
                 return false;
             }
             
-            $customer_id = (int)$customer_id;
-            $invoice_no = mysqli_real_escape_string($conn, $invoice_no);
-            $order_date = mysqli_real_escape_string($conn, $order_date);
-            $order_status = mysqli_real_escape_string($conn, $order_status);
+            // Use prepared statement for security
+            $stmt = $conn->prepare("INSERT INTO orders (customer_id, invoice_no, order_date, order_status) VALUES (?, ?, ?, ?)");
             
-            $sql = "INSERT INTO orders (customer_id, invoice_no, order_date, order_status) 
-                    VALUES ($customer_id, '$invoice_no', '$order_date', '$order_status')";
+            if (!$stmt) {
+                error_log("Prepare failed: " . $conn->error);
+                return false;
+            }
             
-            error_log("Executing SQL: $sql");
+            // Bind parameters
+            $stmt->bind_param("isss", $customer_id, $invoice_no, $order_date, $order_status);
             
-            // Execute directly on the connection
-            $result = mysqli_query($conn, $sql);
+            error_log("Executing INSERT with values: customer_id=$customer_id, invoice_no=$invoice_no, order_date=$order_date, order_status=$order_status");
             
-            if ($result) {
-                // Get insert ID immediately from the same connection
-                $order_id = mysqli_insert_id($conn);
+            // Execute the statement
+            if ($stmt->execute()) {
+                $order_id = $stmt->insert_id;
                 error_log("Order created successfully with ID: $order_id");
+                $stmt->close();
                 
                 if ($order_id > 0) {
                     return $order_id;
@@ -52,8 +53,8 @@ class order_class extends db_connection {
                     return false;
                 }
             } else {
-                $error = mysqli_error($conn);
-                error_log("Order creation failed. MySQL error: " . $error);
+                error_log("Order creation failed. MySQL error: " . $stmt->error);
+                $stmt->close();
                 return false;
             }
             
@@ -72,16 +73,36 @@ class order_class extends db_connection {
      */
     public function add_order_details($order_id, $product_id, $qty) {
         try {
-            $order_id = (int)$order_id;
-            $product_id = (int)$product_id;
-            $qty = (int)$qty;
+            $conn = $this->db_conn();
             
-            $sql = "INSERT INTO orderdetails (order_id, product_id, qty) 
-                    VALUES ($order_id, $product_id, $qty)";
+            if (!$conn) {
+                error_log("Failed to get database connection");
+                return false;
+            }
+            
+            // Use prepared statement for security
+            $stmt = $conn->prepare("INSERT INTO orderdetails (order_id, product_id, qty) VALUES (?, ?, ?)");
+            
+            if (!$stmt) {
+                error_log("Prepare failed: " . $conn->error);
+                return false;
+            }
+            
+            // Bind parameters
+            $stmt->bind_param("iii", $order_id, $product_id, $qty);
             
             error_log("Adding order detail - Order: $order_id, Product: $product_id, Qty: $qty");
             
-            return $this->db_write_query($sql);
+            // Execute the statement
+            if ($stmt->execute()) {
+                error_log("Order detail added successfully");
+                $stmt->close();
+                return true;
+            } else {
+                error_log("Failed to add order detail. MySQL error: " . $stmt->error);
+                $stmt->close();
+                return false;
+            }
             
         } catch (Exception $e) {
             error_log("Error adding order details: " . $e->getMessage());
@@ -105,47 +126,51 @@ class order_class extends db_connection {
     public function record_payment($amount, $customer_id, $order_id, $currency, $payment_date, $payment_method = 'direct', $transaction_ref = null, $authorization_code = null, $payment_channel = null) {
         error_log("=== RECORD_PAYMENT METHOD CALLED ===");
         try {
+            $conn = $this->db_conn();
+            
+            if (!$conn) {
+                error_log("Failed to get database connection");
+                return false;
+            }
+            
+            // Use prepared statement for security and flexibility
+            $stmt = $conn->prepare("INSERT INTO payment (amt, customer_id, order_id, currency, payment_date, payment_method, transaction_ref, authorization_code, payment_channel) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            
+            if (!$stmt) {
+                error_log("Prepare failed: " . $conn->error);
+                return false;
+            }
+            
+            // Convert types for binding
             $amount = (float)$amount;
             $customer_id = (int)$customer_id;
             $order_id = (int)$order_id;
-            $currency = mysqli_real_escape_string($this->db_conn(), $currency);
-            $payment_date = mysqli_real_escape_string($this->db_conn(), $payment_date);
-            $payment_method = mysqli_real_escape_string($this->db_conn(), $payment_method);
-            $transaction_ref = $transaction_ref ? mysqli_real_escape_string($this->db_conn(), $transaction_ref) : null;
-            $authorization_code = $authorization_code ? mysqli_real_escape_string($this->db_conn(), $authorization_code) : null;
-            $payment_channel = $payment_channel ? mysqli_real_escape_string($this->db_conn(), $payment_channel) : null;
             
-            // Build SQL with optional fields
-            $columns = "(amt, customer_id, order_id, currency, payment_date, payment_method";
-            $values = "($amount, $customer_id, $order_id, '$currency', '$payment_date', '$payment_method'";
+            // Bind parameters
+            $stmt->bind_param("diisissss", 
+                $amount, 
+                $customer_id, 
+                $order_id, 
+                $currency, 
+                $payment_date, 
+                $payment_method, 
+                $transaction_ref, 
+                $authorization_code, 
+                $payment_channel
+            );
             
-            if ($transaction_ref) {
-                $columns .= ", transaction_ref";
-                $values .= ", '$transaction_ref'";
-            }
-            if ($authorization_code) {
-                $columns .= ", authorization_code";
-                $values .= ", '$authorization_code'";
-            }
-            if ($payment_channel) {
-                $columns .= ", payment_channel";
-                $values .= ", '$payment_channel'";
-            }
+            error_log("Recording payment - Amount: $amount, Customer: $customer_id, Order: $order_id, Currency: $currency");
             
-            $columns .= ")";
-            $values .= ")";
-            
-            $sql = "INSERT INTO payment $columns VALUES $values";
-            
-            error_log("Executing SQL: $sql");
-            
-            if ($this->db_write_query($sql)) {
-                $payment_id = $this->last_insert_id();
+            // Execute the statement
+            if ($stmt->execute()) {
+                $payment_id = $stmt->insert_id;
                 error_log("Payment recorded successfully with ID: $payment_id");
-                return $payment_id;
+                $stmt->close();
+                return $payment_id > 0 ? $payment_id : false;
             } else {
-                $error = mysqli_error($this->db_conn());
-                error_log("Payment recording failed. MySQL error: " . $error);
+                error_log("Payment recording failed. MySQL error: " . $stmt->error);
+                $stmt->close();
                 return false;
             }
             
@@ -255,14 +280,36 @@ class order_class extends db_connection {
      */
     public function update_order_status($order_id, $order_status) {
         try {
-            $order_id = (int)$order_id;
-            $order_status = mysqli_real_escape_string($this->db_conn(), $order_status);
+            $conn = $this->db_conn();
             
-            $sql = "UPDATE orders SET order_status = '$order_status' WHERE order_id = $order_id";
+            if (!$conn) {
+                error_log("Failed to get database connection");
+                return false;
+            }
+            
+            // Use prepared statement for security
+            $stmt = $conn->prepare("UPDATE orders SET order_status = ? WHERE order_id = ?");
+            
+            if (!$stmt) {
+                error_log("Prepare failed: " . $conn->error);
+                return false;
+            }
+            
+            // Bind parameters
+            $stmt->bind_param("si", $order_status, $order_id);
             
             error_log("Updating order status: $order_id to $order_status");
             
-            return $this->db_write_query($sql);
+            // Execute the statement
+            if ($stmt->execute()) {
+                error_log("Order status updated successfully");
+                $stmt->close();
+                return true;
+            } else {
+                error_log("Failed to update order status. MySQL error: " . $stmt->error);
+                $stmt->close();
+                return false;
+            }
             
         } catch (Exception $e) {
             error_log("Error updating order status: " . $e->getMessage());
