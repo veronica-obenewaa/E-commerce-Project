@@ -17,15 +17,11 @@ class order_class extends db_connection {
      * @return int|false - Returns order_id if successful, false if failed
      */
     public function create_order($customer_id, $invoice_no, $order_date, $order_status) {
-        error_log("=== CREATE_ORDER METHOD CALLED ===");
-        error_log("Parameters - customer_id: $customer_id (type: " . gettype($customer_id) . "), invoice_no: $invoice_no, order_date: $order_date, order_status: $order_status");
-        
         try {
             // Get connection first
             $conn = $this->db_conn();
             
             if (!$conn) {
-                error_log("Failed to get database connection");
                 return false;
             }
             
@@ -36,39 +32,31 @@ class order_class extends db_connection {
             $stmt = $conn->prepare("INSERT INTO orders (customer_id, invoice_no, order_date, order_status) VALUES (?, ?, ?, ?)");
             
             if (!$stmt) {
-                error_log("Prepare failed: " . $conn->error);
                 return false;
             }
             
             // Bind parameters - ensure types match
             if (!$stmt->bind_param("isss", $customer_id, $invoice_no, $order_date, $order_status)) {
-                error_log("Bind param failed: " . $stmt->error);
                 $stmt->close();
                 return false;
             }
             
-            error_log("Executing INSERT with values: customer_id=$customer_id, invoice_no=$invoice_no, order_date=$order_date, order_status=$order_status");
-            
             // Execute the statement
             if (!$stmt->execute()) {
-                error_log("Statement execution failed. MySQL error: " . $stmt->error);
                 $stmt->close();
                 return false;
             }
             
             $order_id = $stmt->insert_id;
-            error_log("Order created successfully with ID: $order_id");
             $stmt->close();
             
             if ($order_id > 0) {
                 return $order_id;
             } else {
-                error_log("Insert succeeded but insert_id is 0 or empty");
                 return false;
             }
             
         } catch (Exception $e) {
-            error_log("Exception in create_order: " . $e->getMessage());
             return false;
         }
     }

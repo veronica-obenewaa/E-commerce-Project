@@ -11,7 +11,7 @@ require_once '../settings/paystack_config.php';
 require_once '../controllers/order_controller.php';
 require_once '../controllers/cart_controller.php';
 
-error_log("=== PAYSTACK CALLBACK/VERIFICATION ===");
+$debug_info = [];  // Collect debug info to return in response
 
 // Check if user is logged in
 if (!isLoggedIn()) {
@@ -22,16 +22,25 @@ if (!isLoggedIn()) {
     exit();
 }
 
+$customer_id = getUserId();
+$debug_info['customer_id'] = $customer_id;
+$debug_info['session_active'] = true;
+
 // Get verification reference from POST data
 $input = json_decode(file_get_contents('php://input'), true);
 $reference = isset($input['reference']) ? trim($input['reference']) : null;
 $cart_items = isset($input['cart_items']) ? $input['cart_items'] : null;
 $total_amount = isset($input['total_amount']) ? floatval($input['total_amount']) : 0;
 
+$debug_info['reference'] = $reference;
+$debug_info['cart_items_from_client'] = $cart_items;
+$debug_info['total_amount_from_client'] = $total_amount;
+
 if (!$reference) {
     echo json_encode([
         'status' => 'error',
-        'message' => 'No payment reference provided'
+        'message' => 'No payment reference provided',
+        'debug' => $debug_info
     ]);
     exit();
 }
@@ -94,9 +103,12 @@ try {
     
     // Ensure we have expected total server-side (calculate from cart if frontend didn't send it)
     require_once '../controllers/cart_controller.php';
+    
     if (!$cart_items || count($cart_items) == 0) {
         $cart_controller = new cart_controller();
-        $cart_items = $cart_controller->get_user_cart_ctr(getUserId());
+        $cart_items = $cart_controller->get_user_cart_ctr($customer_id);
+        $debug_info['cart_fetched_from_db'] = true;
+        $debug_info['cart_items_count'] = $cart_items ? count($cart_items) : 0;
     }
 
     $calculated_total = 0.00;
@@ -108,44 +120,54 @@ try {
                 $calculated_total += floatval($ci['product_price']) * intval($ci['qty']);
             }
         }
+        $debug_info['calculated_total'] = $calculated_total;
+    } else {
+        $debug_info['cart_status'] = 'EMPTY';
+        $debug_info['cart_items'] = $cart_items;
     }
 
     if ($total_amount <= 0) {
         $total_amount = round($calculated_total, 2);
     }
 
-    error_log("Expected order total (server): $total_amount GHS");
+    $debug_info['final_total_amount'] = $total_amount;
+
+    // Check if cart is empty
+    if ($calculated_total <= 0 || !$cart_items || count($cart_items) == 0) {
+        echo json_encode([
+            'status' => 'error',
+            'verified' => false,
+            'message' => 'Cart is empty. Cannot create order without items.',
+            'debug' => $debug_info
+        ]);
+        exit();
+    }
 
     // Verify amount matches (with 1 pesewa tolerance)
     if (abs($amount_paid - $total_amount) > 0.01) {
-        error_log("Amount mismatch - Expected: $total_amount GHS, Paid: $amount_paid GHS");
+        $debug_info['amount_mismatch'] = [
+            'expected' => $total_amount,
+            'paid' => $amount_paid,
+            'difference' => abs($amount_paid - $total_amount)
+        ];
 
         echo json_encode([
             'status' => 'error',
             'message' => 'Payment amount does not match order total',
             'verified' => false,
             'expected' => number_format($total_amount, 2),
-            'paid' => number_format($amount_paid, 2)
+            'paid' => number_format($amount_paid, 2),
+            'debug' => $debug_info
         ]);
         exit();
     }
     
     // Payment is verified! Now create the order in our system
-    require_once '../controllers/cart_controller.php';
     require_once '../controllers/order_controller.php';
     require_once '../settings/db_class.php';
     
-    $customer_id = getUserId();
+    // Cart items already fetched above, create cart controller for empty operation
     $cart_controller = new cart_controller();
-    
-    // Get fresh cart items if not provided
-    if (!$cart_items || count($cart_items) == 0) {
-        $cart_items = $cart_controller->get_user_cart_ctr($customer_id);
-    }
-    
-    if (!$cart_items || count($cart_items) == 0) {
-        throw new Exception("Cart is empty");
-    }
     
     // Create database connection for transaction
     $db = new db_connection();
@@ -160,19 +182,19 @@ try {
         $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
         $order_date = date('Y-m-d');
         
-        error_log("Attempting to create order - Customer: $customer_id, Invoice: $invoice_no");
+        $debug_info['invoice_generated'] = $invoice_no;
         
         // Create order in database
         $order_id = create_order_ctr($customer_id, $invoice_no, $order_date, 'Paid');
         
-        error_log("Order creation result - order_id: " . var_export($order_id, true));
+        $debug_info['order_creation_result'] = $order_id;
         
         if (!$order_id) {
-            error_log("Order creation failed for customer: $customer_id");
+            $debug_info['order_creation_failed'] = true;
             throw new Exception("Failed to create order in database");
         }
         
-        error_log("Order created - ID: $order_id, Invoice: $invoice_no");
+        $debug_info['order_id'] = $order_id;
         
         // Add order details for each cart item
         foreach ($cart_items as $item) {
@@ -181,8 +203,7 @@ try {
             $quantity = $item['qty'] ?? 0;
             
             if (!$product_id || $quantity <= 0) {
-                error_log("Invalid cart item: " . json_encode($item));
-                throw new Exception("Invalid cart item data");
+                throw new Exception("Invalid cart item data: " . json_encode($item));
             }
             
             $detail_result = add_order_details_ctr($order_id, $product_id, $quantity);
@@ -191,7 +212,10 @@ try {
                 throw new Exception("Failed to add order details for product: {$product_id}");
             }
             
-            error_log("Order detail added - Product: {$product_id}, Qty: {$quantity}");
+            $debug_info['order_details_added'][] = [
+                'product_id' => $product_id,
+                'quantity' => $quantity
+            ];
         }
         
         // Record payment in database
@@ -211,7 +235,7 @@ try {
             throw new Exception("Failed to record payment");
         }
         
-        error_log("Payment recorded - ID: $payment_id, Reference: $reference");
+        $debug_info['payment_id'] = $payment_id;
         
         // Empty the customer's cart
         $empty_result = $cart_controller->empty_cart_ctr($customer_id);
@@ -220,11 +244,10 @@ try {
             throw new Exception("Failed to empty cart");
         }
         
-        error_log("Cart emptied for customer: $customer_id");
+        $debug_info['cart_emptied'] = true;
         
         // Commit database transaction
         mysqli_commit($conn);
-        error_log("Database transaction committed successfully");
         
         // Clear session payment data
         unset($_SESSION['paystack_ref']);
@@ -247,24 +270,25 @@ try {
             'item_count' => count($cart_items),
             'payment_reference' => $reference,
             'payment_method' => ucfirst($payment_method),
-            'customer_email' => $customer_email
+            'customer_email' => $customer_email,
+            'debug' => $debug_info
         ]);
         
     } catch (Exception $e) {
         // Rollback database transaction on error
         mysqli_rollback($conn);
-        error_log("Database transaction rolled back: " . $e->getMessage());
+        $debug_info['transaction_rolled_back'] = true;
+        $debug_info['error_details'] = $e->getMessage();
         
         throw $e;
     }
     
 } catch (Exception $e) {
-    error_log("Error in Paystack callback/verification: " . $e->getMessage());
-    
     echo json_encode([
         'status' => 'error',
         'verified' => false,
-        'message' => 'Payment processing error: ' . $e->getMessage()
+        'message' => 'Payment processing error: ' . $e->getMessage(),
+        'debug' => $debug_info
     ]);
 }
 ?>
