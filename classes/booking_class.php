@@ -7,7 +7,9 @@ class booking_class extends db_connection {
     // Get bookings for a physician with optional patient details
     public function getBookingsByPhysician($physician_id) {
         $conn = $this->db_conn();
-        $sql = "SELECT pb.booking_id, pb.physician_id, pb.patient_id, pb.appointment_datetime, pb.reason_text, pb.status, pb.created_at, c.customer_name as patient_name, c.customer_contact as patient_contact
+        $sql = "SELECT pb.booking_id, pb.physician_id, pb.patient_id, pb.appointment_datetime, pb.reason_text, pb.health_conditions, pb.status, pb.created_at, 
+                pb.zoom_meeting_id, pb.zoom_join_url, pb.zoom_start_url, pb.zoom_password, pb.zoom_created_at, pb.zoom_status,
+                c.customer_name as patient_name, c.customer_contact as patient_contact
                 FROM physician_bookings pb
                 LEFT JOIN customer c ON c.customer_id = pb.patient_id
                 WHERE pb.physician_id = ?
@@ -49,6 +51,7 @@ class booking_class extends db_connection {
     public function getBookingsByPatient($patient_id) {
         $conn = $this->db_conn();
         $sql = "SELECT pb.booking_id, pb.physician_id, pb.patient_id, pb.appointment_datetime, pb.reason_text, pb.health_conditions, pb.status, pb.created_at,
+                pb.zoom_meeting_id, pb.zoom_join_url, pb.zoom_start_url, pb.zoom_password, pb.zoom_created_at, pb.zoom_status,
                 c.customer_name as physician_name, c.hospital_name, c.customer_city, c.customer_country, c.customer_contact as physician_contact
                 FROM physician_bookings pb
                 LEFT JOIN customer c ON c.customer_id = pb.physician_id
