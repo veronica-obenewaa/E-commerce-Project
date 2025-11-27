@@ -22,29 +22,34 @@ class order_class extends db_connection {
             $conn = $this->db_conn();
             
             if (!$conn) {
-                return false;
+                throw new Exception("Database connection failed");
             }
             
             // Ensure customer_id is an integer
             $customer_id = (int)$customer_id;
             
+            if (!$customer_id) {
+                throw new Exception("Invalid customer_id: " . var_export($customer_id, true));
+            }
+            
             // Use prepared statement for security
             $stmt = $conn->prepare("INSERT INTO orders (customer_id, invoice_no, order_date, order_status) VALUES (?, ?, ?, ?)");
             
             if (!$stmt) {
-                return false;
+                throw new Exception("Statement prepare failed: " . $conn->error);
             }
             
             // Bind parameters - ensure types match
             if (!$stmt->bind_param("isss", $customer_id, $invoice_no, $order_date, $order_status)) {
                 $stmt->close();
-                return false;
+                throw new Exception("Bind parameters failed: " . $stmt->error);
             }
             
             // Execute the statement
             if (!$stmt->execute()) {
+                $error_msg = "Execute failed: " . $stmt->error;
                 $stmt->close();
-                return false;
+                throw new Exception($error_msg);
             }
             
             $order_id = $stmt->insert_id;
@@ -53,11 +58,11 @@ class order_class extends db_connection {
             if ($order_id > 0) {
                 return $order_id;
             } else {
-                return false;
+                throw new Exception("Insert succeeded but no insert_id returned");
             }
             
         } catch (Exception $e) {
-            return false;
+            throw $e;
         }
     }
     
@@ -73,37 +78,31 @@ class order_class extends db_connection {
             $conn = $this->db_conn();
             
             if (!$conn) {
-                error_log("Failed to get database connection");
-                return false;
+                throw new Exception("Database connection failed");
             }
             
             // Use prepared statement for security
             $stmt = $conn->prepare("INSERT INTO orderdetails (order_id, product_id, qty) VALUES (?, ?, ?)");
             
             if (!$stmt) {
-                error_log("Prepare failed: " . $conn->error);
-                return false;
+                throw new Exception("Statement prepare failed: " . $conn->error);
             }
             
             // Bind parameters
             $stmt->bind_param("iii", $order_id, $product_id, $qty);
             
-            error_log("Adding order detail - Order: $order_id, Product: $product_id, Qty: $qty");
-            
             // Execute the statement
             if ($stmt->execute()) {
-                error_log("Order detail added successfully");
                 $stmt->close();
                 return true;
             } else {
-                error_log("Failed to add order detail. MySQL error: " . $stmt->error);
+                $error_msg = "Execute failed: " . $stmt->error;
                 $stmt->close();
-                return false;
+                throw new Exception($error_msg);
             }
             
         } catch (Exception $e) {
-            error_log("Error adding order details: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
     
@@ -121,13 +120,11 @@ class order_class extends db_connection {
      * @return int|false - Returns payment_id if successful, false if failed
      */
     public function record_payment($amount, $customer_id, $order_id, $currency, $payment_date, $payment_method = 'direct', $transaction_ref = null, $authorization_code = null, $payment_channel = null) {
-        error_log("=== RECORD_PAYMENT METHOD CALLED ===");
         try {
             $conn = $this->db_conn();
             
             if (!$conn) {
-                error_log("Failed to get database connection");
-                return false;
+                throw new Exception("Database connection failed");
             }
             
             // Use prepared statement for security and flexibility
@@ -135,8 +132,7 @@ class order_class extends db_connection {
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             
             if (!$stmt) {
-                error_log("Prepare failed: " . $conn->error);
-                return false;
+                throw new Exception("Statement prepare failed: " . $conn->error);
             }
             
             // Convert types for binding
@@ -145,7 +141,7 @@ class order_class extends db_connection {
             $order_id = (int)$order_id;
             
             // Bind parameters
-            $stmt->bind_param("diisissss", 
+            if (!$stmt->bind_param("diisissss", 
                 $amount, 
                 $customer_id, 
                 $order_id, 
@@ -155,25 +151,29 @@ class order_class extends db_connection {
                 $transaction_ref, 
                 $authorization_code, 
                 $payment_channel
-            );
-            
-            error_log("Recording payment - Amount: $amount, Customer: $customer_id, Order: $order_id, Currency: $currency");
+            )) {
+                $stmt->close();
+                throw new Exception("Bind parameters failed: " . $stmt->error);
+            }
             
             // Execute the statement
-            if ($stmt->execute()) {
-                $payment_id = $stmt->insert_id;
-                error_log("Payment recorded successfully with ID: $payment_id");
+            if (!$stmt->execute()) {
+                $error_msg = "Execute failed: " . $stmt->error;
                 $stmt->close();
-                return $payment_id > 0 ? $payment_id : false;
+                throw new Exception($error_msg);
+            }
+            
+            $payment_id = $stmt->insert_id;
+            $stmt->close();
+            
+            if ($payment_id > 0) {
+                return $payment_id;
             } else {
-                error_log("Payment recording failed. MySQL error: " . $stmt->error);
-                $stmt->close();
-                return false;
+                throw new Exception("Insert succeeded but no insert_id returned");
             }
             
         } catch (Exception $e) {
-            error_log("Error recording payment: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
     
@@ -280,37 +280,34 @@ class order_class extends db_connection {
             $conn = $this->db_conn();
             
             if (!$conn) {
-                error_log("Failed to get database connection");
-                return false;
+                throw new Exception("Database connection failed");
             }
             
             // Use prepared statement for security
             $stmt = $conn->prepare("UPDATE orders SET order_status = ? WHERE order_id = ?");
             
             if (!$stmt) {
-                error_log("Prepare failed: " . $conn->error);
-                return false;
+                throw new Exception("Statement prepare failed: " . $conn->error);
             }
             
             // Bind parameters
-            $stmt->bind_param("si", $order_status, $order_id);
-            
-            error_log("Updating order status: $order_id to $order_status");
+            if (!$stmt->bind_param("si", $order_status, $order_id)) {
+                $stmt->close();
+                throw new Exception("Bind parameters failed: " . $stmt->error);
+            }
             
             // Execute the statement
             if ($stmt->execute()) {
-                error_log("Order status updated successfully");
                 $stmt->close();
                 return true;
             } else {
-                error_log("Failed to update order status. MySQL error: " . $stmt->error);
+                $error_msg = "Execute failed: " . $stmt->error;
                 $stmt->close();
-                return false;
+                throw new Exception($error_msg);
             }
             
         } catch (Exception $e) {
-            error_log("Error updating order status: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
 }
