@@ -232,7 +232,7 @@ class booking_class extends db_connection {
 
     // Generate a secure random password for Zoom meeting
     private function generateMeetingPassword() {
-        return substr(base64_encode(random_bytes(12)), 0, 12);
+        return substr(base64_encode(random_bytes(8)), 0, 10);
     }
 
 }
