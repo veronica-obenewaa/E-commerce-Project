@@ -100,7 +100,7 @@
     position: absolute;
     right: 0;
     top: 50%;
-    transform: translateY(50%);
+    transform: translateY(-50%);
   }
   
   .search-input.expanded {
@@ -145,6 +145,8 @@
     gap: 0.5rem;
     cursor: pointer; */
     /* color: #ffffff !important; */
+    background: transparent;
+    color: #ffffff;
     font-weight: 500;
     font-size: 0.95rem;
     padding: 0.6rem 0.9rem;
