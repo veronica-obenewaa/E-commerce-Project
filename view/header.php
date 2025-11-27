@@ -100,11 +100,11 @@
     position: absolute;
     right: 0;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(50%);
   }
   
   .search-input.expanded {
-    width: 250px;
+    width: 200px;
     opacity: 1;
   }
   
@@ -133,9 +133,9 @@
   .logout-btn {
     /* background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); */
     /* color: #ffffff; */
-    /* padding: 0.6rem 1.3rem; */
-    /* border-radius: 25px; */
-    border: none;
+    padding: 0.6rem 1.3rem;
+    border-radius: 25px;
+    /* border: none; */
     font-weight: 600;
     font-size: 0.95rem;
     margin-left: 0.5rem;
@@ -147,7 +147,7 @@
   }
   
   .logout-btn:hover {
-    /* color: #ffffff; */
+    color: #ffffff;
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
     /* box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); */
