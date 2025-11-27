@@ -58,6 +58,8 @@ if (!$payment_id) {
 $cartEmptied = $cartCtrl->empty_cart_ctr($customer_id);
 if (!$cartEmptied) {
     error_log("Warning: Failed to empty cart for customer: $customer_id");
+    // Debug: log cart contents before and after
+    error_log("DEBUG: Cart contents after checkout attempt: " . json_encode($cartCtrl->get_user_cart_ctr($customer_id)));
 }
 
 // return success with order reference
