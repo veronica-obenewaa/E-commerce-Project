@@ -25,19 +25,16 @@ class ZoomAPI {
 
         $auth_string = base64_encode($this->client_id . ':' . $this->client_secret);
 
-        $url = ZOOM_API_BASE_URL .
-            "?grant_type=account_credentials&account_id={$this->account_id}";
-
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL => $url,
+            CURLOPT_URL => ZOOM_API_BASE_URL,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => [
                 'Authorization: Basic ' . $auth_string,
                 'Content-Type: application/x-www-form-urlencoded'
             ],
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => "",
+            CURLOPT_POSTFIELDS => 'grant_type=account_credentials&account_id=' . urlencode($this->account_id),
             CURLOPT_TIMEOUT => 30,
             CURLOPT_SSL_VERIFYPEER => true
         ]);
