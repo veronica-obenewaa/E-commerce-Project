@@ -8,6 +8,8 @@ header('Content-Type: application/json');
 
 require_once '../settings/core.php';
 require_once '../settings/paystack_config.php';
+require_once '../controllers/order_controller.php';
+require_once '../controllers/cart_controller.php';
 
 error_log("=== PAYSTACK CALLBACK/VERIFICATION ===");
 
@@ -158,10 +160,15 @@ try {
         $invoice_no = 'INV-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
         $order_date = date('Y-m-d');
         
+        error_log("Attempting to create order - Customer: $customer_id, Invoice: $invoice_no");
+        
         // Create order in database
         $order_id = create_order_ctr($customer_id, $invoice_no, $order_date, 'Paid');
         
+        error_log("Order creation result - order_id: " . var_export($order_id, true));
+        
         if (!$order_id) {
+            error_log("Order creation failed for customer: $customer_id");
             throw new Exception("Failed to create order in database");
         }
         

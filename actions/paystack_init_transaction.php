@@ -51,7 +51,7 @@ if (!filter_var($customer_email, FILTER_VALIDATE_EMAIL)) {
 try {
     // Generate unique reference
     $customer_id = getUserId();
-    $reference = 'AYA-' . $customer_id . '-' . time();
+    $reference = 'Med-ePharma-' . $customer_id . '-' . time();
     
     error_log("Initializing transaction - Customer: $customer_id, Amount: $amount GHS, Email: $customer_email");
     

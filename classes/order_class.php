@@ -18,6 +18,8 @@ class order_class extends db_connection {
      */
     public function create_order($customer_id, $invoice_no, $order_date, $order_status) {
         error_log("=== CREATE_ORDER METHOD CALLED ===");
+        error_log("Parameters - customer_id: $customer_id (type: " . gettype($customer_id) . "), invoice_no: $invoice_no, order_date: $order_date, order_status: $order_status");
+        
         try {
             // Get connection first
             $conn = $this->db_conn();
@@ -27,6 +29,9 @@ class order_class extends db_connection {
                 return false;
             }
             
+            // Ensure customer_id is an integer
+            $customer_id = (int)$customer_id;
+            
             // Use prepared statement for security
             $stmt = $conn->prepare("INSERT INTO orders (customer_id, invoice_no, order_date, order_status) VALUES (?, ?, ?, ?)");
             
@@ -35,26 +40,30 @@ class order_class extends db_connection {
                 return false;
             }
             
-            // Bind parameters
-            $stmt->bind_param("isss", $customer_id, $invoice_no, $order_date, $order_status);
+            // Bind parameters - ensure types match
+            if (!$stmt->bind_param("isss", $customer_id, $invoice_no, $order_date, $order_status)) {
+                error_log("Bind param failed: " . $stmt->error);
+                $stmt->close();
+                return false;
+            }
             
             error_log("Executing INSERT with values: customer_id=$customer_id, invoice_no=$invoice_no, order_date=$order_date, order_status=$order_status");
             
             // Execute the statement
-            if ($stmt->execute()) {
-                $order_id = $stmt->insert_id;
-                error_log("Order created successfully with ID: $order_id");
+            if (!$stmt->execute()) {
+                error_log("Statement execution failed. MySQL error: " . $stmt->error);
                 $stmt->close();
-                
-                if ($order_id > 0) {
-                    return $order_id;
-                } else {
-                    error_log("Insert succeeded but ID is 0");
-                    return false;
-                }
+                return false;
+            }
+            
+            $order_id = $stmt->insert_id;
+            error_log("Order created successfully with ID: $order_id");
+            $stmt->close();
+            
+            if ($order_id > 0) {
+                return $order_id;
             } else {
-                error_log("Order creation failed. MySQL error: " . $stmt->error);
-                $stmt->close();
+                error_log("Insert succeeded but insert_id is 0 or empty");
                 return false;
             }
             
