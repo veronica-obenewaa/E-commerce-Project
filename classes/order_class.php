@@ -128,7 +128,7 @@ class order_class extends db_connection {
             }
             
             // Use prepared statement for security and flexibility
-            $stmt = $conn->prepare("INSERT INTO payment (amt, customer_id, order_id, currency, payment_date, payment_method, transaction_ref, authorization_code, payment_channel) 
+            $stmt = $conn->prepare("INSERT INTO payments (amt, customer_id, order_id, currency, payment_date, payment_method, transaction_ref, authorization_code, payment_channel) 
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             
             if (!$stmt) {
@@ -195,7 +195,7 @@ class order_class extends db_connection {
                         p.currency,
                         COUNT(od.product_id) as item_count
                     FROM orders o
-                    LEFT JOIN payment p ON o.order_id = p.order_id
+                    LEFT JOIN payments p ON o.order_id = p.order_id
                     LEFT JOIN orderdetails od ON o.order_id = od.order_id
                     WHERE o.customer_id = $customer_id
                     GROUP BY o.order_id
@@ -230,7 +230,7 @@ class order_class extends db_connection {
                         p.currency,
                         p.payment_date
                     FROM orders o
-                    LEFT JOIN payment p ON o.order_id = p.order_id
+                    LEFT JOIN payments p ON o.order_id = p.order_id
                     WHERE o.order_id = $order_id AND o.customer_id = $customer_id";
             
             return $this->db_fetch_one($sql);
