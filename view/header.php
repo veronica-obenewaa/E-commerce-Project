@@ -151,7 +151,7 @@
     font-size: 0.95rem;
     padding: 0.6rem 0.9rem;
     margin: 0 0.2rem;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
