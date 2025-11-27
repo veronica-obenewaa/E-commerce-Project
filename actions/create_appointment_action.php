@@ -105,9 +105,14 @@ if ($booking_id) {
         ]);
     } else {
         // Booking created but Zoom meeting failed
+        $error_msg = $zoom_result['error'] ?? 'Unknown error';
+        // Include debug info if available
+        if (isset($zoom_result['debug']['raw_response'])) {
+            $error_msg .= ' | Response: ' . $zoom_result['debug']['raw_response'];
+        }
         echo json_encode([
             'status' => 'partial', 
-            'message' => 'Appointment booked, but Zoom meeting could not be created: ' . ($zoom_result['error'] ?? 'Unknown error'),
+            'message' => 'Appointment booked, but Zoom meeting could not be created: ' . $error_msg,
             'booking_id' => $booking_id,
             'redirect' => '../view/user_dashboard.php'
         ]);

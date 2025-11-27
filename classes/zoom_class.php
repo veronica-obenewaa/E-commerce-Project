@@ -160,6 +160,11 @@ class ZoomAPI {
             $payload['password'] = $meeting_data['password'];
         }
 
+        // Log the meeting creation request for debugging
+        error_log("Zoom Meeting Create Request - Topic: " . ($payload['topic'] ?? 'N/A') . ", Start Time: " . ($payload['start_time'] ?? 'N/A'));
+        error_log("Zoom API Endpoint: " . ZOOM_API_CREATE_MEETING);
+        error_log("Zoom Meeting Payload: " . json_encode($payload));
+
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => ZOOM_API_CREATE_MEETING,
@@ -190,7 +195,8 @@ class ZoomAPI {
             return [
                 'success' => false,
                 'error' => $error_data['message'] ?? 'Failed to create Zoom meeting',
-                'http_code' => $http_code
+                'http_code' => $http_code,
+                'raw_response' => $response
             ];
         }
 

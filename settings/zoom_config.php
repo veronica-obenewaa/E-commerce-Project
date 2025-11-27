@@ -16,7 +16,7 @@ define('ZOOM_API_UPDATE_MEETING', 'https://api-us.zoom.us/v2/meetings');
 define('ZOOM_API_DELETE_MEETING', 'https://api-us.zoom.us/v2/meetings');
 
 // Default meeting settings
-define('ZOOM_MEETING_DURATION', 60); // in minutes
+define('ZOOM_MEETING_DURATION', 40); // in minutes
 define('ZOOM_MEETING_TYPE', 2); // 1 = instant, 2 = scheduled
 
 // Note: For production, use environment variables or a secure config file

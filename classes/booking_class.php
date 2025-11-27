@@ -115,9 +115,18 @@ class booking_class extends db_connection {
         $zoom_result = $zoomAPI->createMeeting($meeting_data);
 
         if (!$zoom_result['success']) {
+            // Include raw response and HTTP code for debugging
+            $error_msg = $zoom_result['error'] ?? 'Failed to create Zoom meeting';
+            if (isset($zoom_result['raw_response'])) {
+                $error_msg .= ' | Raw: ' . substr($zoom_result['raw_response'], 0, 200);
+            }
+            if (isset($zoom_result['http_code'])) {
+                $error_msg .= ' | HTTP: ' . $zoom_result['http_code'];
+            }
             return [
                 'success' => false,
-                'error' => $zoom_result['error'] ?? 'Failed to create Zoom meeting'
+                'error' => $error_msg,
+                'debug' => $zoom_result
             ];
         }
 
