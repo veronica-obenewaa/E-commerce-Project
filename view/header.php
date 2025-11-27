@@ -144,7 +144,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer; */
-    color: #ffffff !important;
+    /* color: #ffffff !important; */
     font-weight: 500;
     font-size: 0.95rem;
     padding: 0.6rem 0.9rem;
