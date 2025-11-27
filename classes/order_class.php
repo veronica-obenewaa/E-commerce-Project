@@ -128,8 +128,8 @@ class order_class extends db_connection {
             }
             
             // Use prepared statement for security and flexibility
-            $stmt = $conn->prepare("INSERT INTO payments (amt, customer_id, order_id, currency, payment_date, payment_method, transaction_ref, authorization_code, payment_channel) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO payments (amount, customer_id, order_id, currency, payment_date, payment_status, payment_method, transaction_ref, authorization_code, payment_channel) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             
             if (!$stmt) {
                 throw new Exception("Statement prepare failed: " . $conn->error);
@@ -141,12 +141,14 @@ class order_class extends db_connection {
             $order_id = (int)$order_id;
             
             // Bind parameters
-            if (!$stmt->bind_param("diisissss", 
+            $payment_status = 'Success';
+            if (!$stmt->bind_param("diisssssss", 
                 $amount, 
                 $customer_id, 
                 $order_id, 
                 $currency, 
-                $payment_date, 
+                $payment_date,
+                $payment_status,
                 $payment_method, 
                 $transaction_ref, 
                 $authorization_code, 
@@ -204,7 +206,6 @@ class order_class extends db_connection {
             return $this->db_fetch_all($sql);
             
         } catch (Exception $e) {
-            error_log("Error getting user orders: " . $e->getMessage());
             return false;
         }
     }
@@ -236,7 +237,6 @@ class order_class extends db_connection {
             return $this->db_fetch_one($sql);
             
         } catch (Exception $e) {
-            error_log("Error getting order details: " . $e->getMessage());
             return false;
         }
     }
@@ -264,7 +264,6 @@ class order_class extends db_connection {
             return $this->db_fetch_all($sql);
             
         } catch (Exception $e) {
-            error_log("Error getting order products: " . $e->getMessage());
             return false;
         }
     }

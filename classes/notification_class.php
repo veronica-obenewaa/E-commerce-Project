@@ -28,7 +28,6 @@ class notification_class extends db_connection {
             
             return $result ? $insertId : false;
         } catch (Exception $e) {
-            error_log("Error creating notification: " . $e->getMessage());
             return false;
         }
     }
@@ -59,7 +58,6 @@ class notification_class extends db_connection {
             $stmt->close();
             return $notifications;
         } catch (Exception $e) {
-            error_log("Error getting unread notifications: " . $e->getMessage());
             return [];
         }
     }

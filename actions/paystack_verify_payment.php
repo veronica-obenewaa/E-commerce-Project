@@ -61,12 +61,9 @@ try {
         throw new Exception("No response from Paystack verification API");
     }
     
-    error_log("Paystack verification response: " . json_encode($verification_response));
-    
     // Check if verification was successful
     if (!isset($verification_response['status']) || $verification_response['status'] !== true) {
         $error_msg = $verification_response['message'] ?? 'Payment verification failed';
-        error_log("Payment verification failed: $error_msg");
         
         echo json_encode([
             'status' => 'error',
@@ -86,11 +83,8 @@ try {
     $payment_method = $authorization['channel'] ?? 'card';
     $auth_last_four = $authorization['last_four'] ?? 'XXXX';
     
-    error_log("Transaction status: $payment_status, Amount: $amount_paid GHS");
-    
     // Validate payment status
     if ($payment_status !== 'success') {
-        error_log("Payment status is not successful: $payment_status");
         
         echo json_encode([
             'status' => 'error',

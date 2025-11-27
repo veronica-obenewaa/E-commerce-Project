@@ -35,8 +35,8 @@ try {
         echo "<p style='color: red;'>❌ Orders table not found: " . htmlspecialchars(mysqli_error($conn)) . "</p>";
     }
     
-    echo "<h2>Payment Table Schema</h2>";
-    $result = mysqli_query($conn, "DESCRIBE payment");
+    echo "<h2>Payments Table Schema</h2>";
+    $result = mysqli_query($conn, "DESCRIBE payments");
     
     if ($result) {
         echo "<table border='1' cellpadding='10'>";
@@ -53,9 +53,9 @@ try {
             echo "</tr>";
         }
         echo "</table>";
-        echo "<p style='color: green;'>✅ Payment table exists</p>";
+        echo "<p style='color: green;'>✅ Payments table exists</p>";
     } else {
-        echo "<p style='color: red;'>❌ Payment table not found: " . htmlspecialchars(mysqli_error($conn)) . "</p>";
+        echo "<p style='color: red;'>❌ Payments table not found: " . htmlspecialchars(mysqli_error($conn)) . "</p>";
     }
     
     echo "<h2>OrderDetails Table Schema</h2>";

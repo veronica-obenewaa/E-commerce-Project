@@ -106,8 +106,6 @@ class cart_class extends db_connection {
         $conn = $this->db_conn();
         $stmt = $conn->prepare("SELECT * FROM cart WHERE c_id = ? AND p_id = ?");
         if (!$stmt) {
-            // prepare failed (DB error) - return null to indicate "not found / no existing"
-            error_log('DB prepare failed in checkProductInCart: ' . $conn->error);
             return null;
         }
         $stmt->bind_param("ii", $c_id, $p_id);
@@ -127,14 +125,12 @@ class cart_class extends db_connection {
             // Update qty instead of inserting duplicate
             $stmt = $conn->prepare("UPDATE cart SET qty = qty + ? WHERE c_id = ? AND p_id = ?");
             if (!$stmt) {
-                error_log('DB prepare failed in addToCart (update): ' . $conn->error);
                 return false;
             }
             $stmt->bind_param("iii", $qty, $c_id, $p_id);
         } else {
             $stmt = $conn->prepare("INSERT INTO cart (p_id, c_id, qty) VALUES (?, ?, ?)");
             if (!$stmt) {
-                error_log('DB prepare failed in addToCart (insert): ' . $conn->error);
                 return false;
             }
             $stmt->bind_param("iii", $p_id, $c_id, $qty);
@@ -169,25 +165,16 @@ class cart_class extends db_connection {
     public function emptyCart($c_id) {
         $conn = $this->db_conn();
         if (!$c_id) {
-            error_log("Warning: emptyCart called with null/empty c_id");
             return false;
         }
         
         // First, delete items with the specific customer ID
         $stmt = $conn->prepare("DELETE FROM cart WHERE c_id = ?");
         if (!$stmt) {
-            error_log('DB prepare failed in emptyCart: ' . $conn->error);
             return false;
         }
         $stmt->bind_param("i", $c_id);
         $ok = $stmt->execute();
-        $affected = $stmt->affected_rows;
-        
-        if (!$ok) {
-            error_log("Failed to execute emptyCart delete for c_id=$c_id: " . $stmt->error);
-        } else {
-            error_log("Successfully deleted from cart for c_id=$c_id. Rows affected: " . $affected);
-        }
         $stmt->close();
         
         return $ok;
