@@ -210,7 +210,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
     /* Filter Section */
     .filter-section {
       background: white;
-      padding: 32px 0;
+      padding: 32px 48px;
       margin-bottom: 32px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
