@@ -342,9 +342,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 2 - Thermometer/Blood Sugar -->
+        <!-- Slide 2 - Diabetes/Blood Sugar -->
         <div class="carousel-item">
-          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/blood-sugar-meter-diabetes-1000x778.jpg" alt="Health Monitoring" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/diabetes.jpg" alt="Health Monitoring" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Expert Physician Consultation</h2>
@@ -353,9 +353,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 3 - Vitamins/Supplements -->
+        <!-- Slide 3 - Thermometer -->
         <div class="carousel-item">
-          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/vitamin-tablets-and-bottles-on-a-white-surface.jpg" alt="Vitamins & Supplements" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/thermometer.jpg" alt="Health Monitoring" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Convenient Delivery to Your Door</h2>
@@ -364,9 +364,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 4 - Medicine Syringe -->
+        <!-- Slide 4 - Thermometer & Medicine -->
         <div class="carousel-item">
-          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/medical-thermometer-and-pills-on-white-background.jpg" alt="Healthcare Solutions" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/thermometer-med.jpg" alt="Healthcare Solutions" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Healthcare That Fits Your Budget</h2>
@@ -375,9 +375,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 5 - Global Pills -->
+        <!-- Slide 5 - World Medicine -->
         <div class="carousel-item">
-          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/medicin-world-map-1920x1440.jpg" alt="Global Healthcare" style="width: 100%; height: 100%; object-fit: cover;">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/world-med.png" alt="Global Healthcare" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Quality Medications Worldwide</h2>
