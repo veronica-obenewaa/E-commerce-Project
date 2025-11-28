@@ -345,7 +345,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e.key === 'Enter') {
         const query = searchInput.value.trim();
         if (query) {
-          window.location.href = 'product_search_result.php?q=' + encodeURIComponent(query);
+          const pathPrefix = '<?php echo $pathPrefix; ?>';
+          window.location.href = pathPrefix + 'product_search_result.php?q=' + encodeURIComponent(query);
         }
       }
     });
