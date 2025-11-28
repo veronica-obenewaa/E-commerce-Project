@@ -1,10 +1,15 @@
 <?php require_once __DIR__ . '/../settings/core.php'; ?>
 
 <?php
-// Determine the correct path prefix based on current location
-$isRootIndex = (basename($_SERVER['SCRIPT_NAME']) === 'index.php' && dirname($_SERVER['SCRIPT_NAME']) === '/');
-$pathPrefix = $isRootIndex ? 'view/' : '';
-$rootPath = $isRootIndex ? '' : '../';
+// Determine the correct path prefix based on current executing script
+// When header.php is included from index.php (root), we need view/ prefix
+// When header.php is included from view/*.php, we don't need the prefix
+$scriptFilename = $_SERVER['SCRIPT_FILENAME'] ?? __FILE__;
+$isInViewDirectory = (strpos($scriptFilename, 'view') !== false && basename(dirname($scriptFilename)) === 'view');
+
+// If the current page is in the view directory, use no prefix; otherwise use view/ prefix
+$pathPrefix = $isInViewDirectory ? '' : 'view/';
+$rootPath = $isInViewDirectory ? '../' : '';
 ?>
 
 <!-- Font Awesome -->
