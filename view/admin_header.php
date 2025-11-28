@@ -22,17 +22,20 @@
           $userRole = getUserRole();
           if ($userRole == 3): // Physician
             $dashboardLink = '../admin/dashboard.php';
-            $dashboardText = 'My Page';
+            $dashboardText = 'Dashboard';
+            $dashboardIcon = 'fa-stethoscope';
           elseif ($userRole == 1): // Pharmaceutical Company
             $dashboardLink = '../view/dashboard.php';
-            $dashboardText = 'My Page';
+            $dashboardText = 'Dashboard';
+            $dashboardIcon = 'fa-chart-line';
           else:
             $dashboardLink = '../index.php';
             $dashboardText = 'Dashboard';
+            $dashboardIcon = 'fa-gauge';
           endif;
           ?>
           <a class="nav-link text-white" href="<?php echo $dashboardLink; ?>">
-            <i class="fas fa-user-circle"></i> <?php echo $dashboardText; ?>
+            <i class="fas <?php echo $dashboardIcon; ?>"></i> <?php echo $dashboardText; ?>
           </a>
         </li>
         <li class="nav-item">
