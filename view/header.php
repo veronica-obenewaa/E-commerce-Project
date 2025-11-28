@@ -1,5 +1,12 @@
 <?php require_once __DIR__ . '/../settings/core.php'; ?>
 
+<?php
+// Determine the correct path prefix based on current location
+$isRootIndex = (basename($_SERVER['SCRIPT_NAME']) === 'index.php' && dirname($_SERVER['SCRIPT_NAME']) === '/');
+$pathPrefix = $isRootIndex ? 'view/' : '';
+$rootPath = $isRootIndex ? '' : '../';
+?>
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <!-- Google Fonts -->
@@ -211,7 +218,7 @@
 
 <nav class="navbar navbar-expand-lg premium-navbar">
   <div class="container">
-    <a class="navbar-brand" href="../index.php">
+    <a class="navbar-brand" href="<?php echo $rootPath; ?>index.php">
       <i class="fas fa-heart-pulse brand-icon"></i>
       <span>Med-ePharma</span>
     </a>
@@ -223,17 +230,17 @@
     <div class="collapse navbar-collapse" id="navMain">
       <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item">
-          <a class="nav-link" href="../index.php">
+          <a class="nav-link" href="<?php echo $rootPath; ?>index.php">
             <i class="fas fa-home nav-icon"></i> Home
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="all_product.php">
+          <a class="nav-link" href="<?php echo $pathPrefix; ?>all_product.php">
             <i class="fas fa-pills nav-icon"></i> All Products
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="book_consultation.php">
+          <a class="nav-link" href="<?php echo $pathPrefix; ?>book_consultation.php">
             <i class="fas fa-user-doctor nav-icon"></i> Contact Physician
           </a>
         </li>
@@ -250,7 +257,7 @@
         
         <?php if (!isLoggedIn()): ?>
           <li class="nav-item">
-            <a class="nav-link" href="../Login/register.php">
+            <a class="nav-link" href="<?php echo $rootPath; ?>Login/register.php">
               <i class="fas fa-user-plus nav-icon"></i> Register
             </a>
           </li>
@@ -258,11 +265,11 @@
           <?php 
           $userRole = getUserRole();
           if ($userRole == 3): // Physician
-            $dashboardLink = '../admin/dashboard.php';
+            $dashboardLink = $rootPath . 'admin/dashboard.php';
           elseif ($userRole == 1): // Pharmaceutical Company
-            $dashboardLink = '../view/dashboard.php';
+            $dashboardLink = $pathPrefix . 'dashboard.php';
           elseif (isCustomer() || $userRole == 2):
-            $dashboardLink = 'user_dashboard.php';
+            $dashboardLink = $pathPrefix . 'user_dashboard.php';
           else:
             $dashboardLink = null;
           endif;
@@ -276,13 +283,13 @@
           <?php endif; ?>
           <?php if (isCustomer() || $userRole == 2): ?>
             <li class="nav-item">
-              <a class="nav-link" href="cart.php">
+              <a class="nav-link" href="<?php echo $pathPrefix; ?>cart.php">
                 <i class="fas fa-shopping-cart nav-icon"></i> Cart
               </a>
             </li>
           <?php endif; ?>
           <li class="nav-item">
-            <form method="post" action="../Login/logout.php" class="d-inline">
+            <form method="post" action="<?php echo $rootPath; ?>Login/logout.php" class="d-inline">
               <button class="logout-btn" type="submit">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </button>
