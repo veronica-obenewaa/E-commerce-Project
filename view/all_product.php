@@ -45,13 +45,18 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
       display: flex;
       align-items: center;
       justify-content: center;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      overflow: hidden;
     }
 
     .carousel-item img {
       position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: 1;
     }
 
     .carousel-overlay {
@@ -323,9 +328,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
   <div class="container-fluid px-0">
     <div class="carousel-wrapper">
       <div id="productsCarousel" class="carousel" style="position: relative;">
-        <!-- Slide 1 -->
+        <!-- Slide 1 - Capsules -->
         <div class="carousel-item active">
-          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/gel-capsules-206150_1280.jpg" alt="Quality Medicines">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/gel-capsules-206150_1280.jpg" alt="Quality Medicines" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Your Health, Our Priority</h2>
@@ -334,9 +339,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 2 -->
+        <!-- Slide 2 - Thermometer/Blood Sugar -->
         <div class="carousel-item">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 500'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23e8f5e9;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23c8e6c9;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='500' fill='url(%23grad)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='48' font-weight='bold' fill='%230b6623'%3ETeleconsultation Available%3C/text%3E%3C/svg%3E" alt="Teleconsultation">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/blood-sugar-meter-diabetes-1000x778.jpg" alt="Health Monitoring" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Expert Physician Consultation</h2>
@@ -345,9 +350,9 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 3 -->
+        <!-- Slide 3 - Vitamins/Supplements -->
         <div class="carousel-item">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 500'%3E%3Cdefs%3E%3ClinearGradient id='grad2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23f1f8e9;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23dcedc8;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='500' fill='url(%23grad2)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='48' font-weight='bold' fill='%230b6623'%3EFast & Reliable Delivery%3C/text%3E%3C/svg%3E" alt="Fast Delivery">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/vitamin-tablets-and-bottles-on-a-white-surface.jpg" alt="Vitamins & Supplements" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Convenient Delivery to Your Door</h2>
@@ -356,14 +361,25 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           </div>
         </div>
 
-        <!-- Slide 4 -->
+        <!-- Slide 4 - Medicine Syringe -->
         <div class="carousel-item">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 500'%3E%3Cdefs%3E%3ClinearGradient id='grad3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23e0f2f1;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23b2dfdb;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1200' height='500' fill='url(%23grad3)'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='48' font-weight='bold' fill='%230b6623'%3EAffordable Healthcare%3C/text%3E%3C/svg%3E" alt="Affordable">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/medical-thermometer-and-pills-on-white-background.jpg" alt="Healthcare Solutions" style="width: 100%; height: 100%; object-fit: cover;">
           <div class="carousel-overlay"></div>
           <div class="carousel-content">
             <h2>Healthcare That Fits Your Budget</h2>
             <p>Competitive pricing on all medications with special discounts for regular customers</p>
             <a href="all_product.php" class="carousel-btn">Start Saving</a>
+          </div>
+        </div>
+
+        <!-- Slide 5 - Global Pills -->
+        <div class="carousel-item">
+          <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/medicin-world-map-1920x1440.jpg" alt="Global Healthcare" style="width: 100%; height: 100%; object-fit: cover;">
+          <div class="carousel-overlay"></div>
+          <div class="carousel-content">
+            <h2>Quality Medications Worldwide</h2>
+            <p>Partner with the most trusted pharmaceutical suppliers across Africa</p>
+            <a href="all_product.php" class="carousel-btn">Explore More</a>
           </div>
         </div>
 
@@ -381,6 +397,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
           <span class="carousel-indicator-dot" onclick="currentSlide(1)"></span>
           <span class="carousel-indicator-dot" onclick="currentSlide(2)"></span>
           <span class="carousel-indicator-dot" onclick="currentSlide(3)"></span>
+          <span class="carousel-indicator-dot" onclick="currentSlide(4)"></span>
         </div>
       </div>
     </div>
