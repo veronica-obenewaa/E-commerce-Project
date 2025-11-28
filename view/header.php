@@ -255,12 +255,26 @@
             </a>
           </li>
         <?php else: ?>
-          <?php if (isCustomer() || getUserRole() == 2): ?>
+          <?php 
+          $userRole = getUserRole();
+          if ($userRole == 3): // Physician
+            $dashboardLink = '../admin/dashboard.php';
+          elseif ($userRole == 1): // Pharmaceutical Company
+            $dashboardLink = '../view/dashboard.php';
+          elseif (isCustomer() || $userRole == 2):
+            $dashboardLink = 'user_dashboard.php';
+          else:
+            $dashboardLink = null;
+          endif;
+          ?>
+          <?php if (isset($dashboardLink) && $dashboardLink): ?>
             <li class="nav-item">
-              <a class="nav-link" href="user_dashboard.php">
+              <a class="nav-link" href="<?php echo $dashboardLink; ?>">
                 <i class="fas fa-gauge nav-icon"></i> Dashboard
               </a>
             </li>
+          <?php endif; ?>
+          <?php if (isCustomer() || $userRole == 2): ?>
             <li class="nav-item">
               <a class="nav-link" href="cart.php">
                 <i class="fas fa-shopping-cart nav-icon"></i> Cart
