@@ -36,15 +36,35 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 16px 48px rgba(11, 102, 35, 0.15);
-      max-height: 500px;
+      width: 100%;
+      height: 500px;
+    }
+
+    #productsCarousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
     }
 
     .carousel-item {
       height: 500px;
-      position: relative;
-      display: block;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
       background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
       overflow: hidden;
+    }
+
+    .carousel-item.active {
+      display: block;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .carousel-item img {
@@ -330,7 +350,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
 <section class="carousel-section">
   <div class="container-fluid px-0">
     <div class="carousel-wrapper">
-      <div id="productsCarousel" class="carousel" style="position: relative;">
+      <div id="productsCarousel" style="position: relative; width: 100%; height: 100%;">
         <!-- Slide 1 - Capsules -->
         <div class="carousel-item active">
           <img src="http://169.239.251.102:442/~veronica.obenewaa/uploads/gel-capsules-206150_1280.jpg" alt="Quality Medicines" style="width: 100%; height: 100%; object-fit: cover;">
