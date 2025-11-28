@@ -42,9 +42,7 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
     .carousel-item {
       height: 500px;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
       overflow: hidden;
     }
@@ -63,32 +61,37 @@ $products = $productCtrl->fetch_products_public_ctr()['data'] ?? [];
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(11, 102, 35, 0.4) 0%, rgba(20, 168, 81, 0.3) 100%);
+      background: linear-gradient(135deg, rgba(11, 102, 35, 0.5) 0%, rgba(20, 168, 81, 0.4) 100%);
       z-index: 2;
+      top: 0;
+      left: 0;
     }
 
     .carousel-content {
-      position: relative;
+      position: absolute;
       z-index: 3;
       text-align: center;
       color: white;
       max-width: 600px;
       padding: 40px;
       animation: slideInUp 0.8s ease-out;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .carousel-content h2 {
       font-size: 3rem;
       font-weight: 800;
       margin-bottom: 16px;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       letter-spacing: -1px;
     }
 
     .carousel-content p {
       font-size: 1.25rem;
       margin-bottom: 24px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
       font-weight: 500;
     }
 
