@@ -24,8 +24,8 @@ if (!isLoggedIn() || !isAdmin()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
+            --primary-color: #025d0aff;
+            --secondary-color: #27ae60;
             --accent-color: #e74c3c;
             --success-color: #27ae60;
             --light-bg: #f8f9fa;
@@ -108,7 +108,7 @@ if (!isLoggedIn() || !isAdmin()) {
         }
         
         .btn-submit {
-            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #025d0aff 100%);
             color: white;
             border: none;
             padding: 12px 30px;
@@ -123,7 +123,7 @@ if (!isLoggedIn() || !isAdmin()) {
         
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 8px 20px rgba(2, 93, 10, 0.3);
             color: white;
         }
         
@@ -155,8 +155,8 @@ if (!isLoggedIn() || !isAdmin()) {
         }
         
         .file-upload-area:hover {
-            background-color: rgba(52, 152, 219, 0.1);
-            border-color: #2980b9;
+            background-color: rgba(2, 93, 10, 0.1);
+            border-color: #025d0aff;
         }
         
         .file-upload-area i {
