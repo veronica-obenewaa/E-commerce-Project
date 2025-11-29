@@ -14,7 +14,7 @@ class brand_class extends db_connection {
                 ? ["status" => "success", "message" => "Brand updated successfully"]
                 : ["status" => "error", "message" => "Failed to update brand"];
         }
-    //add category
+    //add brand
     public function addBrand($brand_name) {
         $conn = $this->db_conn();
         $brand_name = trim($brand_name);
