@@ -505,21 +505,21 @@ include __DIR__ . '/header.php';
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <div class="timeline-year">2024</div>
+                        <div class="timeline-year">2025</div>
                         <div class="timeline-title">Platform Launch</div>
                         <div class="timeline-description">Med-ePharma officially launches with full e-commerce and telemedicine capabilities.</div>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <div class="timeline-year">2024</div>
+                        <div class="timeline-year">2026</div>
                         <div class="timeline-title">Community Expansion</div>
                         <div class="timeline-description">We expand our network of verified pharmaceutical partners and licensed physicians across Ghana.</div>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <div class="timeline-year">2025</div>
+                        <div class="timeline-year">2026</div>
                         <div class="timeline-title">Innovation</div>
                         <div class="timeline-description">Launching advanced features to enhance user experience and healthcare accessibility.</div>
                     </div>
