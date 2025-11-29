@@ -17,7 +17,7 @@ if (!isLoggedIn() || !isAdmin()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #025d0aff;
+            --primary-color: #b3e7b8ff;
             --secondary-color: #27ae60;
             --accent-color: #e74c3c;
             --success-color: #27ae60;
