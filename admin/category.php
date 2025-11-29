@@ -90,7 +90,7 @@ if (!isLoggedIn() || !isAdmin()) {
         .category-card {
             background: white;
             border-radius: 10px;
-            padding: 500px;
+            padding: 100px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             border-left: 4px solid var(--secondary-color);
