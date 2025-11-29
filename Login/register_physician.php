@@ -335,7 +335,7 @@
                 });
 
             // Load specializations
-            fetch('../js/medical_specializations.json')
+            fetch(window.location.origin + '/~veronica.obenewaa/js/medical_specializations.json')
                 .then(response => response.json())
                 .then(data => {
                     const specializationSelect = document.getElementById('medical_specializations');

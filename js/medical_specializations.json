@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "name": "General Practice"
+  },
+  {
+    "id": "2",
+    "name": "Cardiology"
+  },
+  {
+    "id": "3",
+    "name": "Internal Medicine"
+  },
+  {
+    "id": "4",
+    "name": "Pediatrics"
+  },
+  {
+    "id": "5",
+    "name": "Dermatology"
+  },
+  {
+    "id": "6",
+    "name": "Psychiatry"
+  },
+  {
+    "id": "7",
+    "name": "Surgery"
+  },
+  {
+    "id": "8",
+    "name": "Orthopedics"
+  },
+  {
+    "id": "9",
+    "name": "Neurology"
+  },
+  {
+    "id": "10",
+    "name": "Ophthalmology"
+  },
+  {
+    "id": "11",
+    "name": "ENT (Otolaryngology)"
+  },
+  {
+    "id": "12",
+    "name": "Gastroenterology"
+  },
+  {
+    "id": "13",
+    "name": "Urology"
+  },
+  {
+    "id": "14",
+    "name": "Oncology"
+  },
+  {
+    "id": "15",
+    "name": "Radiology"
+  },
+  {
+    "id": "16",
+    "name": "Pathology"
+  },
+  {
+    "id": "17",
+    "name": "Anesthesiology"
+  },
+  {
+    "id": "18",
+    "name": "Rheumatology"
+  },
+  {
+    "id": "19",
+    "name": "Endocrinology"
+  },
+  {
+    "id": "20",
+    "name": "Pulmonology"
+  }
+]
