@@ -32,7 +32,8 @@ class brand_class extends db_connection {
         $ok = $stmt->execute();
         $stmt->close();
         return $ok
-            ?['status' => 'success', 'message' => 'Brand added successfully']:['status' => 'error', 'message' => 'Failed to add brand'];
+            ? ['status' => 'success', 'message' => 'Brand added successfully']
+            : ['status' => 'error', 'message' => 'Failed to add brand'];
     }
 
 
