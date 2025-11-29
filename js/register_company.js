@@ -59,14 +59,63 @@ function handleCompanyRegistration(event) {
 }
 
 function validateCompanyForm() {
+    const contactName = document.getElementById('customer_name').value.trim();
+    const email = document.getElementById('customer_email').value.trim();
+    const password = document.getElementById('customer_pass').value.trim();
     const companyName = document.getElementById('company_name').value.trim();
     const pharmaRegNumber = document.getElementById('pharmaceutical_registration_number').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const confirmPassword = document.getElementById('confirm_password').value.trim();
+    const country = document.getElementById('customer_country').value.trim();
+    const city = document.getElementById('customer_city').value.trim();
+    const phone = document.getElementById('customer_contact').value.trim();
 
     // Clear previous error messages
     clearErrorMessages();
+
+    // Validate contact person name
+    if (!contactName) {
+        showFieldError('customer_name', 'Contact person name is required');
+        return false;
+    }
+
+    // Validate email
+    if (!email) {
+        showFieldError('customer_email', 'Email is required');
+        return false;
+    }
+
+    if (!isValidEmail(email)) {
+        showFieldError('customer_email', 'Please enter a valid email address');
+        return false;
+    }
+
+    // Validate password
+    if (!password) {
+        showFieldError('customer_pass', 'Password is required');
+        return false;
+    }
+
+    if (password.length < 8) {
+        showFieldError('customer_pass', 'Password must be at least 8 characters');
+        return false;
+    }
+
+    // Validate country
+    if (!country) {
+        showFieldError('customer_country', 'Please select a country');
+        return false;
+    }
+
+    // Validate city
+    if (!city) {
+        showFieldError('customer_city', 'City is required');
+        return false;
+    }
+
+    // Validate phone
+    if (!phone) {
+        showFieldError('customer_contact', 'Phone number is required');
+        return false;
+    }
 
     // Validate company name
     if (!companyName) {
@@ -82,39 +131,6 @@ function validateCompanyForm() {
     // Validate pharmaceutical registration number
     if (!pharmaRegNumber) {
         showFieldError('pharmaceutical_registration_number', 'Pharmaceutical registration number is required');
-        return false;
-    }
-
-    // Validate email
-    if (!email) {
-        showFieldError('email', 'Email is required');
-        return false;
-    }
-
-    if (!isValidEmail(email)) {
-        showFieldError('email', 'Please enter a valid email address');
-        return false;
-    }
-
-    // Validate password
-    if (!password) {
-        showFieldError('password', 'Password is required');
-        return false;
-    }
-
-    if (password.length < 8) {
-        showFieldError('password', 'Password must be at least 8 characters');
-        return false;
-    }
-
-    // Validate password confirmation
-    if (!confirmPassword) {
-        showFieldError('confirm_password', 'Please confirm your password');
-        return false;
-    }
-
-    if (password !== confirmPassword) {
-        showFieldError('confirm_password', 'Passwords do not match');
         return false;
     }
 
