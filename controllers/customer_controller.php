@@ -100,9 +100,16 @@ class CustomerController {
                 // accept comma-separated string
                 $specs = array_map('trim', explode(',', $specs));
             }
-            foreach ($specs as $specName) {
-                if (empty($specName)) continue;
-                $specId = $this->customerModel->addSpecialization($specName);
+            foreach ($specs as $spec) {
+                if (empty($spec)) continue;
+                // Check if spec is a numeric ID or a name
+                if (is_numeric($spec)) {
+                    // It's a specialization ID, use it directly
+                    $specId = (int)$spec;
+                } else {
+                    // It's a specialization name, get or create it
+                    $specId = $this->customerModel->addSpecialization($spec);
+                }
                 if ($specId) $this->customerModel->addCustomerSpecialization($customer_id, $specId);
             }
         }
