@@ -48,7 +48,7 @@ if (!isLoggedIn() || !isAdmin()) {
         }
         
         .page-header h2 {
-            color: var(--primary-color);
+            color: #09622eff;
             font-weight: 700;
             margin: 0;
             display: flex;
