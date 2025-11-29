@@ -38,6 +38,7 @@
             <i class="fas <?php echo $dashboardIcon; ?>"></i> <?php echo $dashboardText; ?>
           </a>
         </li>
+        <?php if ($userRole == 1): // Only show Category and Brand for pharmaceutical companies ?>
         <li class="nav-item">
           <a class="nav-link text-white" href="../admin/category_add.php">
             <i class="fas fa-tags"></i> Category
@@ -48,6 +49,7 @@
             <i class="fas fa-certificate"></i> Brand
           </a>
         </li>
+        <?php endif; ?>
         <li class="nav-item">
           <span class="nav-link text-white">
             Welcome, <?php echo htmlspecialchars($_SESSION['customer_name'] ?? 'User'); ?>
