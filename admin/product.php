@@ -86,12 +86,6 @@ if (!isLoggedIn() || !isAdmin()) {
             color: white;
         }
         
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-        
         .product-card {
             background: white;
             border-radius: 12px;
@@ -101,6 +95,7 @@ if (!isLoggedIn() || !isAdmin()) {
             display: flex;
             flex-direction: column;
             height: 100%;
+            border: 1px solid #e8e8e8;
         }
         
         .product-card:hover {
@@ -127,14 +122,26 @@ if (!isLoggedIn() || !isAdmin()) {
         }
         
         .product-content {
-            padding: 18px;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
         }
         
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .product-title-section {
+            flex: 1;
+        }
+        
         .product-name {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 8px;
@@ -142,63 +149,85 @@ if (!isLoggedIn() || !isAdmin()) {
             word-break: break-word;
         }
         
-        .product-meta {
+        .product-description {
             font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex: 1;
+        }
+        
+        .product-meta {
+            font-size: 12px;
             color: #7f8c8d;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
         }
         
         .product-meta span {
-            display: block;
-            margin-bottom: 4px;
+            display: inline-block;
+            margin-right: 15px;
+            word-break: break-word;
+        }
+        
+        .product-meta strong {
+            color: var(--primary-color);
+        }
+        
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: auto;
         }
         
         .product-price {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--success-color);
-            margin: 12px 0;
         }
         
         .product-actions {
             display: flex;
             gap: 8px;
-            margin-top: auto;
-            padding-top: 12px;
-            border-top: 1px solid #e0e0e0;
         }
         
         .btn-action {
-            flex: 1;
-            padding: 8px 12px;
-            border: none;
+            padding: 6px 12px;
+            border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
+            gap: 4px;
+            background: white;
         }
         
         .btn-edit {
+            border-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .btn-edit:hover {
             background-color: var(--secondary-color);
             color: white;
         }
         
-        .btn-edit:hover {
-            background-color: #2980b9;
-        }
-        
         .btn-delete {
-            background-color: var(--accent-color);
-            color: white;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
         
         .btn-delete:hover {
-            background-color: #c0392b;
+            background-color: var(--accent-color);
+            color: white;
         }
         
         .empty-state {
@@ -302,21 +331,28 @@ if (!isLoggedIn() || !isAdmin()) {
                                 ${imgSrc ? `<img src="${imgSrc}" alt="${escapeHtml(p.product_title)}">` : '<i class="fas fa-prescription-bottle"></i>'}
                             </div>
                             <div class="product-content">
-                                <div class="product-name">${escapeHtml(p.product_title)}</div>
-                                <div class="product-meta">
-                                    <span><strong>Category:</strong> ${escapeHtml(p.cat_name || 'N/A')}</span>
-                                    <span><strong>Brand:</strong> ${escapeHtml(p.brand_name || 'N/A')}</span>
+                                <div class="product-header">
+                                    <div class="product-title-section">
+                                        <div class="product-name">${escapeHtml(p.product_title)}</div>
+                                    </div>
                                 </div>
-                                <div class="product-price">GH₵ ${parseFloat(p.product_price).toFixed(2)}</div>
-                                <div class="product-actions">
-                                    <button class="btn-action btn-edit" onclick="editProduct(${p.product_id})">
-                                        <i class="fas fa-pencil"></i>
-                                        Edit
-                                    </button>
-                                    <button class="btn-action btn-delete" onclick="deleteProduct(${p.product_id})">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
+                                ${p.product_desc ? `<div class="product-description">${escapeHtml(p.product_desc)}</div>` : ''}
+                                <div class="product-meta">
+                                    <span><strong>Brand:</strong> ${escapeHtml(p.brand_name || 'N/A')}</span>
+                                    <span><strong>Category:</strong> ${escapeHtml(p.cat_name || 'N/A')}</span>
+                                </div>
+                                <div class="product-footer">
+                                    <div class="product-price">GH₵ ${parseFloat(p.product_price).toFixed(2)}</div>
+                                    <div class="product-actions">
+                                        <button class="btn-action btn-edit" onclick="editProduct(${p.product_id})">
+                                            <i class="fas fa-pencil"></i>
+                                            Edit
+                                        </button>
+                                        <button class="btn-action btn-delete" onclick="deleteProduct(${p.product_id})">
+                                            <i class="fas fa-trash"></i>
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
