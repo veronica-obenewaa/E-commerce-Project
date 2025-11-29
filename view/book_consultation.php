@@ -122,6 +122,71 @@ if (isLoggedIn() && isCustomer()) {
         .alert-close-btn:hover {
             opacity: 1;
         }
+        .emergency-section {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+        .emergency-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .emergency-section p {
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            font-size: 0.95rem;
+        }
+        .emergency-contact-number {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            font-family: 'Courier New', monospace;
+        }
+        .emergency-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-emergency {
+            background: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+        .btn-call {
+            color: #dc3545;
+        }
+        .btn-call:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-message {
+            color: #dc3545;
+        }
+        .btn-message:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -132,6 +197,28 @@ if (isLoggedIn() && isCustomer()) {
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-8">
+            <!-- Emergency Contact Section -->
+            <div class="emergency-section">
+                <h3>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Need Immediate Medical Attention?
+                </h3>
+                <p>If you're experiencing a medical emergency, please contact our emergency hotline immediately.</p>
+                <div class="emergency-contact-number">
+                    +233 268 376 848
+                </div>
+                <div class="emergency-actions">
+                    <button type="button" class="btn-emergency btn-call" onclick="callEmergency()">
+                        <i class="fas fa-phone"></i>
+                        Call Now
+                    </button>
+                    <button type="button" class="btn-emergency btn-message" onclick="messageEmergency()">
+                        <i class="fas fa-sms"></i>
+                        Send Message
+                    </button>
+                </div>
+            </div>
+
             <!-- Display Cancellation Alerts -->
             <?php if (!empty($unread_notifications)): ?>
                 <?php foreach ($unread_notifications as $notification): 
@@ -267,6 +354,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 10000); // 10 seconds
     });
 });
+
+// Emergency contact functions
+function callEmergency() {
+    const emergencyNumber = '+233XXXXXXXXXX'; // Replace with actual number
+    window.location.href = 'tel:' + emergencyNumber.replace(/[^0-9+]/g, '');
+}
+
+function messageEmergency() {
+    const emergencyNumber = '+233XXXXXXXXXX'; // Replace with actual number
+    const message = 'I need immediate medical assistance. Please help.';
+    const cleanedNumber = emergencyNumber.replace(/[^0-9+]/g, '');
+    window.location.href = 'sms:' + cleanedNumber + '?body=' + encodeURIComponent(message);
+}
 </script>
 
 </body>
