@@ -295,7 +295,7 @@ if (!isLoggedIn() || !isAdmin()) {
 
                 let html = '';
                 rows.forEach(p => {
-                    const imgSrc = p.product_image ? `../images/${p.product_image}` : null;
+                    const imgSrc = p.product_image ? `../${p.product_image}` : null;
                     html += `
                         <div class="product-card">
                             <div class="product-image">
