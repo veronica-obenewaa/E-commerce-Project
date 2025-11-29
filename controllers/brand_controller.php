@@ -38,7 +38,7 @@ class BrandController {
         if(!$brand_id) return ['status' => 'error', 'message' => 'invalid brand'];
         if($name === '') return ['status' => 'error', 'message' => 'Brand name is required'];
         $ok = $this->brandModel->editBrand($brand_id, $name);
-        return $ok ? ['status' => 'success', 'message' => 'Brand updated'] : ['staus' => 'error', 'message' => 'Failed to update brand'];
+        return $ok ? ['status' => 'success', 'message' => 'Brand updated'] : ['status' => 'error', 'message' => 'Failed to update brand'];
     }
 
     #delete brand controller
