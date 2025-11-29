@@ -64,7 +64,8 @@ class brand_class extends db_connection {
         $ok = $stmt->execute();
         $stmt->close();
         return $ok
-            ?["status" => "success", "message" => "Brand deleted successfully"]:["status" => "error", "message" => "Failed to delete brand"];
+            ? ["status" => "success", "message" => "Brand deleted successfully"]
+            : ["status" => "error", "message" => "Failed to delete brand"];
     }
 
     #get a brand by id
